@@ -1,0 +1,243 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Default",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "val.sent.bal.jsonl",
+ "data_sha256": "32f249dea5c38f07956a5735bf4d9b810f943047946d36c6bd232344e3a0a868",
+ "elapsed_sec": 4.9,
+ "git_branch": "feat/particles",
+ "git_commit": "8088497d7db9e9817d65998059220993e4a187d9",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5747882916053019,
+  "confusion": {
+   "fn": 5160,
+   "fp": 4079,
+   "tn": 6785,
+   "tp": 5704
+  },
+  "macro_f1": 0.5737331921485458,
+  "n": 21728,
+  "n_orig": 10864,
+  "n_trans": 10864,
+  "pred_trans_rate": 0.45024852724594994,
+  "roc_auc": 0.6005885703833824
+ },
+ "rules": {
+  "particles.alltsa": {
+   "auc": 0.5823411973528385,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.000594222646596114,
+   "mean_trans": 0.0018572603571901654,
+   "n_fire": 21728,
+   "sign_acc": 0.500690353460972
+  },
+  "particles.anda": {
+   "auc": 0.5811095035812975,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.0006685350579934602,
+   "mean_trans": 0.0017862368433048158,
+   "n_fire": 21728,
+   "sign_acc": 0.5001380706921944
+  },
+  "particles.copular_det": {
+   "auc": 0.582083187490375,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0061076941294577695,
+   "mean_trans": 0.0030568651701302985,
+   "n_fire": 21728,
+   "sign_acc": 0.5127485272459499
+  },
+  "particles.da_anaphoric": {
+   "auc": 0.5835392630820795,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.005864506772744707,
+   "mean_trans": 0.002470956964330829,
+   "n_fire": 21728,
+   "sign_acc": 0.5025312960235641
+  },
+  "particles.dvs": {
+   "auc": 0.5829969399413502,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.00041033098976763535,
+   "mean_trans": 0.004800809412759747,
+   "n_fire": 21728,
+   "sign_acc": 0.5011966126656848
+  },
+  "particles.generic_man": {
+   "auc": 0.5794345279893762,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 2.3434481310278928e-05,
+   "mean_trans": 0.003764355981223994,
+   "n_fire": 21728,
+   "sign_acc": 0.5034517673048601
+  },
+  "particles.han_hon": {
+   "auc": 0.42835041887543623,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.005338091731276781,
+   "mean_trans": -0.00028478315568931614,
+   "n_fire": 21728,
+   "sign_acc": 0.5066734167893961
+  },
+  "particles.namligen": {
+   "auc": 0.5824729050670114,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.00029418262150218043,
+   "mean_trans": 0.005959204712812926,
+   "n_fire": 21728,
+   "sign_acc": 0.5008744477172312
+  },
+  "particles.ni_vs_man": {
+   "auc": 0.5109341888790802,
+   "fire_orig": 0.05743740795287187,
+   "fire_trans": 0.06581369661266569,
+   "log_odds": 0.14495627278449552,
+   "mean_orig": 0.0001627523319291643,
+   "mean_trans": 0.015786874987343144,
+   "n_fire": 1339,
+   "sign_acc": 0.5914861837191935
+  },
+  "particles.of_course": {
+   "auc": 0.4992619962215942,
+   "fire_orig": 0.015740058910162003,
+   "fire_trans": 0.008376288659793814,
+   "log_odds": -0.6356976292430145,
+   "mean_orig": -0.0006089624420787822,
+   "mean_trans": -0.00014962470565775795,
+   "n_fire": 262,
+   "sign_acc": 0.46946564885496184
+  },
+  "particles.particle_verbs": {
+   "auc": 0.5838506889164955,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0029922493657998975,
+   "mean_trans": 0.0024122939762430485,
+   "n_fire": 21728,
+   "sign_acc": 0.5020250368188512
+  },
+  "particles.poss_1st": {
+   "auc": 0.46098256615192573,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.004019365858700424,
+   "mean_trans": 0.006955487608275786,
+   "n_fire": 21728,
+   "sign_acc": 0.5231958762886598
+  },
+  "particles.poss_3rd": {
+   "auc": 0.43875510376924176,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.005800729041041062,
+   "mean_trans": 0.012327265471633765,
+   "n_fire": 21728,
+   "sign_acc": 0.5115058910162003
+  },
+  "particles.stance": {
+   "auc": 0.5837994970214145,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.002110008455148579,
+   "mean_trans": 0.005132281146483854,
+   "n_fire": 21728,
+   "sign_acc": 0.502071060382916
+  },
+  "particles.ta_itu_med": {
+   "auc": 0.4231611857730657,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0037779294168060603,
+   "mean_trans": 0.008414976248905073,
+   "n_fire": 21728,
+   "sign_acc": 0.5034057437407953
+  },
+  "starter.calques": {
+   "auc": 0.5004607651827603,
+   "fire_orig": 0.002577319587628866,
+   "fire_trans": 0.0034977908689248897,
+   "log_odds": 0.3016773872472456,
+   "mean_orig": 0.003359720176730486,
+   "mean_trans": 0.004860088365243004,
+   "n_fire": 66,
+   "sign_acc": 0.5757575757575758
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.49020246691048086,
+   "fire_orig": 0.19918998527245949,
+   "fire_trans": 0.23205081001472755,
+   "log_odds": 0.19456227730342035,
+   "mean_orig": -0.0018007688504282425,
+   "mean_trans": 0.008238415777112837,
+   "n_fire": 4685,
+   "sign_acc": 0.4794023479188901
+  },
+  "starter.modal_particles": {
+   "auc": 0.5866809008716145,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.010187103616928931,
+   "mean_trans": 0.013869092479573285,
+   "n_fire": 21728,
+   "sign_acc": 0.5046483799705449
+  },
+  "starter.sent_len": {
+   "auc": 0.5812433802999625,
+   "fire_orig": 0.9959499263622975,
+   "fire_trans": 0.9989874815905744,
+   "log_odds": 1.3561872793451304,
+   "mean_orig": -0.025748472474105517,
+   "mean_trans": 0.01321256648693383,
+   "n_fire": 21673,
+   "sign_acc": 0.5615281686891525
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.5286872110479328,
+   "fire_orig": 0.11597938144329897,
+   "fire_trans": 0.04657584683357879,
+   "log_odds": -0.9873151229982131,
+   "mean_orig": 0.03294665599023936,
+   "mean_trans": 0.028516859187247817,
+   "n_fire": 1766,
+   "sign_acc": 0.6823329558323896
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230335Z",
+ "worktree": "worktrees/particles"
+}

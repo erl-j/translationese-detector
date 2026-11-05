@@ -52,21 +52,30 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225113Z | feat/register | 9033fde8+dirty | `tsw.engine:Families(only="register")` | dev | 100 | bal | masked | 14170 | 0.7020 | 0.7017 | 0.7713 |
 | 20261105T225120Z | feat/register | 9033fde8+dirty | `tsw.engine:Families(only="register")` | dev | 500 | bal | - | 2734 | 0.8376 | 0.8376 | 0.9192 |
 | 20261105T225128Z | feat/register | 9033fde8+dirty | `tsw.engine:Families(only="register")` | dev | 500 | bal | masked | 2734 | 0.8376 | 0.8376 | 0.9193 |
+| 20261105T225417Z | feat/particles | a721822d | `tsw.engine:Default` | dev | sent | bal | - | 87904 | 0.5892 | 0.5887 | 0.6317 |
 | 20261105T225427Z | feat/connpunct | 26aca3cb | `tsw.engine:Families(only="connpunct")` | dev | sent | bal | - | 87904 | 0.5692 | 0.5391 | 0.6369 |
 | 20261105T225429Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | sent | bal | - | 87904 | 0.5994 | 0.5977 | 0.6502 |
+| 20261105T225437Z | feat/particles | a721822d+dirty | `tsw.engine:Default` | dev | sent | bal | masked | 87904 | 0.5891 | 0.5885 | 0.6315 |
 | 20261105T225446Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | sent | bal | masked | 87904 | 0.5692 | 0.5391 | 0.6367 |
+| 20261105T225448Z | feat/particles | a721822d+dirty | `tsw.engine:Default` | dev | 100 | bal | - | 14170 | 0.7151 | 0.7148 | 0.7912 |
 | 20261105T225452Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | sent | bal | masked | 87904 | 0.5993 | 0.5975 | 0.6501 |
 | 20261105T225457Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 100 | bal | - | 14170 | 0.7128 | 0.7126 | 0.7837 |
+| 20261105T225502Z | feat/particles | a721822d+dirty | `tsw.engine:Default` | dev | 100 | bal | masked | 14170 | 0.7150 | 0.7147 | 0.7911 |
 | 20261105T225506Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 100 | bal | - | 14170 | 0.7399 | 0.7399 | 0.8217 |
 | 20261105T225511Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 100 | bal | masked | 14170 | 0.7128 | 0.7126 | 0.7836 |
+| 20261105T225512Z | feat/particles | a721822d+dirty | `tsw.engine:Default` | dev | 500 | bal | - | 2734 | 0.8497 | 0.8495 | 0.9319 |
 | 20261105T225520Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 500 | bal | - | 2734 | 0.8537 | 0.8535 | 0.9322 |
+| 20261105T225523Z | feat/particles | a721822d+dirty | `tsw.engine:Default` | dev | 500 | bal | masked | 2734 | 0.8489 | 0.8488 | 0.9317 |
 | 20261105T225524Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 100 | bal | masked | 14170 | 0.7397 | 0.7397 | 0.8215 |
 | 20261105T225532Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 500 | bal | masked | 2734 | 0.8537 | 0.8535 | 0.9322 |
 | 20261105T225535Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 500 | bal | - | 2734 | 0.8961 | 0.8961 | 0.9577 |
+| 20261105T225535Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles")` | dev | sent | bal | - | 87904 | 0.5427 | 0.4926 | 0.6174 |
 | 20261105T225549Z | feat/stats | 406c3a6a | `tsw.engine:Families(only="stats,starter")` | dev-train | sent | bal | - | 58721 | 0.5694 | 0.5591 | 0.5824 |
 | 20261105T225550Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 500 | bal | masked | 2734 | 0.8961 | 0.8961 | 0.9576 |
+| 20261105T225550Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles")` | dev | sent | bal | masked | 87904 | 0.5427 | 0.4926 | 0.6173 |
 | 20261105T225553Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-train | sent | bal | - | 58721 | 0.5580 | 0.5567 | 0.5815 |
 | 20261105T225555Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats")` | dev-train | sent | bal | - | 58721 | 0.5398 | 0.5256 | 0.5345 |
+| 20261105T225558Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles")` | dev | 100 | bal | - | 14170 | 0.6553 | 0.6550 | 0.7255 |
 | 20261105T225559Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-train | sent | bal | - | 58721 | 0.5694 | 0.5591 | 0.5824 |
 | 20261105T225600Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats,starter")` | dev-train | sent | bal | masked | 58721 | 0.5697 | 0.5589 | 0.5828 |
 | 20261105T225601Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-train | sent | bal | masked | 58721 | 0.5578 | 0.5565 | 0.5813 |
@@ -74,6 +83,7 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225605Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats,starter")` | dev-train | 100 | bal | - | 9560 | 0.6487 | 0.6479 | 0.7081 |
 | 20261105T225606Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-train | 100 | bal | - | 9560 | 0.6394 | 0.6390 | 0.7031 |
 | 20261105T225606Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats")` | dev-train | 100 | bal | - | 9560 | 0.5804 | 0.5739 | 0.5998 |
+| 20261105T225609Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles")` | dev | 100 | bal | masked | 14170 | 0.6553 | 0.6550 | 0.7254 |
 | 20261105T225610Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-train | sent | bal | masked | 58721 | 0.5697 | 0.5589 | 0.5828 |
 | 20261105T225612Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats")` | dev-train | 100 | bal | masked | 9560 | 0.5798 | 0.5724 | 0.6009 |
 | 20261105T225612Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-train | 100 | bal | masked | 9560 | 0.6390 | 0.6386 | 0.7026 |
@@ -81,6 +91,7 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225615Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats")` | dev-train | 500 | bal | - | 1823 | 0.6478 | 0.6433 | 0.6914 |
 | 20261105T225616Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-train | 500 | bal | - | 1823 | 0.7630 | 0.7630 | 0.8433 |
 | 20261105T225616Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-train | 100 | bal | - | 9560 | 0.6487 | 0.6479 | 0.7081 |
+| 20261105T225616Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles")` | dev | 500 | bal | - | 2734 | 0.7838 | 0.7838 | 0.8766 |
 | 20261105T225618Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats,starter")` | dev-train | 500 | bal | - | 1823 | 0.7822 | 0.7820 | 0.8551 |
 | 20261105T225619Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats")` | dev-train | 500 | bal | masked | 1823 | 0.6489 | 0.6440 | 0.6925 |
 | 20261105T225621Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-train | 500 | bal | masked | 1823 | 0.7630 | 0.7630 | 0.8429 |
@@ -88,6 +99,7 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225624Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-train | 100 | bal | masked | 9560 | 0.6483 | 0.6473 | 0.7084 |
 | 20261105T225625Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-val | sent | bal | - | 29183 | 0.5643 | 0.5637 | 0.5969 |
 | 20261105T225625Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats,starter")` | dev-train | 500 | bal | masked | 1823 | 0.7811 | 0.7808 | 0.8550 |
+| 20261105T225625Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles")` | dev | 500 | bal | masked | 2734 | 0.7838 | 0.7838 | 0.8766 |
 | 20261105T225626Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats")` | dev-val | sent | bal | masked | 29183 | 0.5327 | 0.5296 | 0.5485 |
 | 20261105T225628Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats")` | dev-val | 100 | bal | - | 4610 | 0.5805 | 0.5805 | 0.6282 |
 | 20261105T225629Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-train | 500 | bal | - | 1823 | 0.7822 | 0.7820 | 0.8551 |
@@ -105,6 +117,7 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225640Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Engine(exclude="stats")` | dev-val | 500 | bal | masked | 911 | 0.7881 | 0.7791 | 0.8538 |
 | 20261105T225640Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | sent | bal | - | 29183 | 0.5699 | 0.5686 | 0.6046 |
 | 20261105T225642Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats,starter")` | dev-val | 100 | bal | masked | 4610 | 0.6768 | 0.6742 | 0.7335 |
+| 20261105T225642Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles,starter")` | dev | sent | bal | - | 87904 | 0.5892 | 0.5887 | 0.6317 |
 | 20261105T225645Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats,starter")` | dev-val | 500 | bal | - | 911 | 0.8079 | 0.8008 | 0.8770 |
 | 20261105T225646Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | sent | bal | masked | 29183 | 0.5695 | 0.5681 | 0.6042 |
 | 20261105T225649Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Families(only="stats,starter")` | dev-val | 500 | bal | masked | 911 | 0.8068 | 0.7998 | 0.8765 |
@@ -112,6 +125,11 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225653Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | 100 | bal | masked | 4610 | 0.6768 | 0.6742 | 0.7335 |
 | 20261105T225655Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | 500 | bal | - | 911 | 0.8079 | 0.8008 | 0.8770 |
 | 20261105T225659Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | 500 | bal | masked | 911 | 0.8068 | 0.7998 | 0.8765 |
+| 20261105T225702Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles,starter")` | dev | sent | bal | masked | 87904 | 0.5891 | 0.5885 | 0.6315 |
+| 20261105T225714Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles,starter")` | dev | 100 | bal | - | 14170 | 0.7151 | 0.7148 | 0.7912 |
+| 20261105T225728Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles,starter")` | dev | 100 | bal | masked | 14170 | 0.7150 | 0.7147 | 0.7911 |
+| 20261105T225737Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles,starter")` | dev | 500 | bal | - | 2734 | 0.8497 | 0.8495 | 0.9319 |
+| 20261105T225748Z | feat/particles | a721822d+dirty | `tsw.engine:Families(only="particles,starter")` | dev | 500 | bal | masked | 2734 | 0.8489 | 0.8488 | 0.9317 |
 | 20261105T230011Z | feat/register | 48051092 | `tsw.engine:Default` | dev | sent | bal | - | 87904 | 0.6040 | 0.6035 | 0.6522 |
 | 20261105T230028Z | feat/register | 48051092+dirty | `tsw.engine:Default` | dev | sent | bal | masked | 87904 | 0.6039 | 0.6034 | 0.6521 |
 | 20261105T230038Z | feat/register | 48051092+dirty | `tsw.engine:Default` | dev | 100 | bal | - | 14170 | 0.7354 | 0.7349 | 0.8105 |
@@ -149,10 +167,13 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T230206Z | main | 80d27ff3+dirty | `baselines:TopicCheat` | val | 500 | bal | masked | 636 | 0.5000 | 0.3333 | 0.5000 |
 | 20261105T230209Z | feat/register | 48051092+dirty | `tsw.engine:Families(only="register")` | dev | 500 | bal | masked | 2734 | 0.8376 | 0.8375 | 0.9185 |
 | 20261105T230215Z | main | 80d27ff3+dirty | `tsw.engine:Default` | trn | sent | bal | - | 87904 | 0.5601 | 0.5598 | 0.5867 |
+| 20261105T230218Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | trn | sent | bal | - | 87904 | 0.5929 | 0.5916 | 0.6353 |
 | 20261105T230227Z | main | 80d27ff3+dirty | `tsw.engine:Default` | trn | sent | bal | masked | 87904 | 0.5598 | 0.5596 | 0.5865 |
 | 20261105T230233Z | main | 80d27ff3+dirty | `tsw.engine:Default` | trn | 100 | bal | - | 14170 | 0.6494 | 0.6474 | 0.7109 |
+| 20261105T230238Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | trn | sent | bal | masked | 87904 | 0.5926 | 0.5914 | 0.6351 |
 | 20261105T230243Z | main | 80d27ff3+dirty | `tsw.engine:Default` | trn | 100 | bal | masked | 14170 | 0.6491 | 0.6472 | 0.7104 |
 | 20261105T230248Z | main | 80d27ff3+dirty | `tsw.engine:Default` | trn | 500 | bal | - | 2734 | 0.7714 | 0.7705 | 0.8473 |
+| 20261105T230250Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | trn | 100 | bal | - | 14170 | 0.7185 | 0.7183 | 0.7959 |
 | 20261105T230256Z | main | 80d27ff3+dirty | `tsw.engine:Default` | trn | 500 | bal | masked | 2734 | 0.7714 | 0.7705 | 0.8468 |
 | 20261105T230258Z | main | 80d27ff3+dirty | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.5598 | 0.5593 | 0.5767 |
 | 20261105T230300Z | feat/register | f7c1f3d5 | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.5867 | 0.5859 | 0.6235 |
@@ -160,29 +181,50 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T230302Z | main | 80d27ff3+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.6109 | 0.6073 | 0.6403 |
 | 20261105T230304Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Default` | val | sent | bal | masked | 21728 | 0.5865 | 0.5857 | 0.6233 |
 | 20261105T230305Z | main | 80d27ff3+dirty | `tsw.engine:Default` | val | 100 | bal | masked | 3354 | 0.6109 | 0.6073 | 0.6401 |
+| 20261105T230305Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | trn | 100 | bal | masked | 14170 | 0.7183 | 0.7181 | 0.7957 |
 | 20261105T230306Z | main | 80d27ff3+dirty | `tsw.engine:Default` | val | 500 | bal | - | 636 | 0.6997 | 0.6955 | 0.7906 |
 | 20261105T230307Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.6911 | 0.6907 | 0.7543 |
 | 20261105T230308Z | main | 80d27ff3+dirty | `tsw.engine:Default` | val | 500 | bal | masked | 636 | 0.6997 | 0.6955 | 0.7904 |
 | 20261105T230310Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Default` | val | 100 | bal | masked | 3354 | 0.6908 | 0.6904 | 0.7542 |
 | 20261105T230312Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Default` | val | 500 | bal | - | 636 | 0.8223 | 0.8220 | 0.9134 |
 | 20261105T230314Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Default` | val | 500 | bal | masked | 636 | 0.8223 | 0.8220 | 0.9133 |
+| 20261105T230314Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | trn | 500 | bal | - | 2734 | 0.8570 | 0.8569 | 0.9358 |
 | 20261105T230317Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Families(only="register")` | val | sent | bal | - | 21728 | 0.5622 | 0.5444 | 0.5716 |
 | 20261105T230320Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Families(only="register")` | val | sent | bal | masked | 21728 | 0.5622 | 0.5444 | 0.5717 |
 | 20261105T230322Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Families(only="register")` | val | 100 | bal | - | 3354 | 0.6592 | 0.6589 | 0.7182 |
 | 20261105T230325Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Families(only="register")` | val | 100 | bal | masked | 3354 | 0.6592 | 0.6589 | 0.7183 |
 | 20261105T230326Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Families(only="register")` | val | 500 | bal | - | 636 | 0.7830 | 0.7827 | 0.8700 |
+| 20261105T230326Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | trn | 500 | bal | masked | 2734 | 0.8570 | 0.8569 | 0.9356 |
 | 20261105T230328Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Families(only="register")` | val | 500 | bal | masked | 636 | 0.7830 | 0.7827 | 0.8701 |
+| 20261105T230330Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.5748 | 0.5738 | 0.6007 |
 | 20261105T230331Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Engine(include_disabled=True, exclude="register,starter.formal_connectives")` | val | sent | bal | - | 21728 | 0.5598 | 0.5593 | 0.5767 |
 | 20261105T230334Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Engine(include_disabled=True, exclude="register,starter.formal_connectives")` | val | sent | bal | masked | 21728 | 0.5597 | 0.5592 | 0.5765 |
 | 20261105T230335Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Engine(include_disabled=True, exclude="register,starter.formal_connectives")` | val | 100 | bal | - | 3354 | 0.6109 | 0.6073 | 0.6403 |
+| 20261105T230335Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | val | sent | bal | masked | 21728 | 0.5748 | 0.5737 | 0.6006 |
 | 20261105T230338Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Engine(include_disabled=True, exclude="register,starter.formal_connectives")` | val | 100 | bal | masked | 3354 | 0.6109 | 0.6073 | 0.6401 |
 | 20261105T230339Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Engine(include_disabled=True, exclude="register,starter.formal_connectives")` | val | 500 | bal | - | 636 | 0.6997 | 0.6955 | 0.7906 |
+| 20261105T230339Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.6541 | 0.6512 | 0.7135 |
 | 20261105T230341Z | feat/register | f7c1f3d5+dirty | `tsw.engine:Engine(include_disabled=True, exclude="register,starter.formal_connectives")` | val | 500 | bal | masked | 636 | 0.6997 | 0.6955 | 0.7904 |
+| 20261105T230342Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | val | 100 | bal | masked | 3354 | 0.6541 | 0.6512 | 0.7134 |
+| 20261105T230344Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | val | 500 | bal | - | 636 | 0.7814 | 0.7788 | 0.8917 |
+| 20261105T230347Z | feat/particles | 8088497d+dirty | `tsw.engine:Default` | val | 500 | bal | masked | 636 | 0.7814 | 0.7788 | 0.8916 |
+| 20261105T230400Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | trn | sent | bal | - | 87904 | 0.5433 | 0.4927 | 0.6217 |
+| 20261105T230415Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | trn | sent | bal | masked | 87904 | 0.5433 | 0.4927 | 0.6216 |
+| 20261105T230423Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | trn | 100 | bal | - | 14170 | 0.6638 | 0.6633 | 0.7325 |
+| 20261105T230434Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | trn | 100 | bal | masked | 14170 | 0.6638 | 0.6633 | 0.7325 |
+| 20261105T230441Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | trn | 500 | bal | - | 2734 | 0.7941 | 0.7941 | 0.8839 |
+| 20261105T230450Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | trn | 500 | bal | masked | 2734 | 0.7941 | 0.7941 | 0.8839 |
+| 20261105T230453Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | val | sent | bal | - | 21728 | 0.5265 | 0.4623 | 0.5989 |
+| 20261105T230457Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | val | sent | bal | masked | 21728 | 0.5265 | 0.4623 | 0.5988 |
 | 20261105T230458Z | feat/stats | e5879905 | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.5509 | 0.5456 | 0.5618 |
 | 20261105T230458Z | feat/connpunct | fdab6a67 | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.5715 | 0.5698 | 0.5959 |
+| 20261105T230459Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | val | 100 | bal | - | 3354 | 0.6094 | 0.6062 | 0.6684 |
+| 20261105T230501Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | val | 100 | bal | masked | 3354 | 0.6094 | 0.6062 | 0.6683 |
 | 20261105T230502Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | sent | bal | masked | 21728 | 0.5504 | 0.5447 | 0.5624 |
 | 20261105T230503Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Default` | val | sent | bal | masked | 21728 | 0.5713 | 0.5696 | 0.5957 |
+| 20261105T230503Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | val | 500 | bal | - | 636 | 0.7327 | 0.7308 | 0.8157 |
 | 20261105T230504Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.6088 | 0.6077 | 0.6463 |
+| 20261105T230505Z | feat/particles | 8088497d+dirty | `tsw.engine:Families(only="particles")` | val | 500 | bal | masked | 636 | 0.7327 | 0.7308 | 0.8157 |
 | 20261105T230507Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | 100 | bal | masked | 3354 | 0.6097 | 0.6088 | 0.6466 |
 | 20261105T230507Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.6482 | 0.6476 | 0.6992 |
 | 20261105T230509Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | 500 | bal | - | 636 | 0.7186 | 0.7159 | 0.7994 |
