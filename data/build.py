@@ -98,7 +98,12 @@ EU_LANGS = "BG CS DA DE EL EN ES ET FI FR GA HU IT LT LV MT NL PL PT RO SK SL SV
 INLINE_LANG = re.compile(r"^[^()]{0,250}?\((%s)\)\s*" % "|".join(EU_LANGS.split()))
 ANY_LANG_MARK = re.compile(r"\s*\((?:%s)\)\s*" % "|".join(EU_LANGS.split()))
 # "för PPE-DE-gruppen. - Herr talman! ..." (role prefix without language marker)
-ROLE_PREFIX = re.compile(r"^(?:[a-zåäöé][^()!?]{0,250}?\.\s-\s)")
+ROLE_PREFIX = re.compile(r"^(?:\([^()]{0,40}\)\s*,?\s*)?[a-zåäöé][^()!?]{0,250}?\.\s?[–—-]\s+")
+# leftover ". – ", ".- ", "- " at the start of a paragraph
+LEADING_DASH = re.compile(r"^[\s.,;:)]*[–—-]\s+")
+# voting-time lines: "Före omröstningen om ändringsförslag 3", chair interjections
+# merged into a speaker's turn ("...: Talmannen. Herr Fatuzzo! ...")
+PROC_LINE = re.compile(r"^(?:Före|Efter) omröstningen\b|(?:^|[.!?:] )(?:Talmannen|Ordföranden)\. ")
 WHOLE_PAREN = re.compile(r"^\(.*\)\s*$")
 PROC_PAREN = re.compile(
     r"\s*\((?:Applåd|Livliga|Skratt|Munterhet|Sorl|Protest|Blandade|Rop|Heckling|Talaren"
@@ -204,6 +209,12 @@ def clean_lines(lines, stats):
             if m:
                 line = line[m.end():]
                 stats["strip_role_prefix"] += 1
+        if PROC_LINE.search(line):
+            stats["drop_procedural_line"] += 1
+            continue
+        line, n = LEADING_DASH.subn("", line)
+        if n:
+            stats["strip_leading_dash"] += 1
         # any remaining language marker anywhere (would leak the label)
         line, n = ANY_LANG_MARK.subn(" ", line)
         if n:
