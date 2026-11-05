@@ -100,3 +100,15 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T230520Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | 100 | bal | masked | 3354 | 0.6109 | 0.6073 | 0.6401 |
 | 20261105T230522Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | 500 | bal | - | 636 | 0.6997 | 0.6955 | 0.7906 |
 | 20261105T230524Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | 500 | bal | masked | 636 | 0.6997 | 0.6955 | 0.7904 |
+| 20261105T230706Z | feat/stats | 668dcd02 | `tsw.engine:Default` | trn | sent | bal | - | 87904 | 0.5597 | 0.5594 | 0.5859 |
+| 20261105T230720Z | feat/stats | 668dcd02+dirty | `tsw.engine:Default` | trn | sent | bal | masked | 87904 | 0.5595 | 0.5592 | 0.5856 |
+| 20261105T230729Z | feat/stats | 668dcd02+dirty | `tsw.engine:Default` | trn | 100 | bal | - | 14170 | 0.6570 | 0.6570 | 0.7178 |
+| 20261105T230740Z | feat/stats | 668dcd02+dirty | `tsw.engine:Default` | trn | 100 | bal | masked | 14170 | 0.6578 | 0.6578 | 0.7180 |
+| 20261105T230747Z | feat/stats | 668dcd02+dirty | `tsw.engine:Default` | trn | 500 | bal | - | 2734 | 0.7919 | 0.7915 | 0.8631 |
+| 20261105T230757Z | feat/stats | 668dcd02+dirty | `tsw.engine:Default` | trn | 500 | bal | masked | 2734 | 0.7901 | 0.7897 | 0.8629 |
+| 20261105T230804Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | sent | bal | - | 87904 | 0.5054 | 0.3487 | 0.5006 |
+| 20261105T230814Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | sent | bal | masked | 87904 | 0.5053 | 0.3483 | 0.5005 |
+| 20261105T230820Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | 100 | bal | - | 14170 | 0.5802 | 0.5775 | 0.6104 |
+| 20261105T230828Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | 100 | bal | masked | 14170 | 0.5810 | 0.5778 | 0.6113 |
+| 20261105T230832Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | 500 | bal | - | 2734 | 0.6558 | 0.6544 | 0.7048 |
+| 20261105T230839Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | 500 | bal | masked | 2734 | 0.6562 | 0.6546 | 0.7056 |
