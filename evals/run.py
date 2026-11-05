@@ -2,10 +2,15 @@
 """Evaluate a rule-based classifier on the Europarl translationese splits.
 
 Examples
-    python3 evals/run.py --clf baselines:Constant --split dev --gran 100
-    python3 evals/run.py --clf "baselines:Random(seed=3)" --split dev --gran sent --mask-topic
-    python3 evals/run.py --clf baselines:MeanSentLen --gran 500 --show-errors 5
-    python3 evals/run.py --clf tsw.engine:Expert --split test --gran 500 --i-mean-it
+    python3 evals/run.py --clf baselines:Constant --split val --gran 100
+    python3 evals/run.py --clf "baselines:Random(seed=3)" --split trn --gran sent --mask-topic
+    python3 evals/run.py --clf baselines:MeanSentLen --gran 500 --show-errors 5      # trn only
+    python3 evals/run.py --clf tsw.engine:Default --split test --gran 500 --i-mean-it
+
+Splits (data/build.py, by session date): trn = 1997 .. 2004-06-30 (the former
+"dev"; --split dev is an alias and is recorded as trn), val = 2004-07-01 ..
+2006-12-31 (aggregate metrics only: --show-errors is refused), test = 2007 ..
+2011 (locked: needs --i-mean-it, never --show-errors).
 
 --clf is "module:Name" or "module:Name(kw=literal, ...)". Modules are looked up
 in evals/ and in the repo root (so tsw.something works). If Name is a class it
@@ -47,6 +52,9 @@ import topicmask  # noqa: E402
 
 SHARED_DEFAULT = "./results/all"
 GRANS = {"sent": "sent", "sentence": "sent", "s": "sent", "100": "100", "500": "500"}
+SPLITS = ("trn", "val", "test")
+SPLIT_ALIASES = {"dev": "trn"}          # the old dev split is trn, byte for byte
+LEGACY_SPLITS = ("dev-train", "dev-val")  # retired date halves of the old dev (results JSON only)
 HARNESS_VERSION = 1
 
 
@@ -142,8 +150,13 @@ def scorer(clf):
 # data
 # --------------------------------------------------------------------------
 
+def canon_split(split):
+    """'dev' -> 'trn'; trn/val/test unchanged."""
+    return SPLIT_ALIASES.get(split, split)
+
+
 def data_path(ddir, split, gran, balanced):
-    return os.path.join(ddir, "%s.%s.%s.jsonl" % (split, gran, "bal" if balanced else "all"))
+    return os.path.join(ddir, "%s.%s.%s.jsonl" % (canon_split(split), gran, "bal" if balanced else "all"))
 
 
 def load_records(path, limit=None, seed=0):
@@ -238,6 +251,7 @@ def run_one(clf, clf_spec, split, gran, balanced=True, mask_topic=False, limit=N
             argv=None):
     """Evaluate one (split, gran, mask) condition; print and save. Returns result dict."""
     t0 = time.time()
+    split = canon_split(split)
     ddir = data_dir(ddir)
     path = data_path(ddir, split, gran, balanced)
     if not os.path.exists(path):
@@ -303,17 +317,22 @@ def run_one(clf, clf_spec, split, gran, balanced=True, mask_topic=False, limit=N
 
 
 def check_test_guard(split, i_mean_it, show_errors_n=0):
+    split = canon_split(split)
+    if split not in SPLITS:
+        sys.exit("unknown split %r (trn, val, test; dev = trn)" % split)
     if split == "test" and not i_mean_it:
-        sys.exit("REFUSING: the test split is locked. Develop on dev; evaluate on test only for a "
-                 "final, pre-registered run, and then pass --i-mean-it.")
-    if split == "test" and show_errors_n:
-        sys.exit("REFUSING: --show-errors is not allowed on the test split (it would leak test examples).")
+        sys.exit("REFUSING: the test split is locked. Develop on trn, compare on val; evaluate on test only "
+                 "for a final, pre-registered run, and then pass --i-mean-it.")
+    if split in ("val", "test") and show_errors_n:
+        sys.exit("REFUSING: --show-errors is not allowed on the %s split (val is metrics-only and test is "
+                 "locked; reading their texts would burn them). Inspect errors on trn." % split)
 
 
 def build_parser():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--clf", required=True, help='e.g. baselines:Constant or "baselines:Random(seed=3)"')
-    ap.add_argument("--split", default="dev", choices=["dev", "test"])
+    ap.add_argument("--split", default="trn", choices=list(SPLITS) + list(SPLIT_ALIASES),
+                    help="trn (default; 'dev' is an alias) | val (metrics only) | test (locked)")
     ap.add_argument("--gran", default="100", help="sent | 100 | 500")
     ap.add_argument("--unbalanced", action="store_true", help="use *.all.jsonl instead of the balanced *.bal.jsonl")
     ap.add_argument("--mask-topic", action="store_true",
@@ -321,7 +340,8 @@ def build_parser():
                          "metrics for comparison")
     ap.add_argument("--limit", type=int, default=None, help="evaluate a stratified random subset of N examples")
     ap.add_argument("--seed", type=int, default=0, help="seed for --limit sampling")
-    ap.add_argument("--show-errors", type=int, default=0, metavar="N", help="print N misclassified examples (dev only)")
+    ap.add_argument("--show-errors", type=int, default=0, metavar="N",
+                    help="print N misclassified examples (trn only; refused on val and test)")
     ap.add_argument("--rules-top", type=int, default=40, help="rows in the per-rule table (0 = all)")
     ap.add_argument("--no-save", action="store_true", help="do not write results/ or LEADERBOARD.md")
     ap.add_argument("--data-dir", default=None, help="override data/processed location")
