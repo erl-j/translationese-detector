@@ -146,7 +146,7 @@ class TestMetamorphic(unittest.TestCase):
         o = " ".join(t for t, _ in self.PAIRS)
         t = " ".join(s for _, s in self.PAIRS)
         self.assertLess(fam_score(o), -2.0)
-        self.assertGreater(fam_score(t), 0.5)
+        self.assertGreater(fam_score(t), 0.2)   # subject-first is only weakly T (lumped SUBJ_FIRST)
 
 
 class TestSpansAndParams(unittest.TestCase):

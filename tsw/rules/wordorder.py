@@ -16,9 +16,12 @@ pronouns, prepositions, subjunctions, fronted adverbs). Sentences it cannot
 classify confidently are left out ("other"); every rule is a *choice* among the
 classified openings or a rare-item count, never a rate of "other".
 
-Calibration: see the comments next to each number (dev.500.bal unless noted,
-`python3 -m tsw.tools.rates --stat tsw.rules.wordorder:<units_fn>` and KWIC
-inspection), 2026-11-05.
+Calibration (2026-11-05/06): per-category counts of the opening classifier,
+KWIC samples and per-speaker / per-year breakdowns on trn = the old dev split
+(dev.500.bal, sessions <= 2004-06-30; first on dev-train < 2002-03-01, then
+re-checked on all of trn under the revised protocol), plus
+`python3 -m tsw.tools.rates` for the regex parts. Values typed by hand,
+<= 2 significant digits; see the comments next to each number.
 """
 import math
 import re
@@ -507,33 +510,40 @@ def openings(doc):
 # ---------------------------------------------------------------------------
 # rule 1: which opening was chosen (multinomial "choice" over opening types)
 #
-# P(category | sentence has a classifiable opening), per class. dev-train
-# (dev.500.bal, sessions < 2002-03-01; 18171 O / 13191 T classified
-# sentences; topic-masked shares identical to 3 decimals; top-5 speakers
-# carry <= 34% of every category in either class). SUB_SA (resumptive 'så')
-# is merged into INV_SUB: B4 predicts O, dev-train shows no O lean
-# (0.12 vs 0.14 per 1000 words).
+# P(category | sentence has a classifiable opening), per class, on trn = all of
+# the old dev split (dev.500.bal, sessions <= 2004-06-30; 25877 O / 20995 T
+# classified sentences; topic-masked shares identical to 3 decimals; top-5
+# speakers carry <= 31% of every category in O and <= 28% in T).
+# Diachrony check (shares per year 1997-2004): INV_ADV, INV_OBJ, INV_SUB,
+# S_DEM, S_DET keep their direction every year. Subject pronoun first (S_PRON)
+# and lexical-NP subject first (S_NP) do NOT: S_PRON's T lean (+0.23 in
+# 1997-2001) vanishes in 2002-2004, S_NP flips, and the two trade off with
+# speaker mix ('Kommissionen kan ...' vs 'Vi kan ...'). They are therefore
+# lumped into one category SUBJ_FIRST whose share is stable (O .37-.43,
+# T .38-.40 per year) and nearly neutral. Excluding the unlumped subject
+# categories improved Default on the 2002-2004 sessions (100 words AUC .726
+# -> .743), which motivated this.
+# SUB_SA (resumptive 'så', B4) is merged into INV_SUB: no O lean on trn
+# (0.093 vs 0.109 per 1000 words).
 OPENING_P = {
-    #  category        p_O      p_T     dev-train shares O / T      ln(T/O)
-    "S_PRON":       (0.30,   0.37),   # .2972 / .3736   +0.23  subject pronoun first (B1)
-    "S_NP":         (0.26,   0.23),   # .2566 / .2274   -0.12
-    "S_DET":        (0.16,   0.14),   # .1581 / .1434   -0.10  'Det är/finns ...' (B2)
-    "S_DEM":        (0.033,  0.054),  # .0333 / .0541   +0.49  'Detta är ...' (EN 'This is')
-    "CLEFT":        (0.020,  0.015),  # .0200 / .0149   -0.30  'Det är X som' (B8)
-    "PSEUDO_CLEFT": (0.0012, 0.0022), # .0012 / .0022   +0.64  'Vad vi behöver är' (EN 'What we need is')
-    "INV_ADV":      (0.091,  0.035),  # .0912 / .0349   -0.96  'Därför anser jag' (B1)
-    "INV_CONJ":     (0.018,  0.028),  # .0175 / .0279   +0.47  'Slutligen vill jag' (EN 'Finally, I')
-    "INV_PP":       (0.073,  0.067),  # .0735 / .0666   -0.10  'I dag har vi'
-    "INV_SUB":      (0.031,  0.046),  # .0311 / .0462   +0.40  'Om vi ..., kommer vi' (EN 'If we ..., we')
-    "INV_NP":       (0.010,  0.0067), # .0100 / .0067   -0.40  'Den frågan har vi ...'
-    "INV_OBJ":      (0.010,  0.0021), # .0103 / .0021   -1.6   'Det vet vi' (B3)
+    #  category        p_O      p_T     trn shares O / T      ln(T/O)
+    "SUBJ_FIRST":   (0.56,   0.60),   # .5578 / .6042   +0.08  pronoun or NP subject first (B1)
+    "S_DET":        (0.16,   0.14),   # .1577 / .1357   -0.15  'Det är/finns ...' (B2)
+    "S_DEM":        (0.036,  0.056),  # .0357 / .0561   +0.45  'Detta är ...' (EN 'This is')
+    "CLEFT":        (0.019,  0.014),  # .0189 / .0137   -0.33  'Det är X som' (B8)
+    "PSEUDO_CLEFT": (0.0009, 0.0019), # .0009 / .0019   +0.72  'Vad vi behöver är' (EN 'What we need is')
+    "INV_ADV":      (0.088,  0.038),  # .0880 / .0382   -0.83  'Därför anser jag' (B1)
+    "INV_CONJ":     (0.017,  0.028),  # .0174 / .0280   +0.47  'Slutligen vill jag' (EN 'Finally, I')
+    "INV_PP":       (0.073,  0.070),  # .0727 / .0695   -0.04  'I dag har vi'
+    "INV_SUB":      (0.030,  0.044),  # .0300 / .0443   +0.39  'Om vi ..., kommer vi' (EN 'If we ..., we')
+    "INV_NP":       (0.011,  0.0062), # .0105 / .0062   -0.53  'Den frågan har vi ...'
+    "INV_OBJ":      (0.010,  0.0022), # .0102 / .0022   -1.5   'Det vet vi' (B3)
 }
-_OPEN_ALIAS = {"SUB_SA": "INV_SUB"}
+_OPEN_ALIAS = {"SUB_SA": "INV_SUB", "S_PRON": "SUBJ_FIRST", "S_NP": "SUBJ_FIRST"}
 OPENING_LLR = {c: math.log(pt / po) for c, (po, pt) in OPENING_P.items()}
 
 _OPEN_LABEL = {
-    "S_PRON": "subject pronoun first",
-    "S_NP": "subject NP first",
+    "SUBJ_FIRST": "subject (pronoun or NP) first",
     "S_DET": "'det' subject first",
     "S_DEM": "demonstrative subject first ('Detta är')",
     "CLEFT": "cleft 'det är X som'",
@@ -568,7 +578,7 @@ def _openings_cached(doc):
 # vs Theme = fronted non-subject. Two rules partitioning the same per-sentence
 # LLRs (their sum is the full multinomial), so each side can be inspected and
 # ablated on its own.
-SUBJECT_THEME = ("S_PRON", "S_NP", "S_DET", "S_DEM", "CLEFT", "PSEUDO_CLEFT")
+SUBJECT_THEME = ("SUBJ_FIRST", "S_DET", "S_DEM", "CLEFT", "PSEUDO_CLEFT")
 FRONTED_THEME = ("INV_ADV", "INV_CONJ", "INV_PP", "INV_SUB", "INV_NP", "INV_OBJ")
 
 
@@ -656,11 +666,11 @@ RULES = [
                   "conjuncts that mirror a sentence-initial English adverbial ('Firstly,' 'Finally,' "
                   "'However,'), and fronted adverbial clauses ('If ..., we ...'): fronting is not O "
                   "per se, only Swedish-initiated topicalisation is. Resumptive 'så' (B4) is not O on "
-                  "dev-train (merged into fronted clauses).",
+                  "trn (merged into fronted clauses).",
         source="literature B1, B3, B4; Hasselgård (2004); Bohnacker & Rosén (2008); "
                "[exp] for the INV_CONJ / INV_SUB split",
-        # dev-train dispersion of the full opening LLR: text-level sd is 1.12x (500
-        # words) / 1.05x (100 words) the independent-sentence prediction -> weight 0.8
+        # trn dispersion of the full opening LLR: text-level sd is 1.12x (500 words)
+        # / 1.03x (100 words) the independent-sentence prediction -> weight 0.8
         weight=0.8, cap=3.0),
     PredicateRule(
         "wordorder.subject_theme",
@@ -668,10 +678,11 @@ RULES = [
         fn=_subj_llr, spans_fn=_subj_spans, describe_fn=_subj_describe,
         direction="T",
         rationale="Other half of the opening model: subject-first declaratives (B1, T: English "
-                  "Theme kept), 'Detta är' (EN 'This is'), pseudo-clefts 'Vad vi behöver är' (EN "
-                  "'What we need is') -> T; expletive 'Det är/finns' and clefts 'Det är X som' (B2, "
-                  "B8: Swedish fills the prefield with light 'det' and focuses with clefts) -> O. "
-                  "Small per-sentence ratios on frequent categories.",
+                  "Theme kept; pronoun and NP subjects lumped because each drifts with year and "
+                  "speaker mix, the sum is stable and only weakly T), 'Detta är' (EN 'This is'), "
+                  "pseudo-clefts 'Vad vi behöver är' (EN 'What we need is') -> T; expletive 'Det "
+                  "är/finns' and clefts 'Det är X som' (B2, B8: Swedish fills the prefield with light "
+                  "'det' and focuses with clefts) -> O.",
         source="literature B1, B2, B8; Hasselgård (2004); [exp] for S_DEM / PSEUDO_CLEFT",
         weight=0.8, cap=2.0),
     PredicateRule(
@@ -683,8 +694,8 @@ RULES = [
                   "('Med andra ord, de är ...', 'Slutligen, kommissionen är ...'), a sentence "
                   "adverb between subject and finite verb ('Jag verkligen hoppas'), and main-clause "
                   "negation order after a subjunction ('att jag har inte', native 'att jag inte "
-                  "har'). Rare in professional translation but precise. dev-train dev.500.bal: "
-                  "no-inversion openings O 3 / T 20 (0.006 / 0.046 per 1000 words); embedded "
+                  "har'). Rare in professional translation but precise. trn dev.500.bal: "
+                  "no-inversion openings O 4 / T 33 (0.006 / 0.047 per 1000 words); embedded "
                   "negation order dev.500.all O 0 / T 39 (0 / 0.011); V3 O 0 / T 2. Per hit 1.5 "
                   "(judgement; observed ln ratio ~2.4, O counts too small to trust).",
         source="literature B5, B6, B7; pitfalls 5.5.9",
