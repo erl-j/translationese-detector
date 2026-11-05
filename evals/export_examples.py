@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""Export annotated validation examples (TP/TN/FP/FN) for the dashboard.
+"""Export annotated trn examples (TP/TN/FP/FN) for the dashboard.
 
-    python3 evals/export_examples.py [--split dev-val] [--engine tsw.engine:Default] [--n 3000]
-                                     [--seed 20261105] [--out data/cache/dashboard/examples.json]
+    python3 evals/export_examples.py [--engine tsw.engine:Default] [--n 3000] [--seed 20261105]
+                                     [--out data/cache/dashboard/examples.json]
 
 For each granularity (single sentences, 100-token chunks) a random sample of
---n units of the balanced dev file, restricted to --split (default dev-val, the
-validation half of dev, evals/devsplit.py; dev-train and dev are allowed, test
-never), is scored with the engine on
+--n units of the balanced TRN file (trn = the former dev split, byte-identical;
+never val or test: their texts must not be shown) is scored with the engine on
 unmasked text, and each unit gets an outcome at threshold 0 (positive =
 translated): TP, TN, FP, FN. Per granularity x outcome it picks 3 confident
 examples (largest |score|) and 2 borderline ones (smallest |score|), preferring
@@ -33,9 +32,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-sys.path.insert(0, os.path.join(ROOT, "evals"))
 
-import devsplit  # noqa: E402
 from tsw.doc import Doc  # noqa: E402
 
 GRANS = [("sent", "sentence"), ("100", "100-token chunk")]
@@ -45,8 +42,7 @@ TOP_RULES = 5
 
 # Analyst notes, keyed by example id (written after reading each example with
 # the default seed and the starter rule set; ids that drop out of the selection
-# when rules change simply lose their note). The first block was written for
-# the old all-of-dev sample; the dev-val block below for the validation sample.
+# when rules change simply lose their note).
 NOTES = {
     # --- sentences: TP
     "ep-03-11-18:252:1:s26": "Two 'det här' for English 'this' (incl. 'med det här parlamentets stöd' = 'with this Parliament's support') saturate the demonstrative rule. Missed: 'redo för handling' is a calque of 'ready for action'.",
@@ -139,8 +135,6 @@ def pick(cands, n_conf, n_border):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--engine", default="tsw.engine:Default")
-    ap.add_argument("--split", default="dev-val", choices=["dev-val", "dev-train", "dev"],
-                    help="part of dev to sample from (default dev-val = validation; test is never used)")
     ap.add_argument("--n", type=int, default=3000, help="units sampled per granularity")
     ap.add_argument("--seed", type=int, default=20261105)
     ap.add_argument("--data", default=os.environ.get("TSW_DATA", os.path.join(ROOT, "data", "processed")))
@@ -151,11 +145,9 @@ def main():
     rules = {r.name: r for r in eng.rules}
     rows, summary = [], []
     for gran, gran_name in GRANS:
-        path = os.path.join(args.data, "dev.%s.bal.jsonl" % gran)   # dev only
+        path = os.path.join(args.data, "trn.%s.bal.jsonl" % gran)   # trn only, never val/test
         with open(path, encoding="utf-8") as f:
             lines = f.readlines()
-        if args.split != "dev":
-            lines = [l for l in lines if devsplit.subset_of(json.loads(l)) == args.split]
         rng = random.Random("%d:%s" % (args.seed, gran))
         sample = [json.loads(lines[i]) for i in sorted(rng.sample(range(len(lines)), min(args.n, len(lines))))]
         by_out = collections.defaultdict(list)
@@ -172,7 +164,7 @@ def main():
                 fire[out][r] += 1
             if not ann["spans"]:
                 nospan[out] += 1
-        summary.append("== %s %s (n=%d): %s" % (args.split, gran, len(sample),
+        summary.append("== %s (n=%d): %s" % (gran, len(sample),
                        "  ".join("%s %d" % (o, len(by_out[o])) for o in OUTCOMES)))
         for o in OUTCOMES:
             k = len(by_out[o]) or 1
@@ -193,7 +185,7 @@ def main():
                         top.append({"rule": d["rule"], "contribution": round(d["contribution"], 3),
                                     "evidence": d["label"]})
                 rows.append({
-                    "id": rec["id"], "split": args.split, "gran": gran, "gran_name": gran_name, "outcome": o, "kind": kind,
+                    "id": rec["id"], "split": "trn", "gran": gran, "gran_name": gran_name, "outcome": o, "kind": kind,
                     "truth": int(rec["label"]), "pred": 1 if ann["score"] > 0 else 0,
                     "score": round(ann["score"], 3), "prob": round(ann["prob"], 3),
                     "date": rec.get("date"), "n_words": ann["n_words"], "text": rec["text"],
