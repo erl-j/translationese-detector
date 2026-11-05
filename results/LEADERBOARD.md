@@ -88,3 +88,15 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225653Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | 100 | bal | masked | 4610 | 0.6768 | 0.6742 | 0.7335 |
 | 20261105T225655Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | 500 | bal | - | 911 | 0.8079 | 0.8008 | 0.8770 |
 | 20261105T225659Z | feat/stats | 406c3a6a+dirty | `tsw.engine:Default` | dev-val | 500 | bal | masked | 911 | 0.8068 | 0.7998 | 0.8765 |
+| 20261105T230458Z | feat/stats | e5879905 | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.5509 | 0.5456 | 0.5618 |
+| 20261105T230502Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | sent | bal | masked | 21728 | 0.5504 | 0.5447 | 0.5624 |
+| 20261105T230504Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.6088 | 0.6077 | 0.6463 |
+| 20261105T230507Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | 100 | bal | masked | 3354 | 0.6097 | 0.6088 | 0.6466 |
+| 20261105T230509Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | 500 | bal | - | 636 | 0.7186 | 0.7159 | 0.7994 |
+| 20261105T230511Z | feat/stats | e5879905+dirty | `tsw.engine:Default` | val | 500 | bal | masked | 636 | 0.7186 | 0.7159 | 0.8001 |
+| 20261105T230513Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | sent | bal | - | 21728 | 0.5598 | 0.5593 | 0.5767 |
+| 20261105T230516Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | sent | bal | masked | 21728 | 0.5597 | 0.5592 | 0.5765 |
+| 20261105T230518Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | 100 | bal | - | 3354 | 0.6109 | 0.6073 | 0.6403 |
+| 20261105T230520Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | 100 | bal | masked | 3354 | 0.6109 | 0.6073 | 0.6401 |
+| 20261105T230522Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | 500 | bal | - | 636 | 0.6997 | 0.6955 | 0.7906 |
+| 20261105T230524Z | feat/stats | e5879905+dirty | `tsw.engine:Engine(exclude="stats")` | val | 500 | bal | masked | 636 | 0.6997 | 0.6955 | 0.7904 |
