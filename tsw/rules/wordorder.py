@@ -16,6 +16,16 @@ pronouns, prepositions, subjunctions, fronted adverbs). Sentences it cannot
 classify confidently are left out ("other"); every rule is a *choice* among the
 classified openings or a rare-item count, never a rate of "other".
 
+Findings vs docs/literature.md (trn): topicalisation is O only when it is a
+Swedish-initiated choice (deictic/causal adverbs, object 'det', NPs); fronted
+adverbial clauses and structuring conjuncts ('För det första', 'Slutligen')
+are T because they mirror the English sentence-initial adverbial. Resumptive
+'så' (B4) is not O. 'Det är därför' (B8 T sub-pattern) is O, not T. Embedded
+V2 negation ('att vi kan inte'), predicted O as colloquial, is T-only (0 hits
+in O). Subject-pronoun-first (B1, T) holds 1997-2001 but fades by 2002-2004.
+Left dislocation ('X, det är ...') and object shift ('ser det inte' vs 'ser
+inte det') were measured and are too rare or ambiguous to use.
+
 Calibration (2026-11-05/06): per-category counts of the opening classifier,
 KWIC samples and per-speaker / per-year breakdowns on trn = the old dev split
 (dev.500.bal, sessions <= 2004-06-30; first on dev-train < 2002-03-01, then
