@@ -43,6 +43,19 @@ src_lang, date, speaker, speakers, speaker_id, n_turns, granularity, n_tokens`.
   (consecutive sentences of one class within one session date, cut as soon as
   they reach 100/500 whitespace tokens).
 
+## Engine
+
+`tsw/` is the expert system; how it works, how to write a rule family (one file
+in `tsw/rules/`, auto-discovered), the rule maths, the calibration protocol and
+anti-overfitting rules are in [docs/ENGINE.md](docs/ENGINE.md).
+
+```bash
+python3 -m tsw "Herr talman! Det här är ju viktigt."     # verdict + evidence + highlighted spans
+python3 -m tsw -f speech.txt --json                      # Engine.annotate() as JSON
+python3 -m tsw.tools.rates --words "ju,nog" --kwic 5     # dev statistics for calibrating a rule
+python3 -m unittest discover -s tsw/tests -t .
+```
+
 ## Evals
 
 A classifier is any object with `score(text) -> float` (> 0 means
