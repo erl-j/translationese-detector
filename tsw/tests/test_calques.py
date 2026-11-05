@@ -60,7 +60,6 @@ PAIRS = {
                          "De ändrade reglerna för att försöka spara pengar."),
     "bara rätt": ("Det är bara rätt och riktigt att de får ersättning.",
                   "Det är rimligt att de får ersättning."),
-    "pseudo-cleft": ("Vad vi behöver är en gemensam strategi.", "Vi behöver en gemensam strategi."),
     "argumentera att": ("Man kan argumentera att reglerna är för stränga.",
                         "Man kan hävda att reglerna är för stränga."),
     "röra oss framåt": ("Vi måste röra oss framåt i frågan.", "Vi måste gå vidare i frågan."),
@@ -121,10 +120,13 @@ class TestLexiconEntries(unittest.TestCase):
 
 class TestNativeAndChoices(unittest.TestCase):
     def test_native_counterparts(self):
-        for t in ["Det är klart att reformen behövs.", "Parlamentet har inflytande över budgeten.",
-                  "Samtidigt måste vi vara realistiska.", "Först vill jag tacka föredraganden."]:
+        for t in ["Det är klart att reformen behövs.", "Parlamentet har inflytande över budgeten."]:
             with self.subTest(text=t):
                 self.assertLess(NAT.contribution(Doc(t)), 0)
+        # integration: sentence-initial 'Samtidigt' / 'Först vill jag' are wordorder.fronted_theme's
+        for t in ["Samtidigt måste vi vara realistiska.", "Först vill jag tacka föredraganden."]:
+            with self.subTest(text=t):
+                self.assertEqual(NAT.contribution(Doc(t)), 0.0)
         self.assertEqual(NAT.contribution(Doc("Samtidigt som vi talar händer det.")), 0.0)
 
     def test_skulle_vilja(self):
@@ -182,10 +184,13 @@ class TestMetamorphic(unittest.TestCase):
         many = " ".join(c for c, _ in PAIRS.values())
         self.assertAlmostEqual(LEX.contribution(Doc(many)), LEX.cap)          # rule cap binds
         self.assertLessEqual(abs(self.fam.score(many)), C.FAMILY_CAP + 1e-9)
-        lots = " ".join(["Jag skulle vilja tacka er. Det är tydligt att det faktum att det slags "
+        lots = " ".join(["Vi försöker att hjälpa dem. Det är tydligt att det faktum att det slags "
                          "politik behövs."] * 5)
         self.assertAlmostEqual(self.fam.score(lots), C.FAMILY_CAP)
         self.assertIn("cap:calques", self.fam.explain(lots))
+
+    def test_pseudo_cleft_left_to_wordorder(self):
+        self.assertEqual(lex_labels("Vad vi behöver är en gemensam strategi."), [])
 
     def test_single_calque_bounded(self):
         for label, (_, v) in C.CALQUES.items():

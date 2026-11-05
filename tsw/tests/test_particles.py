@@ -54,11 +54,12 @@ class TestMaths(unittest.TestCase):
         d = Doc("Man kan säga att " + " ".join(["ord"] * 96) + ".")
         ro, rt = r.rate_o, r.rate_t
         raw = math.log(rt / ro) - 100 * (rt - ro) / 1000
-        self.assertAlmostEqual(r.contribution(d), 0.5 * raw)
+        self.assertAlmostEqual(r.contribution(d), 0.25 * raw)
 
     def test_choice_of_course(self):
         r = R["particles.of_course"]
-        d = Doc("Naturligtvis är det så. Självklart måste vi och givetvis kan vi.")
+        # 'Självklart' is register.sjalvklart's since the integration
+        d = Doc("Naturligtvis är det så. Självklart måste vi, förstås, och givetvis kan vi.")
         self.assertEqual(r.counts(d), (1, 2))
         po, pt = r.p_o, r.p_t
         exp = math.log(pt / po) + 2 * math.log((1 - pt) / (1 - po))
@@ -90,7 +91,9 @@ class TestDisambiguation(unittest.TestCase):
 
     def test_da_anaphoric_not_subjunction(self):
         r = R["particles.da_anaphoric"]
-        self.assertEqual(n_hits(r, "Det är dyrt. Då måste vi agera."), 1)
+        # sentence-initial 'Då' + verb is wordorder.fronted_theme's since the integration
+        self.assertEqual(n_hits(r, "Det är dyrt. Då måste vi agera."), 0)
+        self.assertEqual(n_hits(r, "Det är dyrt. Måste vi då agera?"), 1)
         self.assertEqual(n_hits(r, "Vad finns det då för samband?"), 1)
         self.assertEqual(n_hits(r, "Det är då viktigt att minnas detta."), 1)
         # subjunction 'då' = as/since/when
@@ -114,7 +117,9 @@ class TestDisambiguation(unittest.TestCase):
 
     def test_copular_det(self):
         r = R["particles.copular_det"]
-        self.assertEqual(n_hits(r, "Det är viktigt. Är det så? Det var bra."), 3)
+        # sentence-initial 'Det är/var' is wordorder.subject_theme's since the integration
+        self.assertEqual(n_hits(r, "Det är viktigt. Är det så? Det var bra."), 1)
+        self.assertEqual(n_hits(r, "Jag tror att det är viktigt. Därför var det bra."), 2)
         self.assertEqual(n_hits(r, "Detta är viktigt. Det här är bra."), 0)
 
     def test_particle_verbs_and_ta_itu_med(self):

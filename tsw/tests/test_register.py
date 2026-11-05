@@ -107,7 +107,7 @@ class TestMetamorphic(unittest.TestCase):
         "Jag_tycker": "Jag anser",
         "intens": "mycket",
         "fut": "kommer att",
-        "aven": "även",
+        # "aven": "även" -- register.aven_vs_ocksa disabled at integration (connpunct.additive_ocksa)
         "sjalv": "naturligtvis",
     }
 

@@ -165,7 +165,10 @@ RULES = [
                   "'även' (NORM, like skall/denna/emellertid in Danielsson), originals the neutral "
                   "'också'. P(även) rises in originals over time, so weight 0.7.",
         source="Danielsson (2003) NORM mechanism; literature §3; [exp]",
-        weight=0.7, cap=1.5),
+        # Disabled at integration: every 'också' was also O evidence in connpunct.additive_ocksa
+        # (r .61 O / .49 T on trn.100); the rate rule carries the information (rule-alone AUC
+        # .64 vs .57 on trn.100 masked). See docs/INTEGRATION.md.
+        weight=0.7, cap=1.5, enabled=False),
     RateRule(
         "register.dem_har_rate",
         description="demonstrative 'den/det/de här'",
@@ -243,7 +246,9 @@ RULES = [
         rationale="EN 'X of Y' and agentive 'by' are rendered with 'av' where Swedish prefers a "
                   "compound or s-genitive (INT).",
         source="Danielsson (2003) T keyword av; Nilsson (2004); literature A6",
-        weight=0.5, cap=1.5),
+        # Disabled at integration: stats.av_nominal + stats.av_other count the same tokens
+        # (r .96 with av_other on trn.100) with a length-aware model. See docs/INTEGRATION.md.
+        weight=0.5, cap=1.5, enabled=False),
 
     # ---- disabled alternatives (documented; compare with Engine(include_disabled=True)) ----
     RateRule(

@@ -162,3 +162,19 @@ class TestMetamorphic(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestIntegrationExclusions(unittest.TestCase):
+    """Overlaps removed when the families were integrated (docs/INTEGRATION.md)."""
+
+    def test_native_connectives_not_sentence_initial(self):
+        r = R["connpunct.native_connectives"]
+        n = lambda t: len(list(r.matcher.finditer(Doc(t))))  # noqa: E731
+        self.assertEqual(n("Därför anser jag detta. Men dessutom vill vi mer. Samtidigt måste vi agera."), 0)
+        self.assertEqual(n("Vi måste därför agera, och vi kan dessutom vänta. Det är dock svårt."), 3)
+        self.assertEqual(n("Vi gör det i alla fall."), 0)        # particles.stance owns 'i alla fall'
+
+    def test_written_out_abbrev_without_bla_dvs(self):
+        r = R["connpunct.written_out_abbrev"]
+        self.assertEqual(r.counts(Doc("Det gäller bl.a. fisket, dvs. kvoterna, bland annat i norr.")), (0, 0))
+        self.assertEqual(r.counts(Doc("Det gäller t.ex. fisket och till exempel kvoterna.")), (1, 1))

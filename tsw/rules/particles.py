@@ -109,8 +109,8 @@ RULES = [
         "particles.da_anaphoric",
         description="anaphoric/inferential 'då' ('then, in that case')",
         pattern={
-            # sentence-initial 'Då' + finite verb (V2: adverb, not the subjunction 'Då vi ...')
-            "'Då' + finite verb": r"(?:^|(?<=[.!?:])\s+)då\s+" + _FIN + _E,
+            # (sentence-initial 'Då' + finite verb is NOT counted here since the integration:
+            # wordorder.fronted_theme scores it as a topicalised adverb, INV_ADV)
             # inverted: 'finns det då', 'skall vi då'
             "verb + subject + 'då'": _B + _FIN + r"\s+" + _SUBJ + r"\s+då" + _E,
             # straight: 'det är då', 'vi får då' (not 'då' + subject = subjunction)
@@ -121,7 +121,9 @@ RULES = [
         # FIN SUBJ då .080/.037, SUBJ FIN då .10/.020. Flat over years (O .80-.94 incl. all då-forms
         # per 1000? see report). All 'då' .136/.074; initial 'Då' + subject = subjunction (T-ish).
         # dev-train: O 193 .39 (2000-02 .20-.35 ~.28), T 29 .067; O typed near 2000-02
-        rate_o=0.30, rate_t=0.067,
+        # Integration (2026-11-06), without sentence-initial 'Då' + FIN, trn.500.bal masked:
+        # O 129 .19 (2000-04 .12-.18 ~.15), T 41 .059; O typed from 2000-04 as before.
+        rate_o=0.15, rate_t=0.059,
         direction="O",
         rationale="UNQ + SPK: 'då' as an anaphoric connective/particle linking to the previous "
                   "statement (Då måste vi ...; Vad finns det då för ...) is typical of Swedish "
@@ -132,14 +134,17 @@ RULES = [
         cap=2.0),
     ChoiceRule(
         "particles.of_course",
-        description="'of course': 'naturligtvis' vs 'självklart/givetvis/förstås'",
+        description="'of course': 'naturligtvis' vs 'givetvis/förstås'",
         a=_B + r"naturligtvis" + _E,
-        b=_B + r"(?:givetvis|självklart|förstås(?!\s+som\b))" + _E,
-        label_a="naturligtvis", label_b="självklart/givetvis/förstås",
+        # Integration: 'självklart' removed from B; register.sjalvklart counts it (rate, O)
+        b=_B + r"(?:givetvis|förstås(?!\s+som\b))" + _E,
+        label_a="naturligtvis", label_b="givetvis/förstås",
         # dev.500.bal: P(naturligtvis) O 506/923 = .55, T 306/393 = .78. Rates: naturligtvis
         # .73/.44, others .60/.12. O speakers 66 (top-5 27%). P(A) by year O .42-.69, T .59-.91.
         # dev-train: P(naturligtvis) O 365/668 = .55, T 231/299 = .77
-        p_o=0.55, p_t=0.77,
+        # Integration (2026-11-06), B without 'självklart', trn.500.bal masked: P(naturligtvis)
+        # O 506/713 = .71, T 306/362 = .85 (per year O .55-.95, T .66-.97).
+        p_o=0.71, p_t=0.85,
         direction="T",
         rationale="Literature A7 predicts naturligtvis = T (EN 'of course' -> dictionary default "
                   "'naturligtvis'). On EP dev 'naturligtvis' is NOT more frequent in T, but the "
@@ -213,20 +218,28 @@ RULES = [
         # dev-train: O 4.7 (1997-99 ~6, 2000-02 3.0-4.0 ~3.5), T 2.4; O typed from 2000-02
         rate_o=3.5, rate_t=2.4,
         direction="O",
+        # Integration: weight 0.5 -> 0.25. particles.ni_vs_man counts every 'man' as its B
+        # variant, so each 'man' was O evidence twice (within-class r of the two contributions
+        # .68 O / .44 T on trn.100); halving the rate rule leaves the choice rule in charge.
         rationale="UNQ: 'man' is the Swedish generic pronoun; English uses you/we/one/people/passive, "
                   "which translators render as vi, ni, en, människor or a passive. O rate typed from "
                   "2000-04 because of drift; bursty per speaker, hence weight 0.5.",
         source="literature A9; Tirkkonen-Condit (2004)",
-        weight=0.5, cap=1.5),
+        weight=0.25, cap=1.5),
     RateRule(
         "particles.copular_det",
         description="copular 'det är/var' and 'är/var det' (expletive, cleft, anaphoric det)",
-        pattern=_B + r"(?:det\s+(?:är|var)|(?:är|var)\s+det)" + _E,
+        # Integration: sentence-initial 'Det är/var' (also after Men/Och) is not counted:
+        # wordorder.subject_theme scores that opening (S_DET, CLEFT). Inverted 'är det' stays.
+        pattern=_B + r"(?:(?<!^)(?<![.!?] )(?<![.!?]\" )(?<!^men )(?<!^och )(?<![.!?] men )"
+                     r"(?<![.!?] och )det\s+(?:är|var)|(?:är|var)\s+det)" + _E,
         # dev.500.bal (masked): O 5089 7.3/1000, T 3349 4.8/1000 (ln -0.42); O 95 speakers top-5
         # 27%; by year O 8.6 (1997-99) -> 6.3-7.4 (2000-04), T 5.5 -> 3.9-4.7 (both drift down).
         # 'det är ADJ att' 1.2/.62, cleft 'det är ... som' .81/.48; 'detta/det här är' 1.0/1.3 (T).
         # dev-train: O 7.5 (2000-02 ~7.0), T 5.0 (2000-02 ~4.7)
-        rate_o=7.0, rate_t=4.7,
+        # Integration (2026-11-06), without sentence-initial 'Det är/var', trn.500.bal masked:
+        # O 2661 3.8 (2000-02 3.3-3.9 ~3.5), T 1682 2.4 (2000-02 ~2.3); typed from 2000-02 as before.
+        rate_o=3.5, rate_t=2.3,
         direction="O",
         rationale="Swedish fills the prefield and the subject slot with low-information 'det' "
                   "(extraposition 'Det är viktigt att', clefts 'Det är vi som', anaphoric 'Det är "

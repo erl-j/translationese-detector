@@ -66,9 +66,16 @@ def _rx(words):
 
 # --- connectives -------------------------------------------------------------
 
+# Integration (docs/INTEGRATION.md): only the middle field / non-initial positions. A
+# sentence-initial connective ('Därför anser jag', 'Samtidigt måste vi', 'Men dessutom ...')
+# is the prefield that wordorder.fronted_theme scores as a topicalised adverb (INV_ADV), so
+# counting it here as well scored one token twice. 'i alla fall' belongs to particles.stance.
+_NOT_INITIAL = (r"(?<!^)(?<![.!?] )(?<![.!?]\" )(?<!^men )(?<!^och )(?<![.!?] men )(?<![.!?] och )"
+                r"(?<!^men, )(?<![.!?] men, )")
 _NATIVE_CONNECTIVES = (
+    _NOT_INITIAL +
     r"(?<![\w-])(?:dessutom|därför(?!\s+att\b)|dock|därmed|således|framför\s+allt|inte\s+minst|"
-    r"samtidigt(?!\s+som\b)|i\s+stället|för\s+övrigt|i\s+alla\s+fall)(?![\w-])")
+    r"samtidigt(?!\s+som\b)|i\s+stället|för\s+övrigt)(?![\w-])")
 
 _CALQUE_CONNECTIVES = {
     "'{m}' (EN in particular)": r"(?<![\w-])i\s+synnerhet(?![\w-])",
@@ -79,8 +86,10 @@ _CALQUE_CONNECTIVES = {
     "'{m}' (EN first of all)": r"(?<![\w-])först\s+och\s+främst(?![\w-])",
     "'{m}' (EN finally/at last)": r"(?<![\w-])till\s+sist(?![\w-])",
     "'{m}' (EN anyway/in any case)": r"(?<![\w-])(?:hur\s+som\s+helst|i\s+vilket\s+fall(?:\s+som\s+helst)?)(?![\w-])",
+    # '... är skälet till varför' is left to calques.lexicon ('skälet till varför', EN 'the reason why')
     "'{m}' (EN for this reason/this is why)":
-        r"(?<![\w-])(?:av\s+detta\s+skäl|av\s+den\s+anledningen|(?:detta|det)\s+är\s+skälet)(?![\w-])",
+        r"(?<![\w-])(?:av\s+detta\s+skäl|av\s+den\s+anledningen|(?:detta|det)\s+är\s+skälet"
+        r"(?!\s+till\s+varför))(?![\w-])",
     "'{m}' (EN in general)": r"(?<![\w-])i\s+allmänhet(?![\w-])",
     "'{m}' (EN in other words)": r"(?<![\w-])med\s+andra\s+ord(?![\w-])",
     "'{m}' (EN against this background)": r"(?<![\w-])mot\s+bakgrund\s+av\s+detta(?![\w-])",
@@ -133,9 +142,12 @@ _CL_STOP = (r"(?:och|men|eller|särskilt|just|bara|inte|helt|främst|delvis|äve
 _CL_NOCOMMA = r"(?<![\w-])(?!%s(?![\w-]))[a-zåäö]+\s+%s" % (_CL_STOP, _CL_CONJ)
 _CL_COMMA = r",\s+%s" % _CL_CONJ
 
-_ABBR = (r"(?<![\w.])(?:bl\.a\.?|t\.ex\.?|dvs\.?|d\.v\.s\.|m\.m\.|osv\.|s\.k\.|m\.fl\.|fr\.o\.m\.|"
+# Integration (docs/INTEGRATION.md): 'bl.a./bland annat' and 'dvs./det vill säga' are left out:
+# register.bland_annat and particles.dvs count both spellings as O evidence (a rate), so here the
+# abbreviated form was a second O count and the written-out form a contradicting T count.
+_ABBR = (r"(?<![\w.])(?:t\.ex\.?|m\.m\.|osv\.|s\.k\.|m\.fl\.|fr\.o\.m\.|"
          r"t\.o\.m\.)")
-_FULL = (r"(?<![\w-])(?:bland\s+annat|till\s+exempel|det\s+vill\s+säga|med\s+mera|och\s+så\s+vidare|"
+_FULL = (r"(?<![\w-])(?:till\s+exempel|med\s+mera|och\s+så\s+vidare|"
          r"så\s+kallad[e]?|med\s+flera|från\s+och\s+med|till\s+och\s+med)(?![\w-])")
 
 # dash between two words (not inside document references "C5-0104/2001 - 2001/2053")
@@ -191,8 +203,10 @@ RULES = [
         # samtidigt (not 'samtidigt som') .48/.19, inte minst .55/.11, framför allt .39/.15,
         # därmed .36/.056, således .13/.05. 99 O speakers, top-5 share 27%; per year O 10-13,
         # T 5.3-6.6 (stable). Bursty (argumentative speakers) -> weight 0.5.
-        # dev-train (date < 2002-03-01) re-check: O 6.4, T 2.2 -> values below.
-        rate_o=6.4, rate_t=2.2,
+        # dev-train (date < 2002-03-01) re-check: O 6.4, T 2.2.
+        # Integration (2026-11-06): non-initial positions only, without 'i alla fall'
+        # (trn.500.bal masked): O 3310 hits 4.7, T 1308 1.9 (ln -0.93/hit) -> values below.
+        rate_o=4.7, rate_t=1.9,
         direction="O",
         rationale="Explicitation predicts more connectives in T, but on EP dev originals use ~2.6x "
                   "more native connective adverbs: Swedish argumentative speech places them in the "
@@ -327,12 +341,15 @@ RULES = [
         weight=0.7, cap=1.5),
     ChoiceRule(
         "connpunct.written_out_abbrev",
-        description="'till exempel/bland annat/det vill säga' written out vs 't.ex./bl.a./dvs.'",
+        description="'till exempel/så kallad/till och med' written out vs 't.ex./s.k./t.o.m.'",
         a=_FULL, b=_ABBR, label_a="written out", label_b="abbreviation",
         # dev.500.bal: P(written out) O 538/1919 = 0.28, T 550/821 = 0.67. O 81 speakers,
         # top-5 29%. Per year P(abbr) O .54-.81, T .06-.55.
         # dev-train: O 415/1413 = 0.29, T 301/490 = 0.61.
-        p_o=0.29, p_t=0.61,
+        # Integration (2026-11-06), without bl.a./dvs. (owned by register.bland_annat and
+        # particles.dvs), trn.500.bal masked: P(written out) O 310/1101 = 0.28, T 496/697 = 0.71;
+        # per year O .21-.51, T .49-.96.
+        p_o=0.28, p_t=0.71,
         direction="T",
         rationale="NORM / house style: translators follow the writing guidelines (Myndigheternas "
                   "skrivregler) and write abbreviations out in running text; the Swedish "

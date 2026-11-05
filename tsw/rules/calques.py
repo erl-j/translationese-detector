@@ -188,12 +188,8 @@ CALQUES = {
     "calque 'bara rätt (och riktigt) att' (EN 'only right and proper')":
         (_B + r"(?:bara|endast)\s+(?:rätt|riktigt|rimligt|rättvist)(?:\s+och\s+(?:riktigt|rimligt|"
               r"korrekt|lämpligt))?\s+att" + _E + "|" + _B + r"rätt\s+och\s+riktigt" + _E, 1.2),
-    # pseudo-cleft "What we need is ..." -> native: "Vi behöver ...", "Det vi behöver är ...".
-    # Declarative order only (vad + subject), so questions "Vad vill vi?" do not match.
-    # dev-train: O 5 / T 91 (0.009/0.038 per 1000; 5/53 speakers; ln T/O +1.37)
-    "calque pseudo-cleft 'Vad vi behöver är' (EN 'What we need is')":
-        (_S0 + r"vad\s+(?:vi|jag|ni|de|man)\s+(?:\w+\s+){0,2}?(?:behöver|behövde|vill|ville|måste|kräver|"
-               r"önskar|säger|föreslår|ser|gör)\s+(?:\w+\s+){0,4}?är" + _E, 1.0),
+    # (pseudo-cleft 'Vad vi behöver är' (EN 'What we need is'), dev-train O 5 / T 91, removed at
+    # integration: wordorder.subject_theme scores the same openings as PSEUDO_CLEFT.)
     # "argue that" -> native: "hävda att", "anföra att" ("argumentera för").
     # dev-train: O 0 / T 9 (0.000/0.004 per 1000; 0/8 speakers; ln T/O +1.51)
     "calque 'argumentera att' (EN 'argue that')":
@@ -252,14 +248,9 @@ NATIVE = {
     # dev-train: O 13 / T 11 (0.023/0.005 per 1000; 7/10 speakers; ln T/O -1.60)
     "native 'inflytande över' (vs 'inflytande på')":
         (_B + r"inflytande(?:t)?\s+över" + _E, -1.0),
-    # native connective for "at the same time" (calque: på samma gång); not "samtidigt som"
-    # dev-train: O 171 / T 117 (0.299/0.049 per 1000; 37/57 speakers; ln T/O -1.82)
-    "native sentence-initial 'Samtidigt' (vs 'På samma gång')":
-        (_S0 + r"samtidigt" + _E + r"(?!\s+som" + _E + ")", -0.8),
-    # native for "first of all I would like to" (calque: först av allt)
-    # dev-train: O 31 / T 34 (0.054/0.014 per 1000; 15/26 speakers; ln T/O -1.35)
-    "native 'Först vill jag' (vs 'Först av allt')":
-        (_S0 + r"först\s+(?:vill|skulle)\s+jag" + _E, -0.8),
+    # (sentence-initial 'Samtidigt' (dev-train O 171 / T 117) and 'Först vill jag' (O 31 / T 34)
+    # removed at integration: both are prefield adverbs that wordorder.fronted_theme scores as
+    # INV_ADV, and 'samtidigt' was also counted by connpunct.native_connectives.)
 }
 
 _PREP = (r"(?:i|på|av|för|med|genom|till|under|om|från|mot|enligt|inom|utan|vid|efter|över|bakom|"
@@ -295,7 +286,7 @@ RULES = [
         direction="O",
         rationale="The native variant of a calque pair is itself O-leaning when the English source "
                   "pushes translators to the calque (det är klart att vs det är tydligt att; "
-                  "inflytande över vs på; Samtidigt vs På samma gång; Först vill jag vs Först av allt).",
+                  "inflytande över vs på).",
         source="literature §4.6 native counterparts; [exp]",
         cap=2.0),
     ChoiceRule(
@@ -304,6 +295,9 @@ RULES = [
         a=_B + r"(?:jag|vi)\s+skulle\s+(?:vilja|önska)" + _E + "|" + _B + r"skulle\s+(?:jag|vi)\s+(?:\w+\s+)?vilja" + _E,
         b=_B + r"(?:jag|vi)\s+vill" + _E + "|" + _B + r"vill\s+(?:jag|vi)" + _E,
         label_a="jag skulle vilja", label_b="jag vill",
+        # Disabled at integration: duplicate of register.skulle_vilja_vs_vill (within-class r of
+        # the contributions .99 / .98 on trn.100). See docs/INTEGRATION.md.
+        enabled=False,
         # dev-train: A 181 / B 1657 in O (0.098), A 2479 / B 5017 in T (0.33); A by 40 O / 226 T speakers
         p_o=0.10, p_t=0.33,
         direction="T",

@@ -327,7 +327,11 @@ RULES = [
                   "1997-2004, but the level rises for both classes from 2000 (drift risk on test).",
         source="Björnsson (1968) LIX; Volansky et al. (2015) mean word length 66% [direction from dev]; "
                "literature C6/E5",
-        min_units=MIN_WORDS, cap=1.0),
+        # Integration: weight 0.5. A global word-length statistic shares variance with the
+        # lexical register rules whose short tokens sit in its denominator (copular 'det är',
+        # 'man', 'tycker', modal particles; within-class r .29-.34 in O on trn.500) and with the
+        # av rules (nominal style, r .31-.34). See docs/INTEGRATION.md.
+        weight=0.5, min_units=MIN_WORDS, cap=1.0),
     LengthStat(
         "stats.av_nominal",
         description="'av' after a definite nominalisation ('genomförandet av')",
