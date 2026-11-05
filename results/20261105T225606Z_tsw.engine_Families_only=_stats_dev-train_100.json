@@ -1,0 +1,82 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"stats\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"stats\")",
+ "data_file": "dev.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": 3.6,
+ "git_branch": "feat/stats",
+ "git_commit": "406c3a6a6e998d63b465452c9a16c70022d83931",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.580439330543933,
+  "confusion": {
+   "fn": 2343,
+   "fp": 1668,
+   "tn": 3367,
+   "tp": 2182
+  },
+  "macro_f1": 0.5738923622927707,
+  "n": 9560,
+  "n_orig": 5035,
+  "n_trans": 4525,
+  "pred_trans_rate": 0.4027196652719665,
+  "roc_auc": 0.5997917999418435
+ },
+ "rules": {
+  "cap:stats": {
+   "auc": 0.4984084886457779,
+   "fire_orig": 0.0007944389275074479,
+   "fire_trans": 0.003977900552486188,
+   "log_odds": 1.5236688096039206,
+   "mean_orig": -0.0003052501036589746,
+   "mean_trans": -0.001196092699325299,
+   "n_fire": 22,
+   "sign_acc": 0.18181818181818182
+  },
+  "stats.av_nominal": {
+   "auc": 0.51457856880291,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": -0.1067847578209733,
+   "mean_orig": -0.03879382261983591,
+   "mean_trans": 0.022423472494966252,
+   "n_fire": 9560,
+   "sign_acc": 0.5589958158995816
+  },
+  "stats.av_other": {
+   "auc": 0.5909085681993997,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": -0.1067847578209733,
+   "mean_orig": -0.06557617399795287,
+   "mean_trans": 0.038111190488714065,
+   "n_fire": 9560,
+   "sign_acc": 0.5781380753138076
+  },
+  "stats.long_words": {
+   "auc": 0.5314553045806427,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": -0.1067847578209733,
+   "mean_orig": -0.01557239154841287,
+   "mean_trans": 0.00637713517492547,
+   "n_fire": 9560,
+   "sign_acc": 0.5226987447698744
+  }
+ },
+ "split": "dev-train",
+ "subset_rule": "dev records with session date < 2002-03-01",
+ "timestamp": "20261105T225606Z",
+ "worktree": "worktrees/stats"
+}

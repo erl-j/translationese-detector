@@ -1,0 +1,92 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Engine(exclude=\"stats\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Engine(exclude=\"stats\")",
+ "data_file": "dev.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": 3.24,
+ "git_branch": "feat/stats",
+ "git_commit": "406c3a6a6e998d63b465452c9a16c70022d83931",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.6700650759219089,
+  "confusion": {
+   "fn": 645,
+   "fp": 876,
+   "tn": 1174,
+   "tp": 1915
+  },
+  "macro_f1": 0.6613146131006304,
+  "n": 4610,
+  "n_orig": 2050,
+  "n_trans": 2560,
+  "pred_trans_rate": 0.6054229934924078,
+  "roc_auc": 0.726484756097561
+ },
+ "rules": {
+  "starter.calques": {
+   "auc": 0.5135533536585366,
+   "fire_orig": 0.013170731707317073,
+   "fire_trans": 0.040234375,
+   "log_odds": 1.1310697203274969,
+   "mean_orig": 0.017365853658536587,
+   "mean_trans": 0.05332031249999995,
+   "n_fire": 130,
+   "sign_acc": 0.7923076923076923
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.4942155106707317,
+   "fire_orig": 0.7453658536585366,
+   "fire_trans": 0.7953125,
+   "log_odds": 0.28312534176019244,
+   "mean_orig": -0.039491151597579856,
+   "mean_trans": 0.09151349365562064,
+   "n_fire": 3564,
+   "sign_acc": 0.48063973063973064
+  },
+  "starter.modal_particles": {
+   "auc": 0.5649197789634146,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.2221188860704899,
+   "mean_orig": -0.008983438881028908,
+   "mean_trans": 0.0770871161028667,
+   "n_fire": 4610,
+   "sign_acc": 0.572234273318872
+  },
+  "starter.sent_len": {
+   "auc": 0.720078506097561,
+   "fire_orig": 0.9897560975609756,
+   "fire_trans": 0.993359375,
+   "log_odds": 0.43160368218801626,
+   "mean_orig": -0.13301955250957442,
+   "mean_trans": 0.1447071926652894,
+   "n_fire": 4572,
+   "sign_acc": 0.6646981627296588
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.6198543254573171,
+   "fire_orig": 0.45414634146341465,
+   "fire_trans": 0.22734375,
+   "log_odds": -1.038923829388457,
+   "mean_orig": -7.01192984847533e-06,
+   "mean_trans": -0.0016613277518311652,
+   "n_fire": 1513,
+   "sign_acc": 0.6093853271645737
+  }
+ },
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T225635Z",
+ "worktree": "worktrees/stats"
+}
