@@ -44,7 +44,7 @@ class TestFamily(unittest.TestCase):
 class TestMaths(unittest.TestCase):
     def test_future_choice(self):
         r = rule("register.kommer_att_vs_ska")
-        la, lb = math.log(0.60 / 0.23), math.log(0.40 / 0.77)
+        la, lb = math.log(0.60 / 0.24), math.log(0.40 / 0.76)
         self.assertAlmostEqual(c(r.name, "Det kommer att bli bra."), la)
         self.assertAlmostEqual(c(r.name, "Vi skall göra det och ni ska hjälpa till."), 2 * lb)
         self.assertAlmostEqual(c(r.name, "Det kommer inte att bli bra, men vi skall försöka."), la + lb)
@@ -55,8 +55,8 @@ class TestMaths(unittest.TestCase):
 
     def test_opinion_choice(self):
         r = "register.tycker_vs_anser"
-        self.assertAlmostEqual(c(r, "Jag tycker att det är fel."), math.log(0.17 / 0.54))
-        self.assertAlmostEqual(c(r, "Jag anser att det är fel."), math.log(0.83 / 0.46))
+        self.assertAlmostEqual(c(r, "Jag tycker att det är fel."), math.log(0.20 / 0.58))
+        self.assertAlmostEqual(c(r, "Jag anser att det är fel."), math.log(0.80 / 0.42))
         # 'tycks' (seems) and passive 'anses' are not opinion verbs here
         self.assertEqual(c(r, "Det tycks vara fel, och det anses vara fel."), 0.0)
 
@@ -64,11 +64,11 @@ class TestMaths(unittest.TestCase):
         r = rule("register.dem_har_rate")
         d = Doc("Det här betänkandet är bra. " + FILLER)
         n = d.n_words
-        raw = math.log(0.90 / 0.17) - n * (0.90 - 0.17) / 1000
+        raw = math.log(0.81 / 0.17) - n * (0.81 - 0.17) / 1000
         self.assertAlmostEqual(r.contribution(d), 0.5 * raw)
         # formal 'detta/denna' (incl. 'denna kammare') is NOT counted any more
         d2 = Doc("Detta är viktigt för denna kammare. " + FILLER)
-        self.assertAlmostEqual(r.contribution(d2), -0.5 * d2.n_words * (0.90 - 0.17) / 1000)
+        self.assertAlmostEqual(r.contribution(d2), -0.5 * d2.n_words * (0.81 - 0.17) / 1000)
         # cap 1.0 (speakers who say 'det här' a lot cannot saturate far)
         self.assertAlmostEqual(r.contribution(Doc("Det här och det här och den här och de här.")), 1.0)
 
