@@ -39,9 +39,29 @@
 "rule:starter.calques"
 ],
 "gran": "sent",
+"smean": [
+20.07986921203658,
+0.4382654132820245,
+16.74821356343457,
+0.4789755794349572,
+4.588216691187054,
+1.0608880943277048,
+19.963555654390255,
+0.19881927035351557
+],
+"stat_cols": [
+"n_words",
+"starter.dem_har_vs_denna:share_a",
+"starter.dem_har_vs_denna:choices_per1000",
+"starter.ska_vs_skall:share_a",
+"starter.ska_vs_skall:choices_per1000",
+"starter.modal_particles:per1000",
+"starter.sent_len:mean",
+"starter.calques:per1000"
+],
 "engine": "tsw.engine:Default",
 "tsw_hash": "ae5041cbd85649bf",
-"engine_commit": "8ccbf52bae6e97de3b9dc70ea21fe92ec7d9127b",
+"engine_commit": "589bda5e57660e12a9b1f97c1ccbc42caca54a72",
 "rule_cols": [
 "starter.dem_har_vs_denna",
 "starter.ska_vs_skall",

@@ -76,3 +76,9 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T223520Z | main | 69eb2eee+dirty | `tsw.engine:Default` | dev | 500 | bal | - | 2734 | 0.7714 | 0.7705 | 0.8473 |
 | 20261105T223526Z | main | 69eb2eee+dirty | `tsw.engine:Engine(exclude="starter.sent_len")` | dev | 500 | bal | masked | 2734 | 0.6335 | 0.6173 | 0.7082 |
 | 20261105T223528Z | main | 69eb2eee+dirty | `tsw.engine:Default` | dev | 500 | bal | masked | 2734 | 0.7714 | 0.7705 | 0.8468 |
+| 20261105T224230Z | hybrid-ml | 8ccbf52b | `tsw.engine:Default` | dev-val | 500 | bal | - | 911 | 0.7881 | 0.7791 | 0.8542 |
+| 20261105T224230Z | hybrid-ml | 8ccbf52b | `tsw.engine:Default` | dev-val | 500 | bal | masked | 911 | 0.7881 | 0.7791 | 0.8538 |
+| 20261105T224240Z | hybrid-ml | 8ccbf52b+dirty | `tsw.engine:Default` | dev-val | 100 | bal | - | 4610 | 0.6701 | 0.6613 | 0.7268 |
+| 20261105T224240Z | hybrid-ml | 8ccbf52b+dirty | `tsw.engine:Default` | dev-val | 100 | bal | masked | 4610 | 0.6701 | 0.6613 | 0.7265 |
+| 20261105T224254Z | hybrid-ml | 8ccbf52b+dirty | `tsw.engine:Default` | dev-val | sent | bal | - | 29183 | 0.5643 | 0.5637 | 0.5969 |
+| 20261105T224254Z | hybrid-ml | 8ccbf52b+dirty | `tsw.engine:Default` | dev-val | sent | bal | masked | 29183 | 0.5641 | 0.5635 | 0.5967 |

@@ -118,7 +118,22 @@ class Stacked:
         self.inner = Hybrid(model=model, gran=gran, models_dir=models_dir)
 
     def _inputs(self, text, m):
-        s, ex = self.engine.score_and_explain(text)
+        from tsw.doc import Doc
+        from hybrid.engine_cache import rule_stats, stat_names
+        doc = Doc(text)
+        s, contrib, famd = self.engine._run(doc)
+        if math.isnan(s):
+            s = 0.0
+        ex = dict(contrib)
+        for f_, (raw, cl) in famd.items():
+            if cl != raw:
+                ex["cap:" + f_] = cl - raw
+        stats = {}
+        if any(i.startswith("stat:") for i in m["inputs"]):
+            vals = rule_stats(self.engine, doc)
+            smean = dict(zip(m.get("stat_cols", []), m.get("smean", [])))
+            for n_, v in zip(stat_names(self.engine), vals):
+                stats[n_] = smean.get(n_, 0.0) if (v != v and m["kind"] != "gbt_pickle") else v
         need_feat = any(i.startswith("feat:") for i in m["inputs"])
         feats = {}
         if need_feat:
@@ -138,12 +153,19 @@ class Stacked:
                 x.append(fam.get(i[4:], 0.0))
             elif i.startswith("feat:"):
                 x.append(feats[i[5:]])
+            elif i.startswith("stat:"):
+                x.append(stats[i[5:]])
         return np.asarray(x, dtype=np.float64)
 
     def score_and_explain(self, text):
         g = self.inner.gran or gran_for(text)
         m = self.inner._model(g)
         x = self._inputs(text, m)
+        if m["kind"] == "gbt_pickle":
+            if "model" not in m:
+                with open(os.path.join(ROOT, m["pickle"]), "rb") as f:
+                    m["model"] = pickle.load(f)
+            return float(m["model"].decision_function(x[None, :])[0]), {}
         if m["kind"] == "linear":
             c = x * m["w_arr"]
             return float(c.sum() + m["b"]), {m["inputs"][j]: float(c[j]) for j in np.flatnonzero(c)}

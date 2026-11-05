@@ -4,17 +4,25 @@
     python3 -m hybrid.engine_cache --gran 500 100 sent   # once per engine version
     python3 -m hybrid.stack                              # seconds; re-run after every merge
 
-Models (inputs are the engine's explain() contributions, cached):
+All inputs are expert features: the engine's per-rule contributions (explain()),
+its per-family subscores, the raw statistic each rule computes (hits per 1000
+words, choice shares, unit means; hybrid/engine_cache.py), and the literature
+word-list features of Phase A (hybrid/features.py).
+
   engine_calib    LR on the engine score alone: only re-sets threshold/scale, so
                   any gain over the raw engine is calibration, not re-weighting
   stack_rules     LR over the per-rule contributions (before family caps):
                   coefficient = learned multiplier on the hand-set contribution
                   (1.0 = hand-set weight is right, < 0 = the rule's sign flips)
   stack_families  LR over the per-family subscores (after caps)
-  tree_rules      depth-3 decision tree over per-rule contributions + engine score
-  hybrid_plus     engine score + the 10 strongest expert features of lr_expert
-                  (picked from the dev-train fit; standardised LR)
-  hybrid_full     all per-rule contributions + all expert features (standardised LR)
+  lr_engine       LR over rule contributions + rule statistics (engine-only inputs)
+  gbt_engine      gradient-boosted trees over the same engine-only inputs
+  tree_engine     depth-3 decision tree over rule statistics + engine score
+                  (thresholds in natural units -> candidate rules)
+  hybrid_plus     engine score + the 10 strongest Phase-A features of lr_expert
+                  (picked from the dev-train fit)
+  lr_all          LR over rule contributions + rule statistics + Phase-A features
+  gbt_all         gradient-boosted trees over the same
 
 Every model is written to hybrid/models/<name>.<gran>.json (applied from raw
 text by hybrid.clf:Stacked) and evaluated like hybrid/train.py (harness JSON,
@@ -24,10 +32,12 @@ hand-set weights per rule.
 import argparse
 import json
 import os
+import pickle
 import sys
 import time
 
 import numpy as np
+from sklearn.ensemble import HistGradientBoostingClassifier
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "evals"))
@@ -38,7 +48,8 @@ from hybrid import cache, engine_cache  # noqa: E402
 from hybrid import features as F  # noqa: E402
 from hybrid import train as T  # noqa: E402
 
-ALL = ["engine_calib", "stack_rules", "stack_families", "tree_rules", "hybrid_plus", "hybrid_full"]
+ALL = ["engine_calib", "stack_rules", "stack_families", "lr_engine", "gbt_engine", "tree_engine", "hybrid_plus",
+       "lr_all", "gbt_all"]
 N_PLUS = 10
 
 
@@ -130,6 +141,20 @@ def main(argv=None):
         rj = [cols.index(c) for c in rule_cols]
         fam_of = {m["name"]: m["family"] for m in ec["rule_meta"]}
         Etr, Eva, Evm = ec["E_train"], ec["E_val"], ec["E_val_masked"]
+        stat_cols = [str(c) for c in ec["stat_cols"]]
+        Str, Sva, Svm = ec["S_train"], ec["S_val"], ec["S_val_masked"]
+        smean = np.nanmean(Str, 0)  # NaN (StatRule with no units) -> dev-train mean, for LR/trees
+
+        def imp(S):
+            S = S.copy()
+            r, c = np.nonzero(np.isnan(S))
+            S[r, c] = smean[c]
+            return S
+        Sitr, Siva, Sivm = imp(Str), imp(Sva), imp(Svm)
+        eng_in = ["rule:" + c for c in rule_cols] + ["stat:" + c for c in stat_cols]
+        all_in = eng_in + ["feat:" + n for n in names]
+        EStr, ESva, ESvm = (np.hstack([Etr[:, rj], Sitr]), np.hstack([Eva[:, rj], Siva]),
+                            np.hstack([Evm[:, rj], Sivm]))
         str_, sva, svm = ec["s_train"], ec["s_val"], ec["s_val_masked"]
         # unseen-speaker mask in engine-cache val order
         unseen_fc = T.unseen_speaker_mask(g, fc)
@@ -159,16 +184,36 @@ def main(argv=None):
                 model.update(inputs=["fam:" + f for f in fams])
                 s_u, s_m = T.linear_score(model, Fva), T.linear_score(model, Fvm)
                 extra["family_multipliers"] = dict(zip(fams, model["w"]))
-            elif mname == "tree_rules":
-                inp = rule_cols + ["engine_score"]
-                Ztr = np.hstack([Etr[:, rj], str_[:, None]])
+            elif mname == "lr_engine":
+                model = T.fit_lr(EStr, ytr, groups)
+                model.update(inputs=eng_in)
+                s_u, s_m = T.linear_score(model, ESva), T.linear_score(model, ESvm)
+            elif mname in ("gbt_engine", "gbt_all"):
+                Ztr, Zva, Zvm, inp = (EStr, ESva, ESvm, eng_in) if mname == "gbt_engine" else (
+                    np.hstack([EStr, Xtr]), np.hstack([ESva, Xva]), np.hstack([ESvm, Xvm]), all_in)
+                m = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.08, max_leaf_nodes=15,
+                                                   l2_regularization=1.0, early_stopping=True,
+                                                   validation_fraction=0.15, random_state=T.SEED).fit(Ztr, ytr)
+                s_u, s_m = m.decision_function(Zva), m.decision_function(Zvm)
+                pk = os.path.join(T.BIG_DIR, "%s.%s.pkl" % (mname, g))
+                with open(pk, "wb") as f:
+                    pickle.dump(m, f)
+                model = {"kind": "gbt_pickle", "pickle": os.path.relpath(pk, ROOT), "inputs": inp,
+                         "n_iter": int(m.n_iter_)}
+                extra["hyper"] = {"n_iter": int(m.n_iter_), "max_leaf_nodes": 15, "learning_rate": 0.08}
+            elif mname == "tree_engine":
+                inp = ["stat:" + c for c in stat_cols] + ["engine_score"]
+                Ztr = np.hstack([Sitr, str_[:, None]])
                 t = T.fit_tree(Ztr, ytr, 3)
                 model = T.tree_to_json(t, inp)
-                model["inputs"] = ["rule:" + c for c in rule_cols] + ["engine_score"]
-                s_u = np.array([T.tree_score_row(model, x)[0] for x in np.hstack([Eva[:, rj], sva[:, None]])])
-                s_m = np.array([T.tree_score_row(model, x)[0] for x in np.hstack([Evm[:, rj], svm[:, None]])])
-                with open(os.path.join(T.REPORT_DIR, "tree_rules_engine_%s.md" % g), "w") as f:
-                    f.write("# Depth-3 tree over engine rule contributions (gran=%s)\n\n" % g)
+                model["inputs"] = inp
+                s_u = np.array([T.tree_score_row(model, x)[0] for x in np.hstack([Siva, sva[:, None]])])
+                s_m = np.array([T.tree_score_row(model, x)[0] for x in np.hstack([Sivm, svm[:, None]])])
+                with open(os.path.join(T.REPORT_DIR, "tree_engine_%s.md" % g), "w") as f:
+                    f.write("# Depth-3 tree over the engine's rule statistics + engine score (gran=%s)\n\n"
+                            "Fitted on dev-train (prior P(trans)=%.2f). `stat:<rule>:per1000` = hits per 1000 words, "
+                            "`:share_a` = share of the rule's variant A among its choices, `:mean` = unit mean.\n\n"
+                            % (g, ytr.mean()))
                     for conds, p, n in T.tree_rules(model, inp, ytr.mean()):
                         f.write("- IF %s THEN P(trans)=%.2f (n=%d)\n" % (T.fmt_rule(conds, None) or "(all)", p, n))
             elif mname == "hybrid_plus":
@@ -180,14 +225,14 @@ def main(argv=None):
                 s_u = T.linear_score(model, np.hstack([sva[:, None], Xva[:, top]]))
                 s_m = T.linear_score(model, np.hstack([svm[:, None], Xvm[:, top]]))
                 extra["plus_features"] = [names[j] for j in top]
-            elif mname == "hybrid_full":
-                model = T.fit_lr(np.hstack([Etr[:, rj], Xtr]), ytr, groups)
-                model.update(inputs=["rule:" + c for c in rule_cols] + ["feat:" + n for n in names])
-                s_u = T.linear_score(model, np.hstack([Eva[:, rj], Xva]))
-                s_m = T.linear_score(model, np.hstack([Evm[:, rj], Xvm]))
+            elif mname == "lr_all":
+                model = T.fit_lr(np.hstack([EStr, Xtr]), ytr, groups)
+                model.update(inputs=all_in)
+                s_u = T.linear_score(model, np.hstack([ESva, Xva]))
+                s_m = T.linear_score(model, np.hstack([ESvm, Xvm]))
             else:
                 sys.exit("unknown model %s" % mname)
-            model.update(gran=g, **base_meta)
+            model.update(gran=g, smean=smean.tolist(), stat_cols=stat_cols, **base_meta)
             write_model(mname, g, model)
             if "C" in model:
                 extra["hyper"] = {"C": model["C"]}

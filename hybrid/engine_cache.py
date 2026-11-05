@@ -3,10 +3,12 @@
 
     python3 -m hybrid.engine_cache --gran 500 100 sent      # (+ --clf to pick an engine)
 
-Runs `tsw.engine:Default` (or --clf) through the harness's own evaluate()
-on dev-train (unmasked) and dev-val (unmasked + topic-masked) and stores the
-explain() dicts as a dense matrix (one column per rule, plus the "cap:<family>"
-adjustments). As a by-product it saves the official pure-rules dev-val results
+Runs `tsw.engine:Default` (or --clf; must be a tsw Engine) on dev-train
+(unmasked) and dev-val (unmasked + topic-masked), with the same semantics as the
+harness's evaluate(), and stores (a) the explain() dicts as a dense matrix (one
+column per rule, plus the "cap:<family>" adjustments) and (b) the raw statistic
+behind each rule (hits per 1000 words, choice shares, unit means), computed on
+the same Doc. As a by-product it saves the official pure-rules dev-val results
 (split="dev-val") exactly as `evals/run.py --split dev-val` would, so every
 hybrid model is compared with the engine on the same records.
 
@@ -23,6 +25,7 @@ import datetime
 import glob
 import hashlib
 import json
+import math
 import os
 import sys
 import time
@@ -53,6 +56,63 @@ def path(gran, tag="default"):
     return os.path.join(cache.CACHE_DIR, "engine.%s.%s.npz" % (tag, gran))
 
 
+def stat_names(clf):
+    out = ["n_words"]
+    for r in getattr(clf, "rules", []):
+        k = type(r).__name__
+        if k in ("HitRule", "RateRule"):
+            out.append(r.name + ":per1000")
+        elif k == "ChoiceRule":
+            out += [r.name + ":share_a", r.name + ":choices_per1000"]
+        elif k == "StatRule":
+            out.append(r.name + ":mean")
+    return out
+
+
+def rule_stats(clf, doc):
+    """The raw statistics each rule computes before turning them into an LLR:
+    hits per 1000 words (Hit/Rate), share of variant A + choices per 1000 words
+    (Choice), the unit mean (Stat; NaN if no units). Order = stat_names()."""
+    n = doc.n_words
+    out = [float(n)]
+    for r in getattr(clf, "rules", []):
+        k = type(r).__name__
+        if k in ("HitRule", "RateRule"):
+            out.append(1000.0 * r.matcher.count(doc) / max(n, 1))
+        elif k == "ChoiceRule":
+            ka, kb = r.counts(doc)
+            out += [(ka + 0.5) / (ka + kb + 1.0), 1000.0 * (ka + kb) / max(n, 1)]
+        elif k == "StatRule":
+            out.append(float(r.statistic(doc)[0]))
+    return out
+
+
+def evaluate(clf, recs, mask_topic):
+    """Same semantics as evals/run.py:evaluate (score_and_explain on the (masked)
+    text, NaN -> 0) plus rule_stats on the same Doc."""
+    from tsw.doc import Doc
+    from tsw.engine import CAP_PREFIX
+    import topicmask
+    labels, scores, expl, stats = [], [], [], []
+    for r in recs:
+        text = topicmask.mask(r["text"]) if mask_topic else r["text"]
+        doc = Doc(text)
+        total, contrib, fam = clf._run(doc)
+        e = dict(contrib)
+        for f, (s, cs) in fam.items():
+            if cs != s:
+                e[CAP_PREFIX + f] = cs - s
+        if math.isnan(total):
+            total = 0.0
+        labels.append(r["label"])
+        scores.append(total)
+        expl.append(e)
+        stats.append(rule_stats(clf, doc))
+    return {"metrics": metrics.all_metrics(labels, scores), "scores": scores, "labels": labels,
+            "rules": metrics.rule_diagnostics(labels, expl), "explanations": expl,
+            "stats": np.asarray(stats, np.float64)}
+
+
 def build(gran, clf_spec, tag, save_results=True):
     t0 = time.time()
     clf = run.load_clf(clf_spec)
@@ -60,8 +120,8 @@ def build(gran, clf_spec, tag, save_results=True):
     recs = run.load_records(dpath)
     tr = devsplit.select(recs, "dev-train")
     va = devsplit.select(recs, "dev-val")
-    res = {"train": run.evaluate(clf, tr, False), "val": run.evaluate(clf, va, False),
-           "val_masked": run.evaluate(clf, va, True)}
+    res = {"train": evaluate(clf, tr, False), "val": evaluate(clf, va, False),
+           "val_masked": evaluate(clf, va, True)}
     rule_names = [r.name for r in getattr(clf, "rules", [])]
     cols = list(rule_names)
     for k in res.values():
@@ -90,6 +150,8 @@ def build(gran, clf_spec, tag, save_results=True):
         y_train=np.asarray(res["train"]["labels"], np.int8), y_val=np.asarray(res["val"]["labels"], np.int8),
         ids_train=np.asarray([r["id"] for r in tr]), ids_val=np.asarray([r["id"] for r in va]),
         dates_train=np.asarray([r["date"] for r in tr]),
+        S_train=res["train"]["stats"], S_val=res["val"]["stats"], S_val_masked=res["val_masked"]["stats"],
+        stat_cols=np.asarray(stat_names(clf)),
         cols=np.asarray(cols), rule_family=np.asarray([fam.get(c, c.split(":", 1)[-1]) for c in cols]),
         rule_meta=json.dumps(meta), clf=clf_spec, tsw_hash=tsw_hash(), git_commit=gi["git_commit"] or "",
         prior=float(getattr(clf, "prior", 0.0)), data_sha256=run.sha256_file(dpath))
