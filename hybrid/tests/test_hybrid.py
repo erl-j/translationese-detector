@@ -6,14 +6,7 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path[:0] = [ROOT, os.path.join(ROOT, "evals")]
 
-import devsplit  # noqa: E402
 from hybrid import features as F  # noqa: E402
-
-
-class TestSplit(unittest.TestCase):
-    def test_dates(self):
-        self.assertEqual(devsplit.subset_of({"date": "2002-02-28"}), "dev-train")
-        self.assertEqual(devsplit.subset_of({"date": "2002-03-01"}), "dev-val")
 
 
 class TestFeatures(unittest.TestCase):

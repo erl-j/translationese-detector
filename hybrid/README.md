@@ -14,32 +14,31 @@ Inputs (all expert features):
    rule computes (hits/1000 words, choice share, unit mean).
 3. Reference only: `bow_lr`, LR on the 300 most frequent words (no expert input).
 
-Protocol: fit on **dev-train**, report on **dev-val** (date split, `SPLIT.md`), unmasked
-and topic-masked, plus an unseen-speaker subset; the pure engine and MeanSentLen are
-scored on the same records. Test is never touched.
+Protocol (main's trn/val/test split, see README): every model is fitted on **all of
+trn** (sessions ≤ 2004-06-30); hyper-parameters (LR's C) by 5-fold CV *inside* trn,
+folds grouped by session date. Each fitted model is scored **once** on **val**
+(2004-07 .. 2006) through the harness, unmasked and topic-masked, next to
+`tsw.engine:Default` and MeanSentLen on the same records. Val is metrics-only: the
+models are wrapped score-only (no per-feature val statistics) and nothing reads val
+texts. Test (2007-2011) is never touched.
 
-## Run (all steps fit the login-node budget with the 5-rule starter engine)
+## Run (Slurm, 1 CPU; ~10 min for everything)
 
 ```bash
-PY=.venv-hybrid/bin/python   # numpy, scipy, scikit-learn
-export OMP_NUM_THREADS=1                                                       # be nice on the login node
-$PY -m hybrid.cache --gran 500 100 sent       # Phase A feature cache       ~90 CPU-s, once per features.py
-$PY -m hybrid.train                           # lr_expert, tree_d3/4, gbt, bow_lr   ~45 CPU-s
-$PY -m hybrid.engine_cache --gran 500 100 sent  # engine contributions + stats  ~60 CPU-s (5 rules; grows with rules)
-$PY -m hybrid.stack                           # Phase B models               ~40 CPU-s
-$PY -m hybrid.report                          # reports/*.md                 ~10 CPU-s
-$PY -m unittest discover -s hybrid/tests -t .
+sbatch hybrid/slurm/retrain_val.sh                                  # Phase A + B, val eval, reports
+sbatch --export=ALL,STEPS=phase_b hybrid/slurm/retrain_val.sh       # after merging rule families
 ```
 
-After a rule family is merged into main: `git merge main`, re-run `engine_cache`
-(use Slurm if it exceeds ~1 CPU-minute, see its docstring), `stack`, `report`.
-`engine_cache` also writes the official pure-engine dev-val results.
+Steps (all `python -m hybrid.<step>` with the venv python
+`.venv-hybrid/bin/python`, numpy/scipy/scikit-learn):
+`cache` (trn feature cache) → `train` (Phase A fits) → `engine_cache` (engine contributions +
+rule statistics on trn) → `stack` (Phase B fits) → `eval_val` (harness on val) → `report`.
 
-Harness (live scoring from raw text, same numbers as the cached evaluation; checked):
+Harness (live scoring from raw text):
 
 ```bash
-$PY evals/run.py --clf "hybrid.clf:Hybrid(model='lr_expert')" --split dev-val --gran 500 --mask-topic
-$PY evals/run.py --clf "hybrid.clf:Stacked(model='stack_rules')" --split dev-val --gran 100
+$PY evals/run.py --clf "hybrid.clf:Hybrid(model='lr_expert')" --split val --gran 500 --mask-topic
+$PY evals/run.py --clf "hybrid.clf:Stacked(model='stack_rules')" --split trn --gran 100
 ```
 
 `Hybrid` / `Stacked` pick the per-granularity model by text length (< 90 tokens →
@@ -50,12 +49,13 @@ sentence model, < 300 → 100-token model, else 500), or `gran='500'` forces one
 | file | what |
 |---|---|
 | `features.py` | literature features: word lists, regexes, `raw_counts`, `transform`, `feature_meta` |
-| `cache.py` | feature/BoW cache → `data/cache/hybrid/dev.<gran>.npz` (gitignored) |
-| `train.py` | Phase A models; writes `models/*.json`, results JSON (split=dev-val) |
-| `engine_cache.py` | engine contributions + rule statistics → `data/cache/hybrid/engine.default.<gran>.npz` |
+| `cache.py` | trn feature/BoW cache → `data/cache/hybrid/trn.<gran>.npz` (gitignored) |
+| `train.py` | Phase A fits on trn → `models/*.json`, `reports/training.json` |
+| `engine_cache.py` | engine contributions + rule statistics on trn → `data/cache/hybrid/engine.default.<gran>.npz` |
+| `eval_val.py` | scores every fitted model once on val via `evals/run.py:run_one` (score-only) |
+| `slurm/retrain_val.sh` | the whole pipeline as one 1-CPU Slurm job |
 | `stack.py` | Phase B models (`engine_calib`, `stack_rules`, `stack_families`, `lr_engine`, `gbt_engine`, `tree_engine`, `hybrid_plus`, `lr_all`, `gbt_all`) |
 | `clf.py` | harness classifiers `Hybrid`, `Stacked` |
-| `report.py` | `reports/METRICS.md`, `coefficients.md`, `literature_check.md`, `tree_rules.md` |
-| `split_stats.py` | split sizes + speaker overlap (`SPLIT.md`) |
+| `report.py` | `reports/METRICS.md` (val), `coefficients.md`, `literature_check.md`, `tree_rules.md` (trn) |
 | `models/` | fitted LR/tree models as JSON (GBT pickles live in the gitignored cache) |
 | `reports/` | generated reports; `stacking_<gran>.md` = learned vs hand-set rule weights |

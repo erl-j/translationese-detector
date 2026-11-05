@@ -1,0 +1,103 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Default",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "val.500.bal.jsonl",
+ "data_sha256": "af75bc2eb00cee3e28c4a98a907c3267d6c5f6da381a90cd47f8c5ae73906c6d",
+ "elapsed_sec": 1.32,
+ "git_branch": "main",
+ "git_commit": "80d27ff3fef212069cbb24bad177af5cf9e81bff",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.699685534591195,
+  "confusion": {
+   "fn": 58,
+   "fp": 133,
+   "tn": 185,
+   "tp": 260
+  },
+  "macro_f1": 0.6954504087787781,
+  "n": 636,
+  "n_orig": 318,
+  "n_trans": 318,
+  "pred_trans_rate": 0.6179245283018868,
+  "roc_auc": 0.7906036153633164
+ },
+ "rules": {
+  "cap:starter": {
+   "auc": 0.49528301886792453,
+   "fire_orig": 0.0,
+   "fire_trans": 0.009433962264150943,
+   "log_odds": 1.955373942086263,
+   "mean_orig": 0.0,
+   "mean_trans": -0.001810726567752192,
+   "n_fire": 3,
+   "sign_acc": 0.0
+  },
+  "starter.calques": {
+   "auc": 0.5065365294094379,
+   "fire_orig": 0.07861635220125786,
+   "fire_trans": 0.09119496855345911,
+   "log_odds": 0.1594341534364947,
+   "mean_orig": 0.10660377358490568,
+   "mean_trans": 0.13270440251572327,
+   "n_fire": 54,
+   "sign_acc": 0.5370370370370371
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.5553676674182192,
+   "fire_orig": 0.9874213836477987,
+   "fire_trans": 0.9874213836477987,
+   "log_odds": 0.0,
+   "mean_orig": -0.05240183698430836,
+   "mean_trans": 0.2427568997525793,
+   "n_fire": 628,
+   "sign_acc": 0.5621019108280255
+  },
+  "starter.modal_particles": {
+   "auc": 0.6240556148886516,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.05640224123585201,
+   "mean_trans": 0.38668637018834134,
+   "n_fire": 636,
+   "sign_acc": 0.5880503144654088
+  },
+  "starter.sent_len": {
+   "auc": 0.800937462916815,
+   "fire_orig": 1.0,
+   "fire_trans": 0.9937106918238994,
+   "log_odds": -1.615737145862087,
+   "mean_orig": -0.67269608607516,
+   "mean_trans": 0.3559761422111335,
+   "n_fire": 634,
+   "sign_acc": 0.7350157728706624
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.6158577587911871,
+   "fire_orig": 0.89937106918239,
+   "fire_trans": 0.6886792452830188,
+   "log_odds": -1.3853038584684239,
+   "mean_orig": 0.37889138985029963,
+   "mean_trans": 0.45662191023001986,
+   "n_fire": 505,
+   "sign_acc": 0.6158415841584158
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230306Z",
+ "worktree": "."
+}

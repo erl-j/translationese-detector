@@ -1,26 +1,24 @@
 #!/usr/bin/env python3
-"""Fit the hybrid / ML models on dev-train, evaluate on dev-val (cached features).
+"""Fit the Phase-A hybrid models on ALL of trn (cached features); no evaluation here.
 
-    python3 -m hybrid.train                     # all grans, all models, save results
-    python3 -m hybrid.train --grans 500 --models lr_expert tree_d4 --no-save
+    python3 -m hybrid.train                     # all grans, all models   (~1 CPU-minute)
+    python3 -m hybrid.train --grans 500 --models lr_expert tree_d4
 
 Models (one per granularity; `hybrid.clf:Hybrid` picks one by text length):
   lr_expert   L2 logistic regression on the expert features (hybrid/features.py),
-              C chosen by 5-fold CV on dev-train grouped by session date
+              C chosen by 5-fold CV inside trn, folds grouped by session date
   tree_d3/4   decision tree (depth 3/4) on the same, un-scaled features, so its
               splits read as rules ("rate of ju per 1000 words <= 0.4")
-  gbt         gradient-boosted trees (reference ceiling for these features)
-  bow_lr      pure-ML reference: L2 LR on relative frequencies of the N most
-              frequent dev-train words (function-word style, no expert input)
+  gbt         gradient-boosted trees (HistGradientBoosting; early stopping on an
+              internal random 15% of trn)
+  bow_lr      small reference only: L2 LR on relative frequencies of the N most
+              frequent trn words (no expert input)
 
-Evaluation runs on the cached dev-val features, unmasked and topic-masked (the
-masked text is exactly what `evals/run.py --mask-topic` would feed), and writes
-harness-format results JSON (split="dev-val") via evals/run.py:save_result.
-`hybrid.clf:Hybrid` re-computes the same scores from raw text through the
-harness with identical scores (checked; see hybrid/README.md).
+Models go to hybrid/models/ (JSON; GBT pickles in data/cache/hybrid/models/).
+Evaluation on val runs live through the harness: hybrid/eval_val.py. Never
+fit or tune on val.
 """
 import argparse
-import datetime
 import json
 import math
 import os
@@ -37,7 +35,6 @@ from sklearn.tree import DecisionTreeClassifier
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "evals"))
 sys.path.insert(0, ROOT)
-import devsplit  # noqa: E402
 import metrics  # noqa: E402
 import run  # noqa: E402
 from hybrid import cache  # noqa: E402
@@ -50,6 +47,8 @@ ALL_MODELS = ["lr_expert", "tree_d3", "tree_d4", "gbt", "bow_lr"]
 CS = [0.003, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0]
 BOW_N = 300
 SEED = 20261105
+GBT_PARAMS = dict(max_iter=300, learning_rate=0.08, max_leaf_nodes=15, l2_regularization=1.0,
+                  early_stopping=True, validation_fraction=0.15, random_state=SEED)
 
 
 # --------------------------------------------------------------------------
@@ -68,18 +67,23 @@ def fit_lr(X, y, groups):
     mu, sd = standardize_fit(X)
     Z = (X - mu) / sd
     best = None
+    folds = list(GroupKFold(n_splits=5).split(Z, y, groups))
     for C in CS:
         ll = 0.0
-        for tr, te in GroupKFold(n_splits=5).split(Z, y, groups):
+        oof = np.zeros(len(y))
+        for tr, te in folds:
             m = LogisticRegression(C=C, max_iter=2000).fit(Z[tr], y[tr])
             p = np.clip(m.predict_proba(Z[te])[:, 1], 1e-6, 1 - 1e-6)
+            oof[te] = np.log(p / (1 - p))
             ll -= np.sum(y[te] * np.log(p) + (1 - y[te]) * np.log(1 - p))
         if best is None or ll < best[0]:
-            best = (ll, C)
+            best = (ll, C, oof)
     m = LogisticRegression(C=best[1], max_iter=2000).fit(Z, y)
     w = m.coef_[0] / sd  # weights on raw features
     b = float(m.intercept_[0] - np.sum(m.coef_[0] * mu / sd))
-    return {"kind": "linear", "C": best[1], "cv_logloss": best[0] / len(y), "mean": mu.tolist(), "scale": sd.tolist(),
+    return {"kind": "linear", "C": best[1], "cv_logloss": best[0] / len(y),
+            "cv_auc": metrics.roc_auc(list(map(int, y)), list(best[2])),
+            "mean": mu.tolist(), "scale": sd.tolist(),
             "coef_std": m.coef_[0].tolist(), "w": w.tolist(), "b": b}
 
 
@@ -148,157 +152,75 @@ def bow_matrix(B, cols):
     return np.asarray(B[:, cols].todense()) * (1000.0 / tot[:, None])
 
 
-# --------------------------------------------------------------------------
-# evaluation / reporting
-# --------------------------------------------------------------------------
-
-def result_blob(clf_spec, gran, masked, labels, scores, data, extra, expl=None):
-    gi = run.git_info()
-    out = {"harness_version": run.HARNESS_VERSION,
-           "timestamp": datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"),
-           "clf": clf_spec, "split": "dev-val", "gran": gran, "balanced": True, "mask_topic": bool(masked),
-           "limit": None, "limit_seed": None, **gi,
-           "data_file": "dev.%s.bal.jsonl" % gran, "data_sha256": str(data["data_sha256"]),
-           "metrics": metrics.all_metrics(list(map(int, labels)), list(map(float, scores))),
-           "rules": metrics.rule_diagnostics(list(map(int, labels)), expl) if expl is not None else None,
-           "elapsed_sec": None, "argv": sys.argv, "subset_rule": devsplit.describe("dev-val"),
-           "eval_mode": "cached features (hybrid/train.py); fitted on %s" % devsplit.describe("dev-train")}
-    out.update(extra)
-    return out
+def fmt_rule(conds, _=None):
+    return " AND ".join("%s %s %.3g" % c for c in conds)
 
 
-def expl_dicts(contrib, names, top=None):
-    out = []
-    for row in contrib:
-        nz = np.flatnonzero(row)
-        out.append({names[j]: float(row[j]) for j in nz})
-    return out
+def load_summary():
+    p = os.path.join(REPORT_DIR, "training.json")
+    return json.load(open(p)) if os.path.exists(p) else {}
 
 
-def unseen_speaker_mask(gran, data):
-    with open(os.path.join(cache.CACHE_DIR, "dev.%s.speakers.json" % gran), encoding="utf-8") as f:
-        spk = json.load(f)
-    tr = set(s for i in np.flatnonzero(~data["is_val"]) for s in spk[i] if s)
-    vi = np.flatnonzero(data["is_val"])
-    return np.array([not any(s in tr for s in spk[i] if s) for i in vi])
-
-
-def fmt_rule(conds, feat_desc):
-    parts = []
-    for f, op, thr in conds:
-        parts.append("%s %s %.3g" % (f, op, thr))
-    return " AND ".join(parts)
-
-
-def emit(mname, spec, g, yva, s_u, s_m, data_sha, extra, unseen, summary, save=True, expl_u=None,
-         expl_m=None, t1=None):
-    """Metrics on dev-val (unmasked, masked, unseen-speaker subset); print; save harness JSON."""
-    yva = np.asarray(yva).astype(int)
-    s_u, s_m = np.asarray(s_u, float), np.asarray(s_m, float)
-    mu = metrics.all_metrics(list(yva), list(s_u))
-    mm = metrics.all_metrics(list(yva), list(s_m))
-    mus = metrics.all_metrics(list(yva[unseen]), list(s_u[unseen]))
-    mus["note"] = "dev-val units none of whose speakers occur in dev-train (orig %d / trans %d)" % (
-        int((yva[unseen] == 0).sum()), int((yva[unseen] == 1).sum()))
-    extra = dict(extra, unseen_speaker_metrics=mus, n_unseen_speaker=int(unseen.sum()))
-    print("  %-14s unmasked acc=%.4f F1=%.4f AUC=%.4f | masked acc=%.4f F1=%.4f AUC=%.4f | unseen-spk AUC=%.4f%s"
-          % (mname, mu["accuracy"], mu["macro_f1"], mu["roc_auc"], mm["accuracy"], mm["macro_f1"], mm["roc_auc"],
-             mus["roc_auc"], "" if t1 is None else " (%.1fs)" % (time.time() - t1)))
-    for masked, s, ex in ((False, s_u, expl_u), (True, s_m, expl_m)):
-        blob = result_blob(spec, g, masked, yva, s, {"data_sha256": data_sha}, dict(extra), ex)
-        if masked:
-            blob["unmasked_metrics"] = mu
-            blob["topic_auc_drop"] = mu["roc_auc"] - mm["roc_auc"]
-        if save:
-            run.save_result(blob, quiet=True)
-        summary.setdefault(g, {}).setdefault(mname, {})["masked" if masked else "unmasked"] = {
-            k: blob["metrics"][k] for k in ("n", "accuracy", "macro_f1", "roc_auc")}
-    summary[g][mname]["unseen_speaker"] = {k: mus[k] for k in ("n", "accuracy", "macro_f1", "roc_auc")}
+def save_summary(s):
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    with open(os.path.join(REPORT_DIR, "training.json"), "w") as f:
+        json.dump(s, f, indent=1, sort_keys=True)
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--grans", nargs="+", default=["sent", "100", "500"])
     ap.add_argument("--models", nargs="+", default=ALL_MODELS)
-    ap.add_argument("--no-save", action="store_true", help="do not write results JSON / leaderboard")
     args = ap.parse_args(argv)
     names = F.feature_names()
-    os.makedirs(MODEL_DIR, exist_ok=True)
-    os.makedirs(REPORT_DIR, exist_ok=True)
-    os.makedirs(BIG_DIR, exist_ok=True)
-    summary_path = os.path.join(REPORT_DIR, "metrics.json")
-    summary = json.load(open(summary_path)) if os.path.exists(summary_path) else {}
-
+    for d_ in (MODEL_DIR, REPORT_DIR, BIG_DIR):
+        os.makedirs(d_, exist_ok=True)
+    summary = load_summary()
     for g in args.grans:
         g = run.GRANS[g]
         t0 = time.time()
         d = cache.load(g)
         X = F.transform(d["C"].astype(np.float64), np)
-        Xm_val = F.transform(d["C_masked"].astype(np.float64), np)
-        tr, va = ~d["is_val"], d["is_val"]
-        assert np.array_equal(np.flatnonzero(va), d["val_idx"])
-        Xtr, ytr, Xva, yva = X[tr], d["labels"][tr].astype(int), X[va], d["labels"][va].astype(int)
-        groups = d["dates"][tr]
-        unseen = unseen_speaker_mask(g, d)
-        prior = ytr.mean()
-        print("== gran=%s  dev-train %d  dev-val %d (unseen-speaker units %d)  features %d"
-              % (g, len(ytr), len(yva), unseen.sum(), X.shape[1]))
-        # pure-ML BoW columns: top-N by dev-train token count
-        bow_cols = None
-        if "bow_lr" in args.models:
-            freq = np.asarray(d["bow"][np.flatnonzero(tr)].sum(0)).ravel()
-            bow_cols = np.argsort(-freq, kind="stable")[:BOW_N]
-            bow_words = [d["vocab"][j] for j in bow_cols]
-
+        y = d["labels"].astype(int)
+        groups = d["dates"]
+        print("== gran=%s  trn %d (orig %d / trans %d)  sessions %d  features %d"
+              % (g, len(y), (y == 0).sum(), (y == 1).sum(), len(set(groups)), X.shape[1]))
+        info = {"n": int(len(y)), "data_sha256": str(d["data_sha256"]), "features_hash": str(d["features_hash"])}
         for mname in args.models:
             t1 = time.time()
-            expl_u = expl_m = None
-            extra = {}
             if mname == "lr_expert":
-                model = fit_lr(Xtr, ytr, groups)
-                model.update(features=names, gran=g)
-                s_u, s_m = linear_score(model, Xva), linear_score(model, Xm_val)
-                expl_u = expl_dicts(linear_contrib(model, Xva), names)
-                expl_m = expl_dicts(linear_contrib(model, Xm_val), names)
-                with open(os.path.join(MODEL_DIR, "lr_expert.%s.json" % g), "w") as f:
-                    json.dump(model, f, indent=0)
-                extra["hyper"] = {"C": model["C"]}
+                model = fit_lr(X, y, groups)
+                model.update(features=names, gran=g, trained_on="trn")
+                path = os.path.join(MODEL_DIR, "lr_expert.%s.json" % g)
+                info[mname] = {"C": model["C"], "cv_auc_trn": model["cv_auc"]}
             elif mname.startswith("tree_d"):
                 depth = int(mname[-1])
-                t = fit_tree(Xtr, ytr, depth)
-                model = tree_to_json(t, names)
-                model.update(features=names, gran=g)
-                s_u = np.array([tree_score_row(model, x)[0] for x in Xva])
-                s_m = np.array([tree_score_row(model, x)[0] for x in Xm_val])
-                with open(os.path.join(MODEL_DIR, "%s.%s.json" % (mname, g)), "w") as f:
-                    json.dump(model, f, indent=0)
-                extra["hyper"] = {"max_depth": depth, "min_samples_leaf": max(20, int(0.01 * len(ytr)))}
+                model = tree_to_json(fit_tree(X, y, depth), names)
+                model.update(features=names, gran=g, trained_on="trn")
+                path = os.path.join(MODEL_DIR, "%s.%s.json" % (mname, g))
+                info[mname] = {"max_depth": depth, "min_samples_leaf": max(20, int(0.01 * len(y)))}
             elif mname == "gbt":
-                m = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.08, max_leaf_nodes=15,
-                                                   l2_regularization=1.0, early_stopping=True,
-                                                   validation_fraction=0.15, random_state=SEED).fit(Xtr, ytr)
-                s_u, s_m = m.decision_function(Xva), m.decision_function(Xm_val)
+                m = HistGradientBoostingClassifier(**GBT_PARAMS).fit(X, y)
                 with open(os.path.join(BIG_DIR, "gbt.%s.pkl" % g), "wb") as f:
                     pickle.dump({"model": m, "features": names, "gran": g}, f)
-                extra["hyper"] = {"n_iter": int(m.n_iter_), "max_leaf_nodes": 15, "learning_rate": 0.08}
+                info[mname] = {"n_iter": int(m.n_iter_)}
+                model = None
             elif mname == "bow_lr":
-                Btr = bow_matrix(d["bow"][np.flatnonzero(tr)], bow_cols)
-                Bva = bow_matrix(d["bow"][np.flatnonzero(va)], bow_cols)
-                Bvm = bow_matrix(d["bow_masked"], bow_cols)
-                model = fit_lr(Btr, ytr, groups)
-                model.update(features=bow_words, gran=g, kind="bow_linear")
-                s_u, s_m = linear_score(model, Bva), linear_score(model, Bvm)
-                with open(os.path.join(MODEL_DIR, "bow_lr.%s.json" % g), "w") as f:
-                    json.dump(model, f, indent=0)
-                extra["hyper"] = {"C": model["C"], "top_n": BOW_N}
+                freq = np.asarray(d["bow"].sum(0)).ravel()
+                cols = np.argsort(-freq, kind="stable")[:BOW_N]
+                model = fit_lr(bow_matrix(d["bow"], cols), y, groups)
+                model.update(features=[d["vocab"][j] for j in cols], gran=g, kind="bow_linear", trained_on="trn")
+                path = os.path.join(MODEL_DIR, "bow_lr.%s.json" % g)
+                info[mname] = {"C": model["C"], "cv_auc_trn": model["cv_auc"], "top_n": BOW_N}
             else:
                 sys.exit("unknown model %s" % mname)
-            spec = "hybrid.clf:Hybrid(model='%s')" % mname
-            emit(mname, spec, g, yva, s_u, s_m, str(d["data_sha256"]), extra, unseen, summary,
-                 save=not args.no_save, expl_u=expl_u, expl_m=expl_m, t1=t1)
+            if model is not None:
+                with open(path, "w") as f:
+                    json.dump(model, f, indent=0)
+            print("  %-10s %s  (%.1fs)" % (mname, info[mname], time.time() - t1))
+        summary.setdefault(g, {}).update(info)
         print("  gran %s done in %.1fs" % (g, time.time() - t0))
-    with open(summary_path, "w") as f:
-        json.dump(summary, f, indent=1, sort_keys=True)
+    save_summary(summary)
 
 
 if __name__ == "__main__":

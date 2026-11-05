@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Write the human-readable hybrid reports from the fitted models and caches (seconds).
+"""Write the human-readable hybrid reports (seconds; reads trn caches + val metrics only).
 
     python3 -m hybrid.report
 
-hybrid/reports/METRICS.md        dev-val table: every model x gran x {unmasked, masked},
-                                 with the pure engine and MeanSentLen on the same records
-hybrid/reports/coefficients.md   lr_expert coefficients in plain words vs the literature
-hybrid/reports/literature_check.md  per-feature direction on dev-train vs the literature
-hybrid/reports/tree_rules.md     decision-tree paths over the expert features (candidate rules)
+hybrid/reports/METRICS.md           val table from the harness results JSON (split="val", this
+                                    branch): every model x gran x {unmasked, masked}, next to
+                                    tsw.engine:Default and MeanSentLen on the same records
+hybrid/reports/coefficients.md      lr_expert (fitted on all of trn) coefficients in plain words
+hybrid/reports/literature_check.md  per-feature direction on trn vs the literature
+hybrid/reports/tree_rules.md        decision-tree paths over the expert features (candidate rules)
+
+Nothing here reads val texts or per-feature val statistics.
 """
 import glob
 import json
@@ -50,45 +53,65 @@ def latest(pattern):
     return json.load(open(fs[-1])) if fs else None
 
 
-def metrics_md(summary):
+def val_results():
+    """Latest val result per (clf, gran, mask) written from this branch."""
+    best = {}
+    for p in glob.glob(os.path.join(ROOT, "results", "*_val_*.json")):
+        o = json.load(open(p))
+        if o.get("split") != "val" or o.get("git_branch") != "hybrid-ml" or o.get("limit"):
+            continue
+        k = (o["clf"], o["gran"], bool(o["mask_topic"]))
+        if k not in best or o["timestamp"] > best[k]["timestamp"]:
+            best[k] = o
+    return best
+
+
+def short(clf):
+    if clf.startswith("hybrid.clf:"):
+        return clf.split("'")[1]
+    return {"baselines:MeanSentLen": "MeanSentLen", "tsw.engine:Default": "engine_raw"}.get(clf, clf)
+
+
+def metrics_md(training):
+    res = val_results()
+    by = {}
+    for (clf, g, mk), o in res.items():
+        by.setdefault(g, {}).setdefault(short(clf), {})[mk] = o
+    L = ["# Hybrid models on val\n",
+         "All models fitted on **all of trn** (sessions ≤ 2004-06-30; hyper-parameters by session-grouped "
+         "5-fold CV inside trn) and scored **once** on **val** (sessions 2004-07 .. 2006, balanced files) "
+         "through the harness (`hybrid/eval_val.py`, results JSON with split=\"val\", branch hybrid-ml). "
+         "`tsw.engine:Default` and MeanSentLen are scored on the same records. `masked` = topic tokens "
+         "replaced by XTOPIC before scoring; models are always fitted on unmasked trn text. Numbers are "
+         "acc / macro-F1 / AUC. `trn CV AUC` = out-of-fold AUC inside trn for the chosen C (LR models).\n"]
     for g in GRANS:
-        for masked in (False, True):
-            o = latest("*_baselines_MeanSentLen_dev-val_%s%s.json" % (g, "_masked" if masked else ""))
-            if o:
-                summary.setdefault(g, {}).setdefault("MeanSentLen", {})["masked" if masked else "unmasked"] = {
-                    k: o["metrics"][k] for k in ("n", "accuracy", "macro_f1", "roc_auc")}
-    L = ["# Hybrid models on dev-val\n",
-         "All models fitted on **dev-train** (dev sessions before 2002-03-01) and evaluated on **dev-val** "
-         "(sessions 2002-03-01 .. 2004-05-05, balanced files; see hybrid/SPLIT.md). The pure engine and "
-         "MeanSentLen are scored on exactly the same records. `masked` = topic tokens replaced by XTOPIC "
-         "before scoring (evals/topicmask.py); models were always fitted on unmasked dev-train text. "
-         "`unseen spk` = AUC on dev-val units none of whose speakers occur in dev-train "
-         "(sent n=2139, 100 n=256; too few at 500). Numbers are acc / macro-F1 / AUC.\n"]
-    eng = summary.get("500", {}).get("engine_raw", {})
-    if eng:
-        L.append("Engine: `%s`, tsw source hash `%s`.\n" % (eng.get("engine"), eng.get("tsw_hash")))
-    for g in GRANS:
-        n = summary.get(g, {}).get("engine_raw", {}).get("unmasked", {}).get("n")
+        rows = by.get(g, {})
+        n = next((o["metrics"]["n"] for r in rows.values() for o in r.values()), None)
         L += ["\n## gran = %s (n = %s)\n" % (g, n),
-              "| model | what | unmasked acc / F1 / AUC | masked acc / F1 / AUC | unseen spk AUC |",
+              "| model | what | unmasked acc / F1 / AUC | masked acc / F1 / AUC | trn CV AUC |",
               "|---|---|---|---|---:|"]
         for k, desc in ORDER:
-            r = summary.get(g, {}).get(k)
+            r = rows.get(k)
             if not r:
                 continue
-            u, m = r.get("unmasked", {}), r.get("masked", {})
-            us = r.get("unseen_speaker", {}).get("roc_auc")
-            f = lambda d: "%.3f / %.3f / **%.3f**" % (d["accuracy"], d["macro_f1"], d["roc_auc"]) if d else "-"
-            L.append("| `%s` | %s | %s | %s | %s |" % (k, desc, f(u), f(m),
-                                                      "-" if us is None or us != us else "%.3f" % us))
+            f = lambda o: ("%.3f / %.3f / **%.3f**" % (o["metrics"]["accuracy"], o["metrics"]["macro_f1"],
+                                                       o["metrics"]["roc_auc"])) if o else "-"
+            t = training.get(g, {})
+            cv = (t.get(k) or t.get("phase_b", {}).get(k) or {}).get("cv_auc_trn") or \
+                (t.get("phase_b", {}).get(k) or {}).get("cv_auc")
+            L.append("| `%s` | %s | %s | %s | %s |" % (k, desc, f(r.get(False)), f(r.get(True)),
+                                                      "%.3f" % cv if cv else "-"))
+    eng = [o for (c, _, _), o in res.items() if c == "tsw.engine:Default"]
+    if eng:
+        L.append("\nEngine scored at commit `%s`." % (eng[0].get("git_commit") or "?")[:8])
     open(os.path.join(R, "METRICS.md"), "w").write("\n".join(L) + "\n")
 
 
 def univariate(g):
     d = cache.load(g)
-    X = F.transform(d["C"].astype(np.float64), np)
-    tr = ~d["is_val"]
-    Xtr, y = X[tr], d["labels"][tr].astype(int)
+    Xtr = F.transform(d["C"].astype(np.float64), np)
+    y = d["labels"].astype(int)
+    tr = np.ones(len(y), bool)
     out = {}
     ci = {c: i for i, c in enumerate(F.COUNT_NAMES)}
     for j, n in enumerate(F.feature_names()):
@@ -101,11 +124,11 @@ def univariate(g):
 
 
 def coef_md(uni):
-    L = ["# What the expert-feature LR learned (`lr_expert`, fitted on dev-train)\n",
+    L = ["# What the expert-feature LR learned (`lr_expert`, fitted on all of trn)\n",
          "Per granularity, the 25 features with the largest standardised coefficient (effect of +1 SD of "
          "the feature on the log-odds of *translated*). `lit` = predicted direction in docs/literature.md "
          "(T↑ more frequent in translations, T↓ less, ? = calibrate); `data` = direction of the class means "
-         "on dev-train, with the feature's AUC alone (> .5 = higher in T); `LR` = sign of the coefficient "
+         "on trn, with the feature's AUC alone (> .5 = higher in T); `LR` = sign of the coefficient "
          "given all other features. ✗ marks disagreement with the literature. LR signs of collinear "
          "features (e.g. a rate and its ratio) can differ from their univariate direction; trust `data` "
          "for the direction of a single cue, `LR` for its unique contribution.\n"]
@@ -129,13 +152,13 @@ def coef_md(uni):
 
 
 def litcheck_md(uni):
-    L = ["# Literature directions vs dev-train data\n",
+    L = ["# Literature directions vs trn data\n",
          "For every expert feature with a predicted direction in docs/literature.md: the feature's AUC "
-         "alone on dev-train at 100- and 500-token granularity (> .5 = higher in translations), the class "
+         "alone on trn at 100- and 500-token granularity (> .5 = higher in translations), the class "
          "means at 500 tokens and the T/O ratio of the class means (rare cues have AUC ≈ .5 because most "
          "units have zero hits, so the ratio matters for them). A granularity *agrees with T↑* if AUC ≥ .53 "
          "or T/O ≥ 1.25 (and conversely AUC ≤ .47 or T/O ≤ 0.8 for T↓); the ratio only counts for items with "
-         "≥ 30 hits in dev-train at that granularity (`hits` column, 500). **Contradicted** = the data points "
+         "≥ 30 hits in trn at that granularity (`hits` column, 500). **Contradicted** = the data points "
          "the other way at both 100 and 500; **confirmed** = the predicted way at both; otherwise "
          "weak/mixed. Ratios (`r_*`) are the share of the T-leaning variant.\n",
          "| feature | meaning | lit id | lit | AUC 100 | AUC 500 | mean O (500) | mean T (500) | T/O (500) | hits | verdict |",
@@ -151,7 +174,7 @@ def litcheck_md(uni):
 
         def says(g):  # +1 data says T-up, -1 T-down, 0 unclear
             a, r = uni[g][n]["auc"], ratio(g)
-            ok = uni[g][n]["hits"] >= 30  # ratio only for items with enough dev-train hits
+            ok = uni[g][n]["hits"] >= 30  # ratio only for items with enough trn hits
             up, down = a >= .53 or (ok and r >= 1.25), a <= .47 or (ok and r <= 0.8)
             return 0 if up == down else (1 if up else -1)
         s1, s5 = says("100"), says("500")
@@ -175,24 +198,23 @@ def litcheck_md(uni):
 
 def tree_md():
     L = ["# Decision-tree rules over the expert features (candidate rules for the expert system)\n",
-         "Shallow trees (`tree_d3`, `tree_d4`) fitted on dev-train over the literature features "
+         "Shallow trees (`tree_d3`, `tree_d4`) fitted on trn over the literature features "
          "(hybrid/features.py), un-scaled, so thresholds are in natural units: `rate_x` = hits per 1000 "
          "words, `share_x` = share of sentences, `r_x` = share of the T-leaning variant among the choices "
          "(smoothed: (k_T+.5)/(k_T+k_O+1)). Leaves are listed by how far they move the prior, weighted by "
-         "size. P(trans) is the dev-train leaf purity (prior ≈ .47).\n"]
+         "size. P(trans) is the trn leaf purity (prior = .5).\n"]
     for g in GRANS:
         for mn in ("tree_d4",):
             m = json.load(open(os.path.join(T.MODEL_DIR, "%s.%s.json" % (mn, g))))
             L.append("\n## %s, gran = %s\n" % (mn, g))
-            for conds, p, n in T.tree_rules(m, m["features"], 0.47):
+            for conds, p, n in T.tree_rules(m, m["features"], 0.5):
                 txt = " AND ".join("%s %s %.3g" % c for c in conds)
                 L.append("- IF %s THEN P(trans) = %.2f (n = %d)" % (txt, p, n))
     open(os.path.join(R, "tree_rules.md"), "w").write("\n".join(L) + "\n")
 
 
 def main():
-    summary = json.load(open(os.path.join(R, "metrics.json")))
-    metrics_md(summary)
+    metrics_md(T.load_summary())
     uni = {g: univariate(g) for g in GRANS}
     coef_md(uni)
     litcheck_md(uni)

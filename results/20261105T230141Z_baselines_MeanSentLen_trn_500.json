@@ -1,0 +1,53 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "baselines:MeanSentLen",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "baselines:MeanSentLen",
+ "data_file": "trn.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 0.34,
+ "git_branch": "main",
+ "git_commit": "80d27ff3fef212069cbb24bad177af5cf9e81bff",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.7216532553035845,
+  "confusion": {
+   "fn": 434,
+   "fp": 327,
+   "tn": 1040,
+   "tp": 933
+  },
+  "macro_f1": 0.7212262606911386,
+  "n": 2734,
+  "n_orig": 1367,
+  "n_trans": 1367,
+  "pred_trans_rate": 0.46086320409656184,
+  "roc_auc": 0.7878691959978359
+ },
+ "rules": {
+  "mean_sent_len": {
+   "auc": 0.7878691959978359,
+   "fire_orig": 0.9978054133138259,
+   "fire_trans": 0.9963423555230432,
+   "log_odds": -0.45345193735405154,
+   "mean_orig": -0.15477180209912517,
+   "mean_trans": 0.19076390764194873,
+   "n_fire": 2726,
+   "sign_acc": 0.7226705796038151
+  }
+ },
+ "split": "trn",
+ "timestamp": "20261105T230141Z",
+ "worktree": "."
+}
