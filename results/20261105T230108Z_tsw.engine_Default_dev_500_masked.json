@@ -1,0 +1,193 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Default",
+  "--split",
+  "dev",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "dev.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 10.26,
+ "git_branch": "feat/register",
+ "git_commit": "48051092aa205772f2750094360dbe52cd0b168d",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.8752743233357717,
+  "confusion": {
+   "fn": 99,
+   "fp": 242,
+   "tn": 1125,
+   "tp": 1268
+  },
+  "macro_f1": 0.8749321700863675,
+  "n": 2734,
+  "n_orig": 1367,
+  "n_trans": 1367,
+  "pred_trans_rate": 0.5523043160204828,
+  "roc_auc": 0.9465999960400046
+ },
+ "rules": {
+  "cap:register": {
+   "auc": 0.4217914270378859,
+   "fire_orig": 0.1185076810534016,
+   "fire_trans": 0.04462326261887344,
+   "log_odds": -1.0520982142967612,
+   "mean_orig": 0.16221416763438504,
+   "mean_trans": -0.032654963128414934,
+   "n_fire": 223,
+   "sign_acc": 0.004484304932735426
+  },
+  "register.av_rate": {
+   "auc": 0.7003035283024623,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.21955423268418706,
+   "mean_trans": 0.18163127090216,
+   "n_fire": 2734,
+   "sign_acc": 0.6499634235552304
+  },
+  "register.aven_vs_ocksa": {
+   "auc": 0.6103950416575471,
+   "fire_orig": 0.9568397951719093,
+   "fire_trans": 0.8229700073152889,
+   "log_odds": -1.5556794594493675,
+   "mean_orig": -0.07913676890918535,
+   "mean_trans": 0.08484258085095968,
+   "n_fire": 2433,
+   "sign_acc": 0.5696670776818742
+  },
+  "register.bland_annat": {
+   "auc": 0.6274195438620338,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.2245553657644477,
+   "mean_trans": 0.16144142326261868,
+   "n_fire": 2734,
+   "sign_acc": 0.6141185076810534
+  },
+  "register.bra": {
+   "auc": 0.6405846558737168,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.16121123994703496,
+   "mean_trans": 0.2069563772188459,
+   "n_fire": 2734,
+   "sign_acc": 0.6247256766642283
+  },
+  "register.dem_har_rate": {
+   "auc": 0.5675272878472555,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.1067752868338636,
+   "mean_trans": 0.05127985348426845,
+   "n_fire": 2734,
+   "sign_acc": 0.5797366495976591
+  },
+  "register.kommer_att_vs_ska": {
+   "auc": 0.8040329343191939,
+   "fire_orig": 0.9692757863935626,
+   "fire_trans": 0.93050475493782,
+   "log_odds": -0.8504284488607161,
+   "mean_orig": -0.9522542099025649,
+   "mean_trans": 0.7831063583538201,
+   "n_fire": 2597,
+   "sign_acc": 0.7331536388140162
+  },
+  "register.samt": {
+   "auc": 0.6002199938031422,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.09853785706074311,
+   "mean_trans": 0.15308916511313753,
+   "n_fire": 2734,
+   "sign_acc": 0.5870519385515728
+  },
+  "register.sjalvklart": {
+   "auc": 0.57517543047559,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0894923920994879,
+   "mean_trans": 0.09309539429407467,
+   "n_fire": 2734,
+   "sign_acc": 0.5559619604974396
+  },
+  "register.skulle_vilja_vs_vill": {
+   "auc": 0.6585397570168177,
+   "fire_orig": 0.7578639356254572,
+   "fire_trans": 0.7190929041697147,
+   "log_odds": -0.20080327336650206,
+   "mean_orig": -0.2468852610106467,
+   "mean_trans": 0.20946180247892246,
+   "n_fire": 2019,
+   "sign_acc": 0.6508172362555721
+  },
+  "register.tycker_vs_anser": {
+   "auc": 0.6454680259797109,
+   "fire_orig": 0.6305779078273592,
+   "fire_trans": 0.4381858083394294,
+   "log_odds": -0.7826316989560702,
+   "mean_orig": -0.266699077512787,
+   "mean_trans": 0.23035903075346437,
+   "n_fire": 1461,
+   "sign_acc": 0.6851471594798083
+  },
+  "register.valdigt_vs_mycket": {
+   "auc": 0.6295731927570613,
+   "fire_orig": 0.5698610095098756,
+   "fire_trans": 0.5369422092172641,
+   "log_odds": -0.13314576594476157,
+   "mean_orig": -0.11831997088477915,
+   "mean_trans": 0.2452546082393838,
+   "n_fire": 1513,
+   "sign_acc": 0.6576338400528751
+  },
+  "starter.calques": {
+   "auc": 0.5657645547225889,
+   "fire_orig": 0.051207022677395755,
+   "fire_trans": 0.18141916605705927,
+   "log_odds": 1.407387314719695,
+   "mean_orig": 0.07037307973664951,
+   "mean_trans": 0.2795171909290427,
+   "n_fire": 318,
+   "sign_acc": 0.779874213836478
+  },
+  "starter.modal_particles": {
+   "auc": 0.6670219068020414,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.4655222225043282,
+   "mean_trans": 0.3594218379180279,
+   "n_fire": 2734,
+   "sign_acc": 0.6521580102414045
+  },
+  "starter.sent_len": {
+   "auc": 0.7804078153186539,
+   "fire_orig": 0.9956108266276518,
+   "fire_trans": 0.9978054133138259,
+   "log_odds": 0.6212402364408023,
+   "mean_orig": -0.3875380122969408,
+   "mean_trans": 0.5673868095062481,
+   "n_fire": 2725,
+   "sign_acc": 0.7111926605504587
+  }
+ },
+ "split": "dev",
+ "timestamp": "20261105T230108Z",
+ "worktree": "worktrees/register"
+}

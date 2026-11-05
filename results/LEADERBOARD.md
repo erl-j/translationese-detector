@@ -52,3 +52,15 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225113Z | feat/register | 9033fde8+dirty | `tsw.engine:Families(only="register")` | dev | 100 | bal | masked | 14170 | 0.7020 | 0.7017 | 0.7713 |
 | 20261105T225120Z | feat/register | 9033fde8+dirty | `tsw.engine:Families(only="register")` | dev | 500 | bal | - | 2734 | 0.8376 | 0.8376 | 0.9192 |
 | 20261105T225128Z | feat/register | 9033fde8+dirty | `tsw.engine:Families(only="register")` | dev | 500 | bal | masked | 2734 | 0.8376 | 0.8376 | 0.9193 |
+| 20261105T230011Z | feat/register | 48051092 | `tsw.engine:Default` | dev | sent | bal | - | 87904 | 0.6040 | 0.6035 | 0.6522 |
+| 20261105T230028Z | feat/register | 48051092+dirty | `tsw.engine:Default` | dev | sent | bal | masked | 87904 | 0.6039 | 0.6034 | 0.6521 |
+| 20261105T230038Z | feat/register | 48051092+dirty | `tsw.engine:Default` | dev | 100 | bal | - | 14170 | 0.7354 | 0.7349 | 0.8105 |
+| 20261105T230050Z | feat/register | 48051092+dirty | `tsw.engine:Default` | dev | 100 | bal | masked | 14170 | 0.7354 | 0.7348 | 0.8104 |
+| 20261105T230058Z | feat/register | 48051092+dirty | `tsw.engine:Default` | dev | 500 | bal | - | 2734 | 0.8756 | 0.8753 | 0.9467 |
+| 20261105T230108Z | feat/register | 48051092+dirty | `tsw.engine:Default` | dev | 500 | bal | masked | 2734 | 0.8753 | 0.8749 | 0.9466 |
+| 20261105T230124Z | feat/register | 48051092+dirty | `tsw.engine:Families(only="register")` | dev | sent | bal | - | 87904 | 0.5830 | 0.5679 | 0.6073 |
+| 20261105T230137Z | feat/register | 48051092+dirty | `tsw.engine:Families(only="register")` | dev | sent | bal | masked | 87904 | 0.5830 | 0.5679 | 0.6073 |
+| 20261105T230145Z | feat/register | 48051092+dirty | `tsw.engine:Families(only="register")` | dev | 100 | bal | - | 14170 | 0.7040 | 0.7037 | 0.7701 |
+| 20261105T230155Z | feat/register | 48051092+dirty | `tsw.engine:Families(only="register")` | dev | 100 | bal | masked | 14170 | 0.7040 | 0.7037 | 0.7701 |
+| 20261105T230201Z | feat/register | 48051092+dirty | `tsw.engine:Families(only="register")` | dev | 500 | bal | - | 2734 | 0.8376 | 0.8375 | 0.9185 |
+| 20261105T230209Z | feat/register | 48051092+dirty | `tsw.engine:Families(only="register")` | dev | 500 | bal | masked | 2734 | 0.8376 | 0.8375 | 0.9185 |
