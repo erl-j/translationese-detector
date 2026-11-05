@@ -6,7 +6,6 @@ import sys
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import devsplit  # noqa: E402
 import metrics  # noqa: E402
 import run  # noqa: E402
 import topicmask  # noqa: E402
@@ -95,54 +94,35 @@ class TestGuardAndMask(unittest.TestCase):
         self.assertNotEqual(c.score("x"), run.load_clf("baselines:Random(seed=8)").score("x"))
 
 
-class TestDevSplit(unittest.TestCase):
-    RECS = [{"id": "a", "date": "1997-01-14", "label": 0}, {"id": "b", "date": "2002-02-28", "label": 1},
-            {"id": "c", "date": "2002-03-01", "label": 0}, {"id": "d", "date": "2004-05-05", "label": 1},
-            {"id": "e", "date": "2002-02-28", "label": 0}, {"id": "f", "date": "2002-03-01", "label": 1}]
+class TestSplits(unittest.TestCase):
+    def _main(self, argv):
+        with contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(SystemExit) as cm:
+                run.main(argv)
+        return str(cm.exception.code)
 
-    def test_boundary_and_partition(self):
-        self.assertEqual(devsplit.VAL_START, "2002-03-01")
-        tr = devsplit.select(self.RECS, "dev-train")
-        va = devsplit.select(self.RECS, "dev-val")
-        self.assertEqual([r["id"] for r in tr], ["a", "b", "e"])
-        self.assertEqual([r["id"] for r in va], ["c", "d", "f"])
-        with self.assertRaises(ValueError):
-            devsplit.select(self.RECS, "test")
+    def test_dev_is_alias_of_trn(self):
+        self.assertEqual(run.canon_split("dev"), "trn")
+        self.assertEqual(run.canon_split("val"), "val")
+        self.assertTrue(run.data_path("/d", "dev", "500", True).endswith("/trn.500.bal.jsonl"))
+        self.assertTrue(run.data_path("/d", "val", "sent", False).endswith("/val.sent.all.jsonl"))
 
-    def test_deterministic_order_independent(self):
-        once = [devsplit.subset_of(r) for r in self.RECS]
-        rev = [devsplit.subset_of(r) for r in reversed(self.RECS)][::-1]
-        self.assertEqual(once, rev)
-        self.assertEqual(devsplit.select(self.RECS, "dev-val"), devsplit.select(list(self.RECS), "dev-val"))
+    def test_val_is_metrics_only(self):
+        run.check_test_guard("val", False)  # metrics on val are fine
+        with self.assertRaises(SystemExit):
+            run.check_test_guard("val", False, show_errors_n=3)
+        with self.assertRaises(SystemExit):
+            run.check_test_guard("val", True, show_errors_n=1)  # --i-mean-it does not unlock it
+        self.assertIn("REFUSING", self._main(["--clf", "baselines:Constant", "--split", "val", "--gran", "500",
+                                              "--show-errors", "2", "--no-save"]))
 
-    def test_sessions_not_split(self):
-        side = {}
-        for r in self.RECS * 3:
-            side.setdefault(r["date"], set()).add(devsplit.subset_of(r))
-        self.assertTrue(all(len(v) == 1 for v in side.values()))
+    def test_trn_allows_errors(self):
+        run.check_test_guard("trn", False, show_errors_n=5)
+        run.check_test_guard("dev", False, show_errors_n=5)
 
-    def test_sessions_not_split_real_data(self):
-        try:
-            ddir = run.data_dir()
-        except SystemExit:
-            self.skipTest("no data/processed")
-        path = os.path.join(ddir, "dev.500.bal.jsonl")
-        if not os.path.exists(path):
-            self.skipTest("no dev.500.bal.jsonl")
-        recs = run.load_records(path)
-        tr, va = devsplit.select(recs, "dev-train"), devsplit.select(recs, "dev-val")
-        self.assertEqual(len(tr) + len(va), len(recs))
-        dtr, dva = {r["date"] for r in tr}, {r["date"] for r in va}
-        self.assertFalse(dtr & dva)                    # no session date on both sides
-        self.assertLess(max(dtr), devsplit.VAL_START)
-        self.assertGreaterEqual(min(dva), devsplit.VAL_START)
-        self.assertEqual([r["id"] for r in run.load_records(path, subset="dev-val")], [r["id"] for r in va])
-
-    def test_harness_paths(self):
-        self.assertEqual(run.file_split("dev-val"), "dev")
-        self.assertEqual(run.file_split("test"), "test")
-        self.assertTrue(run.data_path("/d", "dev-train", "500", True).endswith("/dev.500.bal.jsonl"))
-        run.check_test_guard("dev-val", False)  # fine
+    def test_legacy_split_names_not_runnable(self):
+        with self.assertRaises(SystemExit):
+            run.check_test_guard("dev-val", False)
 
 
 if __name__ == "__main__":
