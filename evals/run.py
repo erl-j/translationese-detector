@@ -2,7 +2,7 @@
 """Evaluate a rule-based classifier on the Europarl translationese splits.
 
 Examples
-    python3 evals/run.py --clf baselines:Constant --split dev --gran 100
+    python3 evals/run.py --clf baselines:Constant --split dev-val --gran 100
     python3 evals/run.py --clf "baselines:Random(seed=3)" --split dev --gran sent --mask-topic
     python3 evals/run.py --clf baselines:MeanSentLen --gran 500 --show-errors 5
     python3 evals/run.py --clf tsw.engine:Expert --split test --gran 500 --i-mean-it
@@ -42,6 +42,7 @@ for p in (ROOT, HERE):
     if p not in sys.path:
         sys.path.insert(0, p)
 
+import devsplit  # noqa: E402
 import metrics  # noqa: E402
 import topicmask  # noqa: E402
 
@@ -142,13 +143,20 @@ def scorer(clf):
 # data
 # --------------------------------------------------------------------------
 
+def file_split(split):
+    """Pseudo-splits dev-train / dev-val (evals/devsplit.py) live in the dev files."""
+    return "dev" if split in devsplit.SUBSETS else split
+
+
 def data_path(ddir, split, gran, balanced):
-    return os.path.join(ddir, "%s.%s.%s.jsonl" % (split, gran, "bal" if balanced else "all"))
+    return os.path.join(ddir, "%s.%s.%s.jsonl" % (file_split(split), gran, "bal" if balanced else "all"))
 
 
-def load_records(path, limit=None, seed=0):
+def load_records(path, limit=None, seed=0, subset=None):
     with open(path, encoding="utf-8") as f:
         recs = [json.loads(l) for l in f]
+    if subset:
+        recs = devsplit.select(recs, subset)
     if limit and limit < len(recs):
         # stratified random subset, deterministic, kept in corpus order
         rng = random.Random("limit|%d" % seed)
@@ -242,7 +250,8 @@ def run_one(clf, clf_spec, split, gran, balanced=True, mask_topic=False, limit=N
     path = data_path(ddir, split, gran, balanced)
     if not os.path.exists(path):
         sys.exit("missing %s; build it with: python3 -I data/build.py" % path)
-    recs = load_records(path, limit, seed)
+    subset = split if split in devsplit.SUBSETS else None
+    recs = load_records(path, limit, seed, subset=subset)
     res = evaluate(clf, recs, mask_topic)
     ref = evaluate(clf, recs, False) if (mask_topic and compare_unmasked) else None
     gi = git_info()
@@ -253,6 +262,8 @@ def run_one(clf, clf_spec, split, gran, balanced=True, mask_topic=False, limit=N
            "data_file": os.path.basename(path), "data_sha256": sha256_file(path),
            "metrics": res["metrics"], "rules": res["rules"],
            "elapsed_sec": None, "argv": argv}
+    if subset:
+        out["subset_rule"] = devsplit.describe(subset)
     if ref is not None:
         out["unmasked_metrics"] = ref["metrics"]
         out["topic_auc_drop"] = ref["metrics"]["roc_auc"] - res["metrics"]["roc_auc"]
@@ -313,7 +324,8 @@ def check_test_guard(split, i_mean_it, show_errors_n=0):
 def build_parser():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--clf", required=True, help='e.g. baselines:Constant or "baselines:Random(seed=3)"')
-    ap.add_argument("--split", default="dev", choices=["dev", "test"])
+    ap.add_argument("--split", default="dev", choices=["dev", "test"] + list(devsplit.SUBSETS),
+                    help="dev | test | dev-train / dev-val (date halves of dev, see evals/devsplit.py)")
     ap.add_argument("--gran", default="100", help="sent | 100 | 500")
     ap.add_argument("--unbalanced", action="store_true", help="use *.all.jsonl instead of the balanced *.bal.jsonl")
     ap.add_argument("--mask-topic", action="store_true",
@@ -321,7 +333,8 @@ def build_parser():
                          "metrics for comparison")
     ap.add_argument("--limit", type=int, default=None, help="evaluate a stratified random subset of N examples")
     ap.add_argument("--seed", type=int, default=0, help="seed for --limit sampling")
-    ap.add_argument("--show-errors", type=int, default=0, metavar="N", help="print N misclassified examples (dev only)")
+    ap.add_argument("--show-errors", type=int, default=0, metavar="N",
+                    help="print N misclassified examples (dev / dev-train / dev-val only)")
     ap.add_argument("--rules-top", type=int, default=40, help="rows in the per-rule table (0 = all)")
     ap.add_argument("--no-save", action="store_true", help="do not write results/ or LEADERBOARD.md")
     ap.add_argument("--data-dir", default=None, help="override data/processed location")
