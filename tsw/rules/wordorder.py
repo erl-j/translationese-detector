@@ -564,30 +564,44 @@ def _openings_cached(doc):
     return o
 
 
-def _opening_spans(doc):
-    out = []
-    for i, o in _openings_cached(doc):
-        c = _OPEN_ALIAS.get(o.cat, o.cat)
-        llr = OPENING_LLR.get(c)
-        if llr is None:
-            continue
-        a, b = _span(doc, i, o.a, o.b)
-        out.append((a, b, llr, _OPEN_LABEL[c]))
-    return out
+# Theme = subject (incl. det-clefts, whose prefield is the expletive subject)
+# vs Theme = fronted non-subject. Two rules partitioning the same per-sentence
+# LLRs (their sum is the full multinomial), so each side can be inspected and
+# ablated on its own.
+SUBJECT_THEME = ("S_PRON", "S_NP", "S_DET", "S_DEM", "CLEFT", "PSEUDO_CLEFT")
+FRONTED_THEME = ("INV_ADV", "INV_CONJ", "INV_PP", "INV_SUB", "INV_NP", "INV_OBJ")
 
 
-def _opening_llr(doc):
-    return sum(s for _, _, s, _ in _opening_spans(doc))
+def _make_opening_fns(cats):
+    cats = frozenset(cats)
+
+    def spans(doc):
+        out = []
+        for i, o in _openings_cached(doc):
+            c = _OPEN_ALIAS.get(o.cat, o.cat)
+            if c not in cats:
+                continue
+            a, b = _span(doc, i, o.a, o.b)
+            out.append((a, b, OPENING_LLR[c], _OPEN_LABEL[c]))
+        return out
+
+    def llr(doc):
+        return sum(s for _, _, s, _ in spans(doc))
+
+    def describe(doc, c):
+        cnt = {}
+        for _, o in _openings_cached(doc):
+            k = _OPEN_ALIAS.get(o.cat, o.cat)
+            if k in cats:
+                cnt[k] = cnt.get(k, 0) + 1
+        top = ", ".join("%s %d" % (_OPEN_LABEL[k], v) for k, v in sorted(cnt.items(), key=lambda kv: -kv[1])[:4])
+        return "sentence openings (%s): %+.2f toward %s" % (top, c, "TRANSLATED" if c > 0 else "ORIGINAL")
+
+    return llr, spans, describe
 
 
-def _opening_describe(doc, c):
-    cnt = {}
-    for i, o in _openings_cached(doc):
-        k = _OPEN_ALIAS.get(o.cat, o.cat)
-        if k in OPENING_LLR:
-            cnt[k] = cnt.get(k, 0) + 1
-    top = ", ".join("%s %d" % (_OPEN_LABEL[k], v) for k, v in sorted(cnt.items(), key=lambda kv: -kv[1])[:4])
-    return "sentence openings (%s): %+.2f toward %s" % (top, c, "TRANSLATED" if c > 0 else "ORIGINAL")
+_subj_llr, _subj_spans, _subj_describe = _make_opening_fns(SUBJECT_THEME)
+_front_llr, _front_spans, _front_describe = _make_opening_fns(FRONTED_THEME)
 
 
 # ---------------------------------------------------------------------------
@@ -628,28 +642,38 @@ def _v2_llr(doc):
 
 RULES = [
     PredicateRule(
-        "wordorder.opening_type",
-        description="sentence opening: topicalised + inverted vs subject-first (V2 prefield choice)",
-        fn=_opening_llr, spans_fn=_opening_spans, describe_fn=_opening_describe,
+        "wordorder.fronted_theme",
+        description="topicalised non-subject in the prefield (V2 inversion): which kind",
+        fn=_front_llr, spans_fn=_front_spans, describe_fn=_front_describe,
         direction="O",
         rationale="Hasselgård (2004): V2 languages put non-subjects in the prefield far more often "
-                  "than English, and translators keep the English Theme. Each non-vocative, non-question "
-                  "sentence whose opening the closed-list heuristic can classify contributes "
-                  "ln(p_T/p_O) of its opening type (a multi-way 'which variant was chosen' rule; "
-                  "unclassifiable openings contribute nothing, so it is robust to length). O side: "
-                  "topicalised deictic/causal adverbs (därför, nu, då, samtidigt, här, däremot: "
-                  "-0.96), fronted object det/detta (-1.6, B3), fronted NPs, clefts (B8). T side: "
-                  "subject pronoun first (B1), 'Detta är' (EN 'This is'), pseudo-clefts (EN 'What we "
-                  "need is'), and inversion after structuring conjuncts that mirror a sentence-initial "
-                  "English adverbial ('Firstly,' 'Finally,' 'However,'), and fronted adverbial "
-                  "clauses ('If ..., we ...'), both forced/allowed by English order. Two "
-                  "literature directions are refined: fronting per se is not O (fronted clauses "
-                  "and conjuncts are T), and resumptive 'så' (B4) is not O on dev-train.",
-        source="literature B1, B2, B3, B4, B8; Hasselgård (2004); Bohnacker & Rosén (2008); "
-               "[exp] for the INV_CONJ/INV_SUB/PSEUDO_CLEFT split",
-        # dev-train dispersion: text-level sd of this LLR is 1.12x (500 words) and
-        # 1.05x (100 words) the independent-sentence prediction -> weight 0.8
+                  "than English, and translators keep the English Theme. Each sentence whose opening "
+                  "the closed-list heuristic classifies as a fronted non-subject + finite verb "
+                  "contributes ln(p_T/p_O) of its type (one half of a multinomial 'which opening was "
+                  "chosen' model over classifiable openings; see OPENING_P). O: topicalised "
+                  "deictic/causal adverbs (därför, nu, då, samtidigt, här, däremot: -0.96), fronted "
+                  "object det/detta (-1.6, B3), fronted NPs, PPs (weak). T: inversion after structuring "
+                  "conjuncts that mirror a sentence-initial English adverbial ('Firstly,' 'Finally,' "
+                  "'However,'), and fronted adverbial clauses ('If ..., we ...'): fronting is not O "
+                  "per se, only Swedish-initiated topicalisation is. Resumptive 'så' (B4) is not O on "
+                  "dev-train (merged into fronted clauses).",
+        source="literature B1, B3, B4; Hasselgård (2004); Bohnacker & Rosén (2008); "
+               "[exp] for the INV_CONJ / INV_SUB split",
+        # dev-train dispersion of the full opening LLR: text-level sd is 1.12x (500
+        # words) / 1.05x (100 words) the independent-sentence prediction -> weight 0.8
         weight=0.8, cap=3.0),
+    PredicateRule(
+        "wordorder.subject_theme",
+        description="subject in the prefield: pronoun / NP / det / demonstrative / cleft",
+        fn=_subj_llr, spans_fn=_subj_spans, describe_fn=_subj_describe,
+        direction="T",
+        rationale="Other half of the opening model: subject-first declaratives (B1, T: English "
+                  "Theme kept), 'Detta är' (EN 'This is'), pseudo-clefts 'Vad vi behöver är' (EN "
+                  "'What we need is') -> T; expletive 'Det är/finns' and clefts 'Det är X som' (B2, "
+                  "B8: Swedish fills the prefield with light 'det' and focuses with clefts) -> O. "
+                  "Small per-sentence ratios on frequent categories.",
+        source="literature B1, B2, B8; Hasselgård (2004); [exp] for S_DEM / PSEUDO_CLEFT",
+        weight=0.8, cap=2.0),
     PredicateRule(
         "wordorder.v2_violation",
         description="English word order leaking into Swedish (V3 / no inversion / embedded negation)",
