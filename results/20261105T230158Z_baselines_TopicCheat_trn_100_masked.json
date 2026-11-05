@@ -1,0 +1,42 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "baselines:TopicCheat",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "baselines:TopicCheat",
+ "data_file": "trn.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": 3.64,
+ "git_branch": "main",
+ "git_commit": "80d27ff3fef212069cbb24bad177af5cf9e81bff",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5,
+  "confusion": {
+   "fn": 7085,
+   "fp": 0,
+   "tn": 7085,
+   "tp": 0
+  },
+  "macro_f1": 0.3333333333333333,
+  "n": 14170,
+  "n_orig": 7085,
+  "n_trans": 7085,
+  "pred_trans_rate": 0.0,
+  "roc_auc": 0.5
+ },
+ "rules": {},
+ "split": "trn",
+ "timestamp": "20261105T230158Z",
+ "worktree": "."
+}
