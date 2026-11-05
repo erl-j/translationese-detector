@@ -137,5 +137,6 @@ RULES = [
                   "på plats). 'i termer av', 'på basis av', 'i ljuset av', 'implementera' were checked "
                   "and show no T lean on EP dev, so they are not included.",
         source="literature A12, A16 / §4.6 (c19, c20, c09, c25)",
-        cap=3.0),
+        # superseded by the calques family (tsw/rules/calques.py), which absorbs these entries
+        enabled=False, cap=3.0),
 ]
