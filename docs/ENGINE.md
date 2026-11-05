@@ -53,9 +53,12 @@ Harness constructors (keyword literals only, parsed by `evals/run.py`):
 | `tsw/rules/base.py` | rule types `HitRule`, `RateRule`, `ChoiceRule`, `StatRule`, `PredicateRule`; `Matcher`; `words_rx`; `sentence_lengths` |
 | `tsw/rules/__init__.py` | `discover()`: imports every `tsw/rules/*.py` except `base` and `_*` |
 | `tsw/rules/<family>.py` | one module per family: `RULES = [...]`, optional `FAMILY`, `FAMILY_CAP` |
+| | families: `core_starter` (starter), `stats`, `connpunct`, `register`, `particles`, `wordorder`, `calques` |
 | `tsw/engine.py` | `Engine`, `Default`, `Families` |
 | `tsw/__main__.py` | CLI |
 | `tsw/tools/rates.py` | calibration helper (trn only; refuses val and test) |
+| `tsw/tools/collocations.py` | n-gram discovery (T vs O log-ratio, G², speakers, topic flags; trn only) |
+| `evals/integration/` | per-text rule contributions, within-class correlations, cap binding, family ablation on trn ([INTEGRATION.md](INTEGRATION.md)) |
 | `tsw/tests/` | unit tests |
 
 ## Writing a rule family
@@ -335,6 +338,32 @@ Lessons from the starter run (per-rule table, dev 500 masked):
   default lean to T (without the StatRule, 75% of dev texts are predicted T).
   Judge rules by AUC and sign accuracy; accuracy becomes meaningful once both
   directions have presence evidence.
+
+## Results: integrated engine (balanced; commit ef3cb36, 2026-11-06)
+
+Six families merged on top of the starter (49 enabled rules out of 60
+defined; double counting resolved by hand, see [INTEGRATION.md](INTEGRATION.md)).
+One `run_all` on trn and val; val numbers are aggregate metrics only. acc / AUC:
+
+| system | split | sent | sent masked | 100 | 100 masked | 500 | 500 masked |
+|---|---|---|---|---|---|---|---|
+| **Default (integrated)** | trn | .653 / .723 | .653 / .723 | .822 / .907 | .822 / .907 | .945 / .990 | .945 / .990 |
+| **Default (integrated)** | val | .612 / .667 | .613 / .666 | .747 / .833 | .747 / .833 | .920 / .977 | .920 / .977 |
+| starter Default (main 80d27ff) | trn | .560 / .587 | .560 / .587 | .649 / .711 | .649 / .710 | .771 / .847 | .771 / .847 |
+| starter Default (main 80d27ff) | val | .560 / .577 | .560 / .577 | .611 / .640 | .611 / .640 | .700 / .791 | .700 / .790 |
+| `baselines:MeanSentLen` | trn | .561 / .583 | .561 / .582 | .629 / .677 | .629 / .677 | .722 / .788 | .721 / .787 |
+| `baselines:MeanSentLen` | val | .564 / .584 | .563 / .583 | .633 / .671 | .633 / .671 | .709 / .793 | .708 / .792 |
+
+- Masking changes nothing (≤ .001): no family keys on topic words.
+- trn − val AUC gap (masked): sent .057, 100 .074, 500 .013. The 500-token
+  gap is below the .03 alarm level. The 100-token gap is the same size as the
+  starter's (.070), so it reflects drift into the 2004–06 term (fewer clues per
+  short text, drifting O rates) rather than a new overfit. Both are worth
+  watching on test.
+- Family contributions (leave-one-family-out on trn) and cap behaviour:
+  [INTEGRATION.md](INTEGRATION.md). connpunct, register and particles carry
+  most of the marginal signal; stats adds ~nothing in the combined system.
+- A full `run_all` (12 conditions, trn + val) takes ~6.5 min on one CPU.
 
 ## Starter results (dev, balanced; commit bab4888)
 

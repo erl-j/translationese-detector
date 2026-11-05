@@ -1,0 +1,2048 @@
+{
+"register.av_rate|stats.av_other": [
+22732,
+22732,
+0,
+3470.7467723742034
+],
+"connpunct.additive_ocksa|register.aven_vs_ocksa": [
+6012,
+6012,
+0,
+801.0846309824321
+],
+"particles.generic_man|particles.ni_vs_man": [
+5268,
+5268,
+0,
+993.2460493058882
+],
+"particles.copular_det|wordorder.subject_theme": [
+5112,
+4924,
+188,
+624.6775541665943
+],
+"calques.skulle_vilja|register.skulle_vilja_vs_vill": [
+4758,
+4758,
+0,
+2138.4859730782346
+],
+"connpunct.initial_adverbial_comma|wordorder.fronted_theme": [
+4690,
+3449,
+1241,
+380.40448314174523
+],
+"register.av_rate|starter.sent_len": [
+4214,
+4214,
+0,
+643.3120160215633
+],
+"starter.sent_len|stats.av_other": [
+3713,
+3713,
+0,
+870.6168171046584
+],
+"calques.skulle_vilja|wordorder.subject_theme": [
+2855,
+534,
+2321,
+160.23078875291503
+],
+"register.skulle_vilja_vs_vill|wordorder.subject_theme": [
+2855,
+534,
+2321,
+160.13889038737534
+],
+"register.av_rate|stats.av_nominal": [
+2742,
+2742,
+0,
+418.61587030927063
+],
+"starter.sent_len|wordorder.subject_theme": [
+1868,
+1520,
+348,
+146.17435186740235
+],
+"register.kommer_att_vs_ska|wordorder.subject_theme": [
+1695,
+874,
+821,
+140.932600168148
+],
+"connpunct.initial_adverbial_comma|connpunct.native_connectives": [
+1669,
+1646,
+23,
+152.67330073295648
+],
+"connpunct.native_connectives|wordorder.fronted_theme": [
+1576,
+1521,
+55,
+790.7072783921782
+],
+"register.kommer_att_vs_ska|starter.sent_len": [
+1555,
+713,
+842,
+556.2032374780283
+],
+"register.tycker_vs_anser|wordorder.subject_theme": [
+1381,
+785,
+596,
+78.2687741630516
+],
+"connpunct.parenthetical_dash|starter.sent_len": [
+1048,
+1048,
+0,
+328.88612042741346
+],
+"particles.poss_1st|starter.sent_len": [
+1021,
+1021,
+0,
+263.6547853766473
+],
+"connpunct.initial_adverbial_comma|connpunct.initial_men": [
+954,
+25,
+929,
+90.3053208424837
+],
+"register.aven_vs_ocksa|starter.sent_len": [
+941,
+351,
+590,
+178.8451518722227
+],
+"particles.copular_det|wordorder.fronted_theme": [
+932,
+699,
+233,
+138.4332990443415
+],
+"particles.ni_vs_man|starter.sent_len": [
+845,
+196,
+649,
+225.6077060716296
+],
+"calques.skulle_vilja|wordorder.fronted_theme": [
+835,
+404,
+431,
+219.5536732382155
+],
+"register.skulle_vilja_vs_vill|wordorder.fronted_theme": [
+821,
+401,
+420,
+207.68161557585017
+],
+"particles.copular_det|starter.sent_len": [
+817,
+0,
+817,
+162.7250110786027
+],
+"particles.ni_vs_man|wordorder.fronted_theme": [
+747,
+415,
+332,
+159.07755046136455
+],
+"starter.sent_len|wordorder.fronted_theme": [
+738,
+351,
+387,
+174.28690935755492
+],
+"particles.ni_vs_man|wordorder.subject_theme": [
+664,
+181,
+483,
+37.37588187309883
+],
+"register.kommer_att_vs_ska|wordorder.fronted_theme": [
+657,
+336,
+321,
+214.69307331699832
+],
+"particles.generic_man|starter.sent_len": [
+649,
+0,
+649,
+122.43197800540513
+],
+"particles.generic_man|wordorder.fronted_theme": [
+641,
+351,
+290,
+96.11068007419838
+],
+"connpunct.clause_comma_omission|starter.sent_len": [
+620,
+76,
+544,
+81.45296179429111
+],
+"register.av_rate|wordorder.fronted_theme": [
+613,
+271,
+342,
+54.17093250814051
+],
+"connpunct.written_out_abbrev|particles.dvs": [
+605,
+517,
+88,
+187.5894961948852
+],
+"connpunct.additive_ocksa|starter.sent_len": [
+590,
+0,
+590,
+188.52095500932802
+],
+"particles.poss_1st|wordorder.subject_theme": [
+589,
+578,
+11,
+34.79374800754137
+],
+"connpunct.native_connectives|starter.sent_len": [
+573,
+0,
+573,
+201.87396694214925
+],
+"calques.lexicon|wordorder.subject_theme": [
+570,
+518,
+52,
+52.922104498784826
+],
+"stats.av_other|wordorder.fronted_theme": [
+552,
+238,
+314,
+68.93246126893108
+],
+"register.av_rate|wordorder.subject_theme": [
+544,
+487,
+57,
+35.875489326283024
+],
+"connpunct.written_out_abbrev|register.bland_annat": [
+510,
+237,
+273,
+172.493912029536
+],
+"starter.sent_len|stats.av_nominal": [
+501,
+501,
+0,
+178.00810696106117
+],
+"connpunct.initial_adverbial_comma|starter.sent_len": [
+492,
+46,
+446,
+55.1541583220262
+],
+"particles.generic_man|wordorder.subject_theme": [
+483,
+0,
+483,
+27.059203997701598
+],
+"calques.lexicon|starter.sent_len": [
+482,
+482,
+0,
+175.270661157025
+],
+"calques.skulle_vilja|starter.sent_len": [
+482,
+155,
+327,
+150.05847286862996
+],
+"connpunct.written_out_abbrev|starter.sent_len": [
+478,
+193,
+285,
+145.97412906978326
+],
+"register.skulle_vilja_vs_vill|starter.sent_len": [
+476,
+149,
+327,
+145.03026194584302
+],
+"stats.av_other|wordorder.subject_theme": [
+463,
+409,
+54,
+35.90977968169744
+],
+"connpunct.initial_adverbial_comma|register.aven_vs_ocksa": [
+462,
+50,
+412,
+39.413334646053165
+],
+"register.tycker_vs_anser|wordorder.fronted_theme": [
+423,
+261,
+162,
+201.18536656379706
+],
+"particles.poss_3rd|starter.sent_len": [
+405,
+405,
+0,
+147.91115702479328
+],
+"particles.poss_1st|wordorder.fronted_theme": [
+354,
+96,
+258,
+37.16363041436254
+],
+"connpunct.calque_connectives|connpunct.initial_adverbial_comma": [
+340,
+45,
+295,
+75.67465883918547
+],
+"particles.han_hon|starter.sent_len": [
+331,
+331,
+0,
+104.12557463248515
+],
+"calques.native_counterparts|connpunct.initial_adverbial_comma": [
+322,
+319,
+3,
+29.619907320921875
+],
+"register.tycker_vs_anser|starter.sent_len": [
+317,
+220,
+97,
+110.11363636363623
+],
+"register.valdigt_vs_mycket|starter.sent_len": [
+311,
+249,
+62,
+111.80704793217815
+],
+"calques.native_counterparts|wordorder.fronted_theme": [
+310,
+307,
+3,
+206.33676100898728
+],
+"particles.han_hon|wordorder.subject_theme": [
+298,
+296,
+2,
+17.11876635252644
+],
+"register.av_rate|stats.long_words": [
+289,
+260,
+29,
+44.127648360145606
+],
+"connpunct.calque_connectives|wordorder.fronted_theme": [
+288,
+188,
+100,
+80.49432831485565
+],
+"calques.native_counterparts|connpunct.native_connectives": [
+278,
+278,
+0,
+148.3807757400352
+],
+"particles.of_course|register.sjalvklart": [
+268,
+268,
+0,
+179.70192911559326
+],
+"connpunct.calque_connectives|starter.sent_len": [
+261,
+261,
+0,
+93.26652892561978
+],
+"connpunct.clause_comma_omission|particles.copular_det": [
+247,
+227,
+20,
+26.60729144963426
+],
+"stats.av_other|stats.long_words": [
+236,
+208,
+28,
+54.93854145013457
+],
+"register.samt|starter.sent_len": [
+215,
+0,
+215,
+80.5847107438017
+],
+"connpunct.som_drop|starter.sent_len": [
+213,
+86,
+127,
+58.72748281201296
+],
+"calques.pied_piped_relative|starter.sent_len": [
+183,
+183,
+0,
+68.59710743801651
+],
+"particles.of_course|wordorder.fronted_theme": [
+166,
+74,
+92,
+79.67985760008239
+],
+"connpunct.som_drop|particles.ni_vs_man": [
+165,
+90,
+75,
+41.236623980855875
+],
+"connpunct.initial_adverbial_comma|particles.of_course": [
+165,
+75,
+90,
+14.58165760503241
+],
+"register.bra|register.valdigt_vs_mycket": [
+165,
+0,
+165,
+74.96522303006333
+],
+"particles.da_anaphoric|wordorder.fronted_theme": [
+162,
+159,
+3,
+106.24911798743126
+],
+"connpunct.initial_adverbial_comma|particles.da_anaphoric": [
+157,
+157,
+0,
+13.390038500640976
+],
+"calques.lexicon|wordorder.fronted_theme": [
+155,
+52,
+103,
+33.007554065168236
+],
+"register.aven_vs_ocksa|wordorder.fronted_theme": [
+151,
+145,
+6,
+43.03905877264752
+],
+"connpunct.initial_adverbial_comma|wordorder.subject_theme": [
+145,
+0,
+145,
+8.003173092486366
+],
+"calques.forsoka_att|starter.sent_len": [
+136,
+29,
+107,
+32.794357596357536
+],
+"starter.sent_len|stats.long_words": [
+126,
+85,
+41,
+38.35345475128224
+],
+"connpunct.native_connectives|wordorder.subject_theme": [
+126,
+114,
+12,
+30.42804207658689
+],
+"calques.skulle_vilja|connpunct.clause_comma_omission": [
+119,
+89,
+30,
+15.145948980175117
+],
+"connpunct.clause_comma_omission|register.skulle_vilja_vs_vill": [
+119,
+89,
+30,
+15.16961923452782
+],
+"connpunct.som_drop|particles.generic_man": [
+119,
+72,
+47,
+22.449006752917402
+],
+"particles.of_course|starter.sent_len": [
+119,
+81,
+38,
+39.78770648442562
+],
+"connpunct.som_drop|particles.han_hon": [
+111,
+51,
+60,
+33.14817246882315
+],
+"connpunct.att_drop|register.tycker_vs_anser": [
+110,
+105,
+5,
+90.91722150570712
+],
+"register.dem_har_rate|starter.sent_len": [
+109,
+109,
+0,
+36.58719575023107
+],
+"particles.han_hon|wordorder.fronted_theme": [
+106,
+57,
+49,
+25.776504389405098
+],
+"connpunct.written_out_abbrev|wordorder.fronted_theme": [
+105,
+24,
+81,
+20.48132464282886
+],
+"calques.lexicon|connpunct.initial_adverbial_comma": [
+105,
+0,
+105,
+8.95469531223592
+],
+"particles.dvs|starter.sent_len": [
+104,
+0,
+104,
+36.892561983471076
+],
+"register.bra|starter.sent_len": [
+99,
+0,
+99,
+34.878099173553736
+],
+"starter.modal_particles|starter.sent_len": [
+99,
+0,
+99,
+33.98553719008264
+],
+"calques.skulle_vilja|connpunct.som_drop": [
+97,
+48,
+49,
+26.34108876752984
+],
+"connpunct.som_drop|register.skulle_vilja_vs_vill": [
+97,
+48,
+49,
+26.031627446801007
+],
+"particles.poss_3rd|wordorder.subject_theme": [
+91,
+91,
+0,
+5.022681044250064
+],
+"register.dem_har_rate|wordorder.subject_theme": [
+89,
+87,
+2,
+21.662895665379217
+],
+"connpunct.initial_men|starter.sent_len": [
+87,
+87,
+0,
+30.04129522547513
+],
+"starter.modal_particles|wordorder.subject_theme": [
+86,
+48,
+38,
+12.06010745748246
+],
+"particles.da_anaphoric|wordorder.subject_theme": [
+85,
+46,
+39,
+8.809541279675306
+],
+"particles.anda|starter.sent_len": [
+84,
+0,
+84,
+28.636363636363622
+],
+"calques.native_counterparts|particles.copular_det": [
+82,
+82,
+0,
+16.332253253911297
+],
+"stats.av_nominal|wordorder.subject_theme": [
+81,
+78,
+3,
+5.038071139708605
+],
+"calques.lexicon|particles.copular_det": [
+80,
+0,
+80,
+15.933905613571994
+],
+"connpunct.explanatory_parens|starter.sent_len": [
+79,
+79,
+0,
+28.69261031298643
+],
+"register.aven_vs_ocksa|register.kommer_att_vs_ska": [
+74,
+11,
+63,
+11.61866900487077
+],
+"connpunct.parenthetical_dash|wordorder.fronted_theme": [
+74,
+65,
+9,
+20.217739350830495
+],
+"connpunct.som_drop|register.kommer_att_vs_ska": [
+73,
+38,
+35,
+20.92110194060925
+],
+"connpunct.native_connectives|particles.stance": [
+70,
+70,
+0,
+37.374422050047464
+],
+"connpunct.initial_adverbial_comma|particles.anda": [
+69,
+68,
+1,
+6.720760460552819
+],
+"particles.anda|wordorder.fronted_theme": [
+69,
+63,
+6,
+44.16179581032114
+],
+"connpunct.att_drop|wordorder.fronted_theme": [
+65,
+64,
+1,
+49.58999630821084
+],
+"connpunct.additive_ocksa|register.kommer_att_vs_ska": [
+63,
+0,
+63,
+23.090526443228693
+],
+"particles.ta_itu_med|starter.sent_len": [
+62,
+62,
+0,
+23.194214876033065
+],
+"calques.pied_piped_relative|register.av_rate": [
+61,
+61,
+0,
+9.31414031131105
+],
+"connpunct.additive_ocksa|connpunct.clause_comma_omission": [
+61,
+61,
+0,
+6.079527391280658
+],
+"connpunct.clause_comma_omission|register.aven_vs_ocksa": [
+61,
+61,
+0,
+6.079527391280658
+],
+"stats.av_nominal|wordorder.fronted_theme": [
+61,
+33,
+28,
+11.47609894469813
+],
+"stats.long_words|wordorder.subject_theme": [
+59,
+37,
+22,
+4.171959971814273
+],
+"calques.pied_piped_relative|stats.av_other": [
+59,
+59,
+0,
+13.970377144462663
+],
+"calques.native_counterparts|wordorder.subject_theme": [
+58,
+57,
+1,
+6.144225800867793
+],
+"particles.particle_verbs|starter.sent_len": [
+58,
+0,
+58,
+20.243801652892568
+],
+"particles.copular_det|particles.da_anaphoric": [
+57,
+57,
+0,
+11.352907749670054
+],
+"register.bland_annat|starter.sent_len": [
+57,
+0,
+57,
+20.064049586776868
+],
+"connpunct.calque_connectives|register.av_rate": [
+55,
+55,
+0,
+8.3979953626575
+],
+"connpunct.calque_connectives|stats.av_other": [
+55,
+55,
+0,
+12.945833231864565
+],
+"stats.av_nominal|stats.long_words": [
+53,
+52,
+1,
+15.652077300265274
+],
+"connpunct.initial_adverbial_comma|register.sjalvklart": [
+52,
+52,
+0,
+4.438712145460154
+],
+"connpunct.som_drop|wordorder.subject_theme": [
+51,
+49,
+2,
+11.633172403641906
+],
+"register.sjalvklart|wordorder.fronted_theme": [
+51,
+51,
+0,
+34.048702974670725
+],
+"calques.lexicon|register.av_rate": [
+51,
+51,
+0,
+7.787232063555135
+],
+"calques.lexicon|stats.av_other": [
+51,
+51,
+0,
+12.046451423209875
+],
+"connpunct.additive_ocksa|connpunct.initial_adverbial_comma": [
+50,
+50,
+0,
+4.263050200309256
+],
+"register.dem_har_rate|wordorder.fronted_theme": [
+49,
+14,
+35,
+9.653425227228333
+],
+"connpunct.att_drop|wordorder.subject_theme": [
+47,
+0,
+47,
+2.594131967909374
+],
+"connpunct.parenthetical_dash|stats.long_words": [
+47,
+24,
+23,
+12.69706232551647
+],
+"calques.native_counterparts|calques.skulle_vilja": [
+44,
+39,
+5,
+15.509564986632656
+],
+"calques.native_counterparts|register.skulle_vilja_vs_vill": [
+44,
+39,
+5,
+15.061560454626504
+],
+"connpunct.initial_adverbial_comma|particles.poss_1st": [
+43,
+1,
+42,
+3.8443936690627813
+],
+"particles.ni_vs_man|register.kommer_att_vs_ska": [
+42,
+25,
+17,
+19.37559373365276
+],
+"particles.stance|starter.sent_len": [
+40,
+0,
+40,
+13.252066115702483
+],
+"connpunct.att_drop|particles.copular_det": [
+40,
+40,
+0,
+7.966952806786011
+],
+"starter.modal_particles|wordorder.fronted_theme": [
+39,
+27,
+12,
+15.421409482503266
+],
+"register.kommer_att_vs_ska|stats.long_words": [
+38,
+12,
+26,
+10.733896875848489
+],
+"particles.stance|wordorder.fronted_theme": [
+37,
+34,
+3,
+23.12217005014196
+],
+"connpunct.calque_connectives|wordorder.subject_theme": [
+36,
+24,
+12,
+9.855947431392263
+],
+"register.valdigt_vs_mycket|wordorder.subject_theme": [
+36,
+20,
+16,
+5.9583261703032715
+],
+"particles.poss_3rd|wordorder.fronted_theme": [
+35,
+20,
+15,
+7.056551850604707
+],
+"particles.da_anaphoric|register.kommer_att_vs_ska": [
+34,
+29,
+5,
+22.887071740323687
+],
+"register.aven_vs_ocksa|wordorder.subject_theme": [
+34,
+26,
+8,
+4.3622675937137325
+],
+"calques.native_counterparts|starter.sent_len": [
+32,
+0,
+32,
+10.7603305785124
+],
+"connpunct.additive_ocksa|wordorder.subject_theme": [
+31,
+25,
+6,
+7.061442765281204
+],
+"register.samt|stats.long_words": [
+30,
+0,
+30,
+10.603775010226935
+],
+"connpunct.som_drop|wordorder.fronted_theme": [
+28,
+16,
+12,
+7.356974303051421
+],
+"particles.da_anaphoric|particles.ni_vs_man": [
+27,
+18,
+9,
+9.344167002716613
+],
+"connpunct.som_drop|particles.copular_det": [
+26,
+12,
+14,
+5.178519324410905
+],
+"stats.long_words|wordorder.fronted_theme": [
+25,
+7,
+18,
+4.023628322543064
+],
+"particles.alltsa|starter.sent_len": [
+24,
+0,
+24,
+8.293388429752067
+],
+"register.bland_annat|wordorder.fronted_theme": [
+24,
+22,
+2,
+1.776462933071365
+],
+"connpunct.clause_comma_omission|particles.han_hon": [
+23,
+1,
+22,
+2.604370935411179
+],
+"particles.poss_1st|stats.long_words": [
+23,
+8,
+15,
+5.941858256860731
+],
+"particles.copular_det|stats.long_words": [
+23,
+18,
+5,
+4.5809978639019535
+],
+"register.valdigt_vs_mycket|wordorder.fronted_theme": [
+23,
+14,
+9,
+5.833309829574881
+],
+"connpunct.written_out_abbrev|stats.long_words": [
+22,
+9,
+13,
+6.21136838432374
+],
+"connpunct.att_drop|register.kommer_att_vs_ska": [
+21,
+13,
+8,
+14.98062951716637
+],
+"particles.copular_det|starter.modal_particles": [
+21,
+21,
+0,
+4.182650223562653
+],
+"connpunct.clause_comma_omission|wordorder.fronted_theme": [
+21,
+2,
+19,
+2.5064108894185013
+],
+"connpunct.written_out_abbrev|wordorder.subject_theme": [
+20,
+9,
+11,
+1.6786347482453645
+],
+"particles.da_anaphoric|starter.sent_len": [
+20,
+0,
+20,
+7.475206611570247
+],
+"calques.lexicon|connpunct.calque_connectives": [
+19,
+19,
+0,
+18.857142857142858
+],
+"connpunct.initial_adverbial_comma|wordorder.v2_violation": [
+19,
+18,
+1,
+26.105068028248546
+],
+"particles.particle_verbs|wordorder.subject_theme": [
+19,
+1,
+18,
+1.398594368145389
+],
+"register.sjalvklart|starter.sent_len": [
+19,
+0,
+19,
+7.394628099173556
+],
+"register.aven_vs_ocksa|stats.long_words": [
+19,
+11,
+8,
+3.7135112535890453
+],
+"connpunct.initial_adverbial_comma|particles.stance": [
+19,
+19,
+0,
+1.6218371300719778
+],
+"connpunct.clause_comma_omission|register.kommer_att_vs_ska": [
+18,
+1,
+17,
+2.610585250755652
+],
+"particles.da_anaphoric|particles.generic_man": [
+18,
+18,
+0,
+3.3956480802732116
+],
+"connpunct.explanatory_parens|stats.long_words": [
+17,
+17,
+0,
+6.412128343286461
+],
+"particles.generic_man|register.kommer_att_vs_ska": [
+17,
+0,
+17,
+3.2070009647024778
+],
+"connpunct.clause_comma_omission|stats.long_words": [
+17,
+7,
+10,
+1.845334360769991
+],
+"particles.ni_vs_man|stats.long_words": [
+16,
+6,
+10,
+4.110917680091062
+],
+"calques.lexicon|stats.long_words": [
+16,
+12,
+4,
+5.156492005229765
+],
+"register.bra|wordorder.subject_theme": [
+15,
+9,
+6,
+2.529913659905876
+],
+"connpunct.explanatory_parens|register.av_rate": [
+15,
+15,
+0,
+2.2903623716338646
+],
+"particles.particle_verbs|wordorder.fronted_theme": [
+14,
+3,
+11,
+4.202074193303944
+],
+"calques.lexicon|calques.skulle_vilja": [
+14,
+1,
+13,
+5.030444130683324
+],
+"calques.lexicon|register.skulle_vilja_vs_vill": [
+14,
+1,
+13,
+4.880796835499222
+],
+"connpunct.explanatory_parens|stats.av_other": [
+14,
+14,
+0,
+3.3090045974209055
+],
+"connpunct.initial_adverbial_comma|stats.long_words": [
+13,
+5,
+8,
+1.520676551945832
+],
+"connpunct.native_connectives|stats.long_words": [
+12,
+4,
+8,
+3.4239910847029744
+],
+"connpunct.explanatory_parens|connpunct.written_out_abbrev": [
+12,
+1,
+11,
+3.6669392871075988
+],
+"particles.alltsa|wordorder.subject_theme": [
+12,
+12,
+0,
+2.9316638356913454
+],
+"connpunct.exclamation|starter.sent_len": [
+12,
+0,
+12,
+5.231404958677686
+],
+"calques.forsoka_att|wordorder.fronted_theme": [
+12,
+2,
+10,
+2.680731736736572
+],
+"particles.copular_det|register.dem_har_rate": [
+12,
+0,
+12,
+2.390085842035802
+],
+"calques.lexicon|connpunct.som_drop": [
+11,
+7,
+4,
+3.907662688464083
+],
+"calques.skulle_vilja|stats.long_words": [
+11,
+5,
+6,
+3.1343782223342935
+],
+"register.skulle_vilja_vs_vill|stats.long_words": [
+11,
+5,
+6,
+3.1184119616168613
+],
+"calques.skulle_vilja|register.aven_vs_ocksa": [
+11,
+3,
+8,
+1.945272582753014
+],
+"connpunct.additive_ocksa|stats.long_words": [
+11,
+8,
+3,
+3.1093607906851055
+],
+"connpunct.calque_connectives|stats.long_words": [
+11,
+7,
+4,
+3.031169802507737
+],
+"particles.namligen|starter.sent_len": [
+10,
+0,
+10,
+3.4214876033057857
+],
+"particles.of_course|wordorder.subject_theme": [
+10,
+3,
+7,
+2.156998068486953
+],
+"particles.poss_3rd|stats.long_words": [
+10,
+9,
+1,
+3.0368588640853185
+],
+"connpunct.clause_comma_omission|particles.ni_vs_man": [
+10,
+2,
+8,
+1.6609101753645563
+],
+"particles.namligen|wordorder.subject_theme": [
+10,
+9,
+1,
+2.25394217395807
+],
+"particles.generic_man|stats.long_words": [
+10,
+6,
+4,
+1.8864711557073406
+],
+"connpunct.att_drop|starter.sent_len": [
+9,
+0,
+9,
+3.216942148760329
+],
+"particles.stance|wordorder.subject_theme": [
+9,
+8,
+1,
+2.5522140785917404
+],
+"connpunct.calque_connectives|particles.copular_det": [
+9,
+0,
+9,
+1.7925643815268517
+],
+"particles.dvs|wordorder.fronted_theme": [
+8,
+1,
+7,
+2.1783279719134176
+],
+"calques.pied_piped_relative|wordorder.fronted_theme": [
+8,
+8,
+0,
+2.451150414439077
+],
+"connpunct.att_drop|particles.ni_vs_man": [
+8,
+2,
+6,
+4.599580262967908
+],
+"register.tycker_vs_anser|stats.long_words": [
+8,
+8,
+0,
+2.1648795542978116
+],
+"connpunct.initial_och|starter.sent_len": [
+8,
+8,
+0,
+2.8016528925619837
+],
+"calques.skulle_vilja|connpunct.additive_ocksa": [
+8,
+0,
+8,
+2.9321303419972966
+],
+"register.bra|wordorder.fronted_theme": [
+8,
+1,
+7,
+2.1783279719134176
+],
+"particles.han_hon|stats.long_words": [
+8,
+1,
+7,
+2.2926245911669834
+],
+"connpunct.native_connectives|register.kommer_att_vs_ska": [
+8,
+0,
+8,
+4.271362520005424
+],
+"connpunct.additive_ocksa|wordorder.fronted_theme": [
+7,
+1,
+6,
+1.8719341701085332
+],
+"particles.alltsa|wordorder.fronted_theme": [
+7,
+4,
+3,
+3.6063835006204803
+],
+"register.samt|wordorder.fronted_theme": [
+7,
+0,
+7,
+2.1447566126341924
+],
+"calques.forsoka_att|connpunct.additive_ocksa": [
+7,
+7,
+0,
+1.4475608931887618
+],
+"calques.forsoka_att|register.aven_vs_ocksa": [
+7,
+7,
+0,
+0.9327332696069724
+],
+"calques.lexicon|connpunct.clause_comma_omission": [
+7,
+0,
+7,
+0.6976506842453221
+],
+"particles.han_hon|register.kommer_att_vs_ska": [
+7,
+7,
+0,
+2.8204549920837056
+],
+"connpunct.clause_comma_omission|connpunct.som_drop": [
+6,
+4,
+2,
+0.9251578174527133
+],
+"connpunct.calque_connectives|connpunct.clause_comma_omission": [
+6,
+6,
+0,
+5.773312949698138
+],
+"starter.sent_len|wordorder.v2_violation": [
+6,
+6,
+0,
+2.1570247933884312
+],
+"calques.forsoka_att|calques.lexicon": [
+6,
+0,
+6,
+1.2407664798760816
+],
+"connpunct.initial_adverbial_comma|particles.alltsa": [
+6,
+4,
+2,
+2.589299589109426
+],
+"particles.dvs|wordorder.subject_theme": [
+5,
+5,
+0,
+0.53412557049809
+],
+"connpunct.som_drop|stats.long_words": [
+5,
+3,
+2,
+1.2376154267387927
+],
+"connpunct.initial_adverbial_comma|connpunct.written_out_abbrev": [
+4,
+0,
+4,
+0.341439395804627
+],
+"connpunct.clause_comma_omission|wordorder.subject_theme": [
+4,
+3,
+1,
+0.3168780919423577
+],
+"connpunct.explanatory_parens|connpunct.parenthetical_dash": [
+4,
+4,
+0,
+1.32279696449073
+],
+"particles.dvs|stats.long_words": [
+4,
+0,
+4,
+1.086293157870549
+],
+"connpunct.additive_ocksa|particles.particle_verbs": [
+4,
+4,
+0,
+1.466065170998648
+],
+"particles.particle_verbs|register.aven_vs_ocksa": [
+4,
+4,
+0,
+0.5329904397754128
+],
+"particles.anda|wordorder.subject_theme": [
+4,
+4,
+0,
+0.9772212785637816
+],
+"particles.ni_vs_man|wordorder.v2_violation": [
+4,
+1,
+3,
+1.4554947311360797
+],
+"connpunct.clause_comma_omission|particles.da_anaphoric": [
+4,
+3,
+1,
+1.261211975340542
+],
+"calques.forsoka_att|particles.particle_verbs": [
+4,
+4,
+0,
+0.8271776532507211
+],
+"connpunct.exclamation|stats.long_words": [
+4,
+2,
+2,
+1.084272578848037
+],
+"particles.generic_man|particles.particle_verbs": [
+4,
+4,
+0,
+0.7545884622829361
+],
+"particles.ni_vs_man|particles.particle_verbs": [
+4,
+4,
+0,
+0.9778133516038429
+],
+"particles.copular_det|wordorder.v2_violation": [
+4,
+0,
+4,
+0.7966952806786006
+],
+"particles.generic_man|starter.modal_particles": [
+4,
+4,
+0,
+0.7545884622829361
+],
+"particles.ni_vs_man|starter.modal_particles": [
+4,
+4,
+0,
+0.9778133516038429
+],
+"particles.da_anaphoric|particles.han_hon": [
+4,
+0,
+4,
+1.4939076455111986
+],
+"calques.lexicon|register.valdigt_vs_mycket": [
+3,
+3,
+0,
+1.3702752074871445
+],
+"register.sjalvklart|wordorder.subject_theme": [
+3,
+1,
+2,
+0.35469391402006767
+],
+"calques.forsoka_att|particles.ta_itu_med": [
+3,
+0,
+3,
+0.6203832399380409
+],
+"calques.lexicon|connpunct.additive_ocksa": [
+3,
+0,
+3,
+1.099548878248986
+],
+"calques.lexicon|register.aven_vs_ocksa": [
+3,
+0,
+3,
+0.3997428298315596
+],
+"calques.skulle_vilja|wordorder.v2_violation": [
+3,
+1,
+2,
+1.7841565703510327
+],
+"register.skulle_vilja_vs_vill|wordorder.v2_violation": [
+3,
+1,
+2,
+1.7608695277840558
+],
+"calques.skulle_vilja|connpunct.native_connectives": [
+3,
+0,
+3,
+1.601760945002034
+],
+"connpunct.clause_comma_omission|connpunct.initial_adverbial_comma": [
+3,
+0,
+3,
+0.29899315039085234
+],
+"particles.generic_man|wordorder.v2_violation": [
+3,
+0,
+3,
+0.5659413467122021
+],
+"particles.particle_verbs|stats.long_words": [
+3,
+3,
+0,
+0.8241063224072107
+],
+"register.bra|stats.long_words": [
+3,
+3,
+0,
+0.8177378289493336
+],
+"connpunct.clause_comma_omission|register.dem_har_rate": [
+3,
+0,
+3,
+0.29899315039085234
+],
+"connpunct.clause_comma_omission|register.valdigt_vs_mycket": [
+3,
+3,
+0,
+1.3702752074871445
+],
+"particles.da_anaphoric|register.skulle_vilja_vs_vill": [
+3,
+1,
+2,
+2.670849789827612
+],
+"register.kommer_att_vs_ska|starter.modal_particles": [
+3,
+3,
+0,
+1.7668538861723948
+],
+"register.dem_har_rate|stats.long_words": [
+3,
+1,
+2,
+0.7955961687765771
+],
+"calques.lexicon|register.dem_har_rate": [
+3,
+3,
+0,
+1.9011649357102625
+],
+"calques.forsoka_att|stats.long_words": [
+3,
+2,
+1,
+0.6850561581498881
+],
+"register.tycker_vs_anser|wordorder.v2_violation": [
+2,
+1,
+1,
+1.6443570163905132
+],
+"register.valdigt_vs_mycket|stats.long_words": [
+2,
+0,
+2,
+0.5357830804128166
+],
+"calques.lexicon|particles.ni_vs_man": [
+2,
+1,
+1,
+0.458739052186675
+],
+"particles.ta_itu_med|wordorder.fronted_theme": [
+2,
+2,
+0,
+0.6127876036097692
+],
+"connpunct.clause_comma_omission|register.bra": [
+2,
+0,
+2,
+1.9244376498993792
+],
+"connpunct.calque_connectives|wordorder.v2_violation": [
+2,
+2,
+0,
+1.874491129795237
+],
+"particles.ta_itu_med|wordorder.subject_theme": [
+2,
+2,
+0,
+0.11038859437912228
+],
+"connpunct.native_connectives|particles.particle_verbs": [
+2,
+2,
+0,
+1.067840630001356
+],
+"connpunct.explanatory_parens|register.aven_vs_ocksa": [
+2,
+2,
+0,
+0.586194468801459
+],
+"calques.pied_piped_relative|stats.av_nominal": [
+2,
+2,
+0,
+1.0900636348390789
+],
+"connpunct.clause_comma_omission|connpunct.native_connectives": [
+2,
+2,
+0,
+0.1993287669272349
+],
+"connpunct.att_drop|particles.generic_man": [
+2,
+2,
+0,
+0.37729423114146804
+],
+"particles.anda|stats.long_words": [
+2,
+1,
+1,
+0.5350498894816609
+],
+"connpunct.initial_men|stats.long_words": [
+2,
+2,
+0,
+0.5550716940335992
+],
+"connpunct.explanatory_parens|particles.dvs": [
+2,
+0,
+2,
+1.523266744577648
+],
+"starter.modal_particles|stats.long_words": [
+2,
+1,
+1,
+0.5188644368945514
+],
+"connpunct.explanatory_parens|particles.copular_det": [
+2,
+0,
+2,
+0.3983476403393003
+],
+"calques.forsoka_att|wordorder.subject_theme": [
+2,
+0,
+2,
+0.41358882662536056
+],
+"register.samt|wordorder.subject_theme": [
+2,
+0,
+2,
+0.11038859437912228
+],
+"connpunct.written_out_abbrev|wordorder.v2_violation": [
+2,
+1,
+1,
+0.6713481325492531
+],
+"particles.dvs|wordorder.v2_violation": [
+2,
+0,
+2,
+2.5985659682605218
+],
+"connpunct.som_drop|register.av_rate": [
+2,
+0,
+2,
+0.3053816495511819
+],
+"connpunct.som_drop|stats.av_other": [
+2,
+0,
+2,
+0.4599056937608503
+],
+"calques.skulle_vilja|particles.anda": [
+2,
+0,
+2,
+1.666290731874155
+],
+"calques.skulle_vilja|particles.da_anaphoric": [
+2,
+1,
+1,
+1.4890395194117336
+],
+"connpunct.calque_connectives|connpunct.som_drop": [
+1,
+0,
+1,
+0.22995284688042514
+],
+"connpunct.native_connectives|connpunct.som_drop": [
+1,
+0,
+1,
+0.42683590013462597
+],
+"calques.lexicon|particles.generic_man": [
+1,
+0,
+1,
+0.18864711557073402
+],
+"particles.ta_itu_med|stats.long_words": [
+1,
+0,
+1,
+0.2542965553158235
+],
+"connpunct.som_drop|particles.anda": [
+1,
+1,
+0,
+0.22995284688042514
+],
+"calques.native_counterparts|particles.da_anaphoric": [
+1,
+1,
+0,
+1.499089855265235
+],
+"connpunct.native_connectives|wordorder.v2_violation": [
+1,
+0,
+1,
+0.533920315000678
+],
+"particles.poss_1st|wordorder.v2_violation": [
+1,
+1,
+0,
+0.25928001311419546
+],
+"register.bland_annat|stats.long_words": [
+1,
+0,
+1,
+0.5607825567502965
+],
+"register.bland_annat|wordorder.subject_theme": [
+1,
+0,
+1,
+0.05519429718956114
+],
+"calques.pied_piped_relative|stats.long_words": [
+1,
+1,
+0,
+0.2562897847832664
+],
+"calques.lexicon|connpunct.native_connectives": [
+1,
+0,
+1,
+0.533920315000678
+],
+"connpunct.initial_adverbial_comma|connpunct.som_drop": [
+1,
+0,
+1,
+0.08535984895115675
+],
+"particles.particle_verbs|wordorder.v2_violation": [
+1,
+0,
+1,
+1.0414538748281612
+],
+"connpunct.explanatory_parens|wordorder.fronted_theme": [
+1,
+1,
+0,
+0.3063938018048846
+],
+"connpunct.clause_comma_omission|connpunct.explanatory_parens": [
+1,
+1,
+0,
+0.9622188249496896
+],
+"calques.lexicon|particles.stance": [
+1,
+0,
+1,
+1.0
+],
+"particles.namligen|stats.long_words": [
+1,
+0,
+1,
+0.28967736991340187
+],
+"particles.alltsa|stats.long_words": [
+1,
+1,
+0,
+0.27024631165706225
+],
+"calques.skulle_vilja|particles.of_course": [
+1,
+0,
+1,
+0.6711682738411702
+],
+"calques.skulle_vilja|register.sjalvklart": [
+1,
+0,
+1,
+0.9962577370883664
+],
+"connpunct.som_drop|particles.da_anaphoric": [
+1,
+0,
+1,
+0.42683590013462597
+],
+"register.av_rate|wordorder.v2_violation": [
+1,
+1,
+0,
+0.15269082477559096
+],
+"stats.av_other|wordorder.v2_violation": [
+1,
+1,
+0,
+0.23899428294132824
+],
+"calques.native_counterparts|connpunct.clause_comma_omission": [
+1,
+1,
+0,
+0.09966438346361745
+],
+"connpunct.explanatory_parens|register.samt": [
+1,
+0,
+1,
+1.015816382089554
+],
+"particles.da_anaphoric|starter.modal_particles": [
+1,
+1,
+0,
+1.499089855265235
+],
+"particles.ta_itu_med|wordorder.v2_violation": [
+1,
+1,
+0,
+1.5
+],
+"connpunct.parenthetical_dash|stats.av_nominal": [
+1,
+1,
+0,
+0.3306992411226825
+],
+"calques.skulle_vilja|starter.modal_particles": [
+1,
+1,
+0,
+0.29511705093929913
+],
+"register.skulle_vilja_vs_vill|starter.modal_particles": [
+1,
+1,
+0,
+0.2836297552468332
+],
+"connpunct.explanatory_parens|particles.poss_3rd": [
+1,
+1,
+0,
+0.33517423495757753
+],
+"connpunct.initial_adverbial_comma|particles.copular_det": [
+1,
+1,
+0,
+0.08535984895115675
+],
+"connpunct.explanatory_parens|register.kommer_att_vs_ska": [
+1,
+1,
+0,
+0.7576886115096051
+],
+"connpunct.att_drop|particles.han_hon": [
+1,
+0,
+1,
+0.34858158267944384
+],
+"register.kommer_att_vs_ska|wordorder.v2_violation": [
+1,
+0,
+1,
+0.6418538861723948
+],
+"particles.of_course|wordorder.v2_violation": [
+1,
+1,
+0,
+0.3364722366212129
+],
+"connpunct.clause_comma_omission|connpunct.written_out_abbrev": [
+1,
+1,
+0,
+0.3717890170934186
+],
+"connpunct.clause_comma_omission|register.bland_annat": [
+1,
+0,
+1,
+0.9622188249496896
+],
+"particles.of_course|stats.long_words": [
+1,
+0,
+1,
+0.2669444237779915
+],
+"particles.da_anaphoric|register.tycker_vs_anser": [
+1,
+1,
+0,
+1.0647107369924282
+],
+"particles.namligen|wordorder.fronted_theme": [
+1,
+0,
+1,
+0.3063938018048846
+],
+"connpunct.explanatory_parens|stats.av_nominal": [
+1,
+1,
+0,
+0.33534414383254874
+],
+"connpunct.clause_comma_omission|starter.modal_particles": [
+1,
+0,
+1,
+0.9622188249496896
+]
+}

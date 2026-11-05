@@ -41,57 +41,59 @@ N_CONFIDENT, N_BORDER = 3, 2
 TOP_RULES = 5
 
 # Analyst notes, keyed by example id (written after reading each example with
-# the default seed and the starter rule set; ids that drop out of the selection
-# when rules change simply lose their note).
+# the default seed and the INTEGRATED rule set of 2026-11-06, 52 -> 47 enabled
+# rules in 7 families; the notes for the starter rule set are in git history,
+# commit 627e006. Ids that drop out of the selection when rules change simply
+# lose their note).
 NOTES = {
     # --- sentences: TP
-    "ep-03-11-18:252:1:s26": "Two 'det här' for English 'this' (incl. 'med det här parlamentets stöd' = 'with this Parliament's support') saturate the demonstrative rule. Missed: 'redo för handling' is a calque of 'ready for action'.",
-    "ep-02-12-18:101:1:s16": "Pseudo-cleft 'Vad vi behöver är action' (EN 'What we need is action', even keeping the English word), a semicolon-separated anaphoric 'för att' list and 'sist men inte minst' ('last but not least'). The engine only sees 'de här' and length; pseudo-cleft, semicolon and idiom rules would catch it.",
-    "ep-01-02-12:94:1:s14": "'det faktum att' calque fires. 'denna kammare' (twice) renders the EP-English 'this House' yet counts as a weak original clue; a 'denna kammare / detta parlament' calque would flip it.",
-    "ep-00-03-01:17:1:s25": "Coin flip: one 'denna' vs length. Missed: 'på grund av någon önskan hos Prodis kommission' mirrors 'because of any desire on the part of the Prodi Commission' (negative-polarity 'någon', 'hos' for 'on the part of').",
-    "ep-04-01-14:25:1:s2": "Right by a hair: only 'dessa'/'skall' and length. The passive triplet 'luras, skrämmas eller pressas att lova' follows English 'fooled, bullied or pressured into promising'; 'pressas att' for 'pressured into' is a catchable calque.",
+    "ep-02-01-15:24:1:s9": "Four 'kommer att' for English 'will' (the future-choice rule at its cap), 'när det rör' (EN 'as regards') and four address 'ni' make this long sentence clearly translated; the dashed aside and length add a little.",
+    "ep-00-10-04:312:1:s34": "'Till sist, jag var' copies 'Finally, I was': the comma after the fronted adverbial, the missing V2 inversion and the calque connective 'till sist' all fire, each reading a different property (punctuation, word order, lexis) of one English construction.",
+    "ep-01-01-17:15:1:s2": "'i synnerhet' (EN 'in particular'), two 'kommer att' and no comma before the clausal 'men vi' (English punctuation) mark it as translated.",
+    "ep-97-04-07:37:1:s19": "Right by 0.002: the fronted clause with resumptive 'så' ('Om så är fallet så är jag', weakly T) is balanced by additive 'också' (O). No lexical calque fires.",
+    "ep-02-04-10:252:1:s4": "'Om detta är sant, är det ...' mirrors 'If this is true, it is ...' (fronted clause, weakly T) against the inverted copular 'är det' (weakly O); right by 0.007.",
     # --- sentences: TN
-    "ep-98-05-13:223:1:s4": "Modal particle 'ju' ('as we know') has no English trigger, so it is a clean original clue; short sentence adds a little.",
-    "ep-97-09-16:110:1:s13": "Spoken native Swedish: 'ju', fronted 'så' with V2 inversion ('så är det') and an exclamation. Only 'ju' is used; the V2 'så är det' pattern is a second, uncaptured clue.",
-    "ep-01-05-02:86:1:s13": "Left-dislocated att-clause picked up by 'det', a dashed aside '- det görs ju inte i dag -' and a tag 'är inte det en framgång?': native spoken syntax. The engine only sees 'ju'.",
-    "ep-98-05-15:19:1:s6": "Native: negation raising 'anser vi inte att ... utan', late particle verb 'ta sig an' after a long parenthesis. No rule covers these; four denna/skall forms barely tip it to original.",
-    "ep-02-09-24:149:1:s10": "Neutral administrative sentence ('Det återstår sex månader tills ...'); one 'skall' decides at -0.005. No real evidence either way.",
+    "ep-99-05-07:34:1:s13": "The particle 'nämligen', 'tycker' rather than 'anser', and the topicalised 'Personligen tycker jag' (V2) are three native clues without English triggers.",
+    "ep-97-09-16:110:1:s13": "'ju', the fronted 'så' with V2 inversion ('så är det', now scored by the word-order rules) and a non-vocative exclamation are all native; sentence-initial 'Men' is the only T clue.",
+    "ep-98-04-02:15:1:s2": "Modal particle 'ju' plus the stance adverb 'egentligen': neither has an English trigger, and together they decide the sentence.",
+    "ep-00-02-15:315:1:s19": "No rule fires: 'i varje fall' is not in the stance list (which has 'i alla fall'), so the score is length and absence terms only (-0.004).",
+    "ep-98-10-21:124:1:s2": "The fronted 'I dag genomfördes' is not classified (the verb is not in the closed list) and appositive ', nämligen' is excluded from the particle rule by design; right by 0.01 on absence terms.",
     # --- sentences: FP
-    "ep-97-10-21:35:1:s1": "A Swedish speaker says 'först av allt': the calque was already established in EP Swedish, and its weight (2.0) lets one hit decide. Lower weight or require a second clue.",
-    "ep-99-05-05:251:1:s8": "Native speaker using 'det faktum att'. Missed original clues: conditional 'vore det bra', 'i själva verket', hedging 'kanske'; the topic ('svenska företrädare', small languages) would be masked.",
-    "ep-98-06-16:226:1:s4": "Formal written Swedish ('För det andra:', 'dvs.', V1 question with a long subject) where 'det faktum att' is native too (O rate 0.09/1000 words). One calque hit outweighs everything.",
-    "ep-99-12-01:152:1:s5": "Colloquial native speech: particle verb 'få ihop', 'dvs.', 'några gånger'. Three denna-forms pull toward original, but sentence length tips it to translated by 0.003.",
-    "ep-00-07-05:332:1:s34": "Two coordinated 'hur'-clauses as subject; no lexical clue at all, the score is neutral length only. Undecidable for the current rules.",
+    "ep-01-10-03:313:1:s14": "A Swedish speaker writes 'Till sist, för att ...': the comma rule (at its cap of 2) and the calque connective 'till sist' outweigh native 'skall'. Before a fronted purpose clause the comma is arguably normal Swedish.",
+    "ep-99-10-06:212:1:s2": "'Det är skälet till att' (the 'this is the reason' connective), 'välkomnar' and 'säkerställa' in one long Council-style sentence. Swedish speakers use all three, but the per-hit values add up.",
+    "ep-97-07-16:220:1:s3": "A polite 'Jag skulle vilja fråga' plus 'om vilka följder', an interrogative determiner that the pied-piped-relative rule misreads as a relative ('följder' is not in its noun list).",
+    "ep-02-09-24:276:1:s27": "'Det är rimligt att ...' is neutral. With no lexical clue, the score comes only from the sentence opening and length terms (+0.001).",
+    "ep-00-04-12:125:1:s18": "Native V2 with a fronted PP ('I Köln och i Helsingfors gjordes'), but fronted PPs carry almost no weight (-0.03); the absence terms tip it to T by 0.01.",
     # --- sentences: FN
-    "ep-99-12-15:293:1:s2": "Regex bug: 'Paradoxalt nog' is a sentence adverb (EN 'paradoxically'), not the modal particle 'nog'. Exclude '<adjective>-t nog' (paradoxalt/märkligt/beklagligt nog).",
-    "ep-02-05-14:54:1:s3": "Regex bug: 'väl förberedda' = 'well prepared', but the participle filter misses '-dda' forms. 'Vi vet alla att' ('We all know that') and 'någonsin' ('ever') are English-shaped.",
-    "ep-00-05-16:281:1:s15": "'Detta är oacceptabelt.' = 'This is unacceptable.': three words, the only evidence is short length. Not decidable at sentence level.",
-    "ep-00-03-15:133:1:s43": "Missed calque: 'Detta leder in mig på budgeten' = 'This leads me on to the budget' (native: 'Därmed kommer jag till budgeten'). Discourse-transition calques are a good rule target.",
-    "ep-99-01-13:172:1:s5": "Missed calque: 'Det tycks mig som att' = 'It seems to me that' (native 'Det förefaller mig som om' / 'Jag tycker'). Two 'detta' push it to original.",
+    "ep-98-10-07:147:1:s3": "The translator chose spoken 'väldigt dåligt' and 'bra' and V2 'Då tänkte vi' (EN 'Then we thought'), three native-register clues inside a translation.",
+    "ep-97-12-16:40:1:s2": "'tycker' and 'bra' in a translation (EN 'I think they have done well'); the register rules read both as native.",
+    "ep-02-01-16:83:1:s9": "A translated list sentence with 'bland annat' and 'samt', two O-leaning unique items (T rates .02 and .25 per 1000 words); length cannot make up for them.",
+    "ep-98-02-18:135:1:s1": "'Jag skulle vilja upprepa' ('I would like to repeat') points to T, but 'det är bra att' ('it is good to') cancels it; wrong by 0.003.",
+    "ep-00-05-16:158:1:s5": "'Jag skulle vara glad att ge er' = 'I would be glad to give you' (native 'Jag ger er gärna') is a calque that the lexicon lacks; nothing fires.",
     # --- 100-token chunks: TP
-    "c100:2001-02-01:1:20": "'det/den här' and 'Får jag först av allt tacka' ('May I first of all thank'). Missed: 'som ett preliminärt svar till det som sagts' uses 'svar till' for 'answer to' (native 'svar på').",
-    "c100:2002-11-20:1:70": "Two 'det här' and 'det faktum att'. Also missed: 'Som svar till X' (native 'svar på'), passive 'bli övertygad av' ('be convinced by').",
-    "c100:2001-02-01:1:41": "Four 'den/det här frågan' for English 'this issue' cap the rule. Also: 'ytterligare en hormon' (gender slip, 'ett hormon'), sentence-final 'till exempel?' copying English 'for example'.",
-    "c100:1998-07-01:1:44": "Lively spoken source: generic 'you' rendered as 'ni' throughout ('Ni kan sedan gå ned ...'), loanword 'gate'. Engine sees nothing but length; generic 'ni' (native: 'man') would be a strong translation clue.",
-    "c100:2003-12-18:1:5": "Missed calque 'Med detta sagt' = 'That said / With this said'; verbless 'För det första X och för det andra Y'. Three 'detta' almost flip it to original.",
+    "c100:1998-03-10:1:3": "Saturated by several families: 'Slutligen,' with the English comma, 'i synnerhet', 'i allmänhet', 'Först och främst', five 'kommer att', 'skulle jag vilja' and 'hennes'. connpunct hits its cap.",
+    "c100:2002-03-12:1:82": "'göra det möjligt för dem att' (EN 'make it possible for them to'), 'spenderar', 'Jag skulle vilja att', four 'kommer att' and 'mycket' + adjective; also 'om ni så vill' ('if you like') rendered with 'ni'.",
+    "c100:2003-01-15:1:28": "'de senaste tio åren', two 'i synnerhet', 'Till sist,' with a comma, 'välkomnar' and nominal 'tillämpningen av' all point to T. v2_violation misses 'Till sist, Afghanistan är' because the subject is a proper noun.",
+    "c100:2001-05-02:1:46": "Right by 0.002: four possessives ('våra revisorer', 'dess rapportering') and 'Detta är' point to T; two 'skall' and 'bra' point to O.",
+    "c100:2003-02-10:1:41": "Report-style prose with long sentences (+0.67) and 'kommer att'. The native particle verb 'gick ut på' (-1.0) nearly flips it.",
     # --- 100-token chunks: TN
-    "c100:2004-04-22:0:3": "Two concessive 'visst' plus 'tyvärr' and short sentences: typical native argumentation. Correct for the right reasons.",
-    "c100:1997-10-21:0:22": "Two 'ju', two 'nämligen', fronting ('Det ser säkert vi', 'det kanske man inte ser'). 'nämligen' has no English trigger but is not yet a rule; a strong native clue.",
-    "c100:1997-02-19:0:2": "Two 'ju', informal 'pratade', realia ('tiokronor och femkronor') and 'efter det att'. Correct; particles carry it.",
-    "c100:2004-04-19:0:1": "Native: 'Först vill jag nämna' (not the calque 'först av allt'), 'ytterst' twice, 'beklämmande'. Only one 'detta' fires, so it is right by 0.0004; native intensifiers would help.",
-    "c100:1998-05-15:0:3": "'Men även om ..., så borde' (resumptive 'så' after a fronted subordinate clause) is native Swedish with no English counterpart; also 'blotta misstanken', 'dvs.'. Engine only sees four denna-forms.",
+    "c100:1998-04-30:0:4": "Rhetorical native speech: 'ju', 'väl', 'egentligen', 'ändå', anaphoric 'då', 'bland annat', three 'skall' and two exclamations. The particles family hits its cap.",
+    "c100:1997-10-21:0:22": "Two 'ju', two particle uses of 'nämligen' (now a rule), the fronted objects 'Det ser man' and 'Där ser man', and 'tycker ... bra': native from every angle.",
+    "c100:2000-02-02:0:9": "'ju', 'väldigt', particle 'nämligen', 'självklart', 'tycker' and six generic 'man': a dense native register profile.",
+    "c100:2000-07-05:0:35": "Formal native prose without particles: 'dock' and two 'också' (O) barely outweigh 'dess ändringsförslag' (T); right by 0.01.",
+    "c100:2003-10-21:0:7": "Middle-field 'dock' and 'därför' (O) against 'säkerställa' and several 'av' (T); right by 0.01.",
     # --- 100-token chunks: FP
-    "c100:2001-05-03:0:3": "A Swedish speaker using 'den här mobiliteten', 'det här området' and 'det faktum att': the dev-calibrated 'den här' direction fails for informal native speakers and saturates at 3.0.",
-    "c100:2001-04-05:0:1": "Two 'det här' outweigh native signs: V2 'Därför behövs det', 'på sikt', 't.ex.', mid-position 'dock'. The English code-switch 'food safety-process' is a native-speaker anglicism, so a loanword rule would mislead here too.",
-    "c100:2002-06-11:0:17": "Topicalised objects with a stranded preposition ('De mål vi sätter upp ... skall vi naturligtvis leva upp till', 'Allt detta bär vi med oss') are very native but undetected; 'det/den här' wins.",
-    "c100:1997-04-09:0:14": "Native but no rule fires: 'inget som helst hot', 'Det framgick dock', 'enligt min mening'. Length alone tips it by 0.0003.",
-    "c100:2002-06-12:0:19": "Formal native register ('i afton', 'Till att börja med'), but 'Tillåt mig att poängtera' looks like 'Allow me to stress'. Near zero; no decisive clue fires.",
+    "c100:2001-04-04:0:138": "A Council answer read by a Swedish speaker, in officialese: 'ta itu med', 'I synnerhet', 'kommer den att', 'anser'. No native clue fires.",
+    "c100:2001-06-12:0:48": "Council-presidency prose by a Swedish speaker: 'i allmänhet ... i synnerhet', two 'kommer att', 'säkerställa', 'Låt mig få påpeka'. The abbreviation 's.k.' is the only native clue.",
+    "c100:2002-04-09:0:27": "A Commission statement given in Swedish: four 'kommer att', 'säkerställa', nominal 'betänkandet av' and the zero relative 'det förslag vi kommer att lägga fram'. Its Swedish reads like translated Commission prose.",
+    "c100:2002-09-25:0:16": "Plain written native prose with no lexical clue; 'Detta har' (T) tips it by 0.001. The V2 clause 'Det togs därigenom' is not classified.",
+    "c100:1999-10-06:0:5": "Neutral native political prose: 'också' (O) is outweighed by length and absence terms by 0.004. The fronted PP 'I decennier har ...' carries almost no weight.",
     # --- 100-token chunks: FN
-    "c100:2003-01-13:1:22": "Ironic speech: the translator rendered tag questions with 'väl' and 'ju', so particles can occur in translation. The '?Om' and '??' are garbled quote marks (a corpus artefact, not a clue).",
-    "c100:2001-02-13:1:134": "Regex bug: 'långt nog' = 'far enough' (degree 'nog'). Missed translation clues: pseudo-cleft 'Vad vi försökte uppnå var', 'Inte bara ...; även ...' with a semicolon, 'Det finns många medlemsstater som anser'.",
-    "c100:2003-11-18:1:142": "Regex bug: 'Beklagligt nog' ('regrettably') read as modal 'nog'. Missed: commissioner named in full with title, double negation 'inte skulle påstå att det inte är någon skillnad'.",
-    "c100:2001-10-23:1:92": "Formal translations default to 'detta', so six denna-forms push it to original. Missed: 'Det är bara rätt och riktigt' ('only right and proper'), 'på allas våra vägnar' ('on behalf of all of us'), semicolon.",
-    "c100:2002-09-25:1:8": "V2 violation: 'Med anknytning till detta, utvecklingen ... har varit positiv' (fronted adverbial, comma, subject before verb, as in English). A V2 rule would catch it; also 'pressas att', 'chef de file'.",
+    "c100:2003-06-02:1:9": "A translation in native conventions: three 'skall', 'dvs.', 't.o.m.' and an exclamation; only 'För det andra kan jag' points to T.",
+    "c100:2001-04-03:1:203": "A translated Commission reply with 'ju', 'tycker' and native V2 ('Därför måste jag', 'Förhoppningsvis kommer vi'); only 'i själva verket' and 'Detta är' point to T.",
+    "c100:1998-07-01:1:44": "Generic 'you' rendered as 'ni' saturates ni_vs_man (+1.5), but the translator also used anaphoric 'då' twice, 'alltså' and V2 'Då har ni', which read as native; a TP under the starter rules, now a false negative.",
+    "c100:2000-05-16:1:98": "Three 'förstås' (EN 'of course') count as the native choice against 'naturligtvis'. 'våra liv i deras händer' and 'det här' point to T; wrong by 0.001.",
+    "c100:1999-03-09:1:36": "Possessives ('vår plikt', 'mina kolleger') point weakly to T and lose to absence terms. 'Inte nog med det' (EN 'Not only that') and 'på en mycket bredare skala' ('on a much broader scale') are calques that no rule covers.",
 }
 
 

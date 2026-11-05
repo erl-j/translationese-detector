@@ -256,3 +256,15 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T230828Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | 100 | bal | masked | 14170 | 0.5810 | 0.5778 | 0.6113 |
 | 20261105T230832Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | 500 | bal | - | 2734 | 0.6558 | 0.6544 | 0.7048 |
 | 20261105T230839Z | feat/stats | 668dcd02+dirty | `tsw.engine:Families(only="stats")` | trn | 500 | bal | masked | 2734 | 0.6562 | 0.6546 | 0.7056 |
+| 20261105T233251Z | integrate | ef3cb367 | `tsw.engine:Default` | trn | sent | bal | - | 87904 | 0.6532 | 0.6531 | 0.7230 |
+| 20261105T233355Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | trn | sent | bal | masked | 87904 | 0.6531 | 0.6531 | 0.7230 |
+| 20261105T233441Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | trn | 100 | bal | - | 14170 | 0.8222 | 0.8220 | 0.9068 |
+| 20261105T233529Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | trn | 100 | bal | masked | 14170 | 0.8222 | 0.8220 | 0.9068 |
+| 20261105T233608Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | trn | 500 | bal | - | 2734 | 0.9448 | 0.9447 | 0.9901 |
+| 20261105T233650Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | trn | 500 | bal | masked | 2734 | 0.9448 | 0.9447 | 0.9901 |
+| 20261105T233704Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.6124 | 0.6124 | 0.6665 |
+| 20261105T233719Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | val | sent | bal | masked | 21728 | 0.6125 | 0.6125 | 0.6664 |
+| 20261105T233730Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.7466 | 0.7462 | 0.8329 |
+| 20261105T233741Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | val | 100 | bal | masked | 3354 | 0.7469 | 0.7465 | 0.8329 |
+| 20261105T233751Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | val | 500 | bal | - | 636 | 0.9198 | 0.9196 | 0.9770 |
+| 20261105T233801Z | integrate | ef3cb367+dirty | `tsw.engine:Default` | val | 500 | bal | masked | 636 | 0.9198 | 0.9196 | 0.9770 |
