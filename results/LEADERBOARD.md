@@ -52,3 +52,15 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T225532Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 500 | bal | masked | 2734 | 0.8537 | 0.8535 | 0.9322 |
 | 20261105T225535Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 500 | bal | - | 2734 | 0.8961 | 0.8961 | 0.9577 |
 | 20261105T225550Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 500 | bal | masked | 2734 | 0.8961 | 0.8961 | 0.9576 |
+| 20261105T230458Z | feat/connpunct | fdab6a67 | `tsw.engine:Default` | val | sent | bal | - | 21728 | 0.5715 | 0.5698 | 0.5959 |
+| 20261105T230503Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Default` | val | sent | bal | masked | 21728 | 0.5713 | 0.5696 | 0.5957 |
+| 20261105T230507Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Default` | val | 100 | bal | - | 3354 | 0.6482 | 0.6476 | 0.6992 |
+| 20261105T230511Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Default` | val | 100 | bal | masked | 3354 | 0.6482 | 0.6476 | 0.6991 |
+| 20261105T230514Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Default` | val | 500 | bal | - | 636 | 0.7830 | 0.7820 | 0.8705 |
+| 20261105T230518Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Default` | val | 500 | bal | masked | 636 | 0.7830 | 0.7820 | 0.8704 |
+| 20261105T230520Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Engine(exclude="connpunct")` | val | sent | bal | - | 21728 | 0.5598 | 0.5593 | 0.5767 |
+| 20261105T230523Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Engine(exclude="connpunct")` | val | sent | bal | masked | 21728 | 0.5597 | 0.5592 | 0.5765 |
+| 20261105T230525Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Engine(exclude="connpunct")` | val | 100 | bal | - | 3354 | 0.6109 | 0.6073 | 0.6403 |
+| 20261105T230527Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Engine(exclude="connpunct")` | val | 100 | bal | masked | 3354 | 0.6109 | 0.6073 | 0.6401 |
+| 20261105T230528Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Engine(exclude="connpunct")` | val | 500 | bal | - | 636 | 0.6997 | 0.6955 | 0.7906 |
+| 20261105T230530Z | feat/connpunct | fdab6a67+dirty | `tsw.engine:Engine(exclude="connpunct")` | val | 500 | bal | masked | 636 | 0.6997 | 0.6955 | 0.7904 |
