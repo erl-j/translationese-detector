@@ -17,7 +17,7 @@ Split: only trn (= the old dev split, sessions <= 2004-06-30; 'dev' is an
 alias) is read. 'val' (2004-07..2006) and 'test' (2007..2011) are refused:
 never look at their n-grams.
 
-Data: dev.sent.all by default (every sentence carries its own speaker, and the
+Data: trn.sent.all by default (every sentence carries its own speaker, and the
 unbalanced file has ~4.8x more translated text, which helps for rare items).
 Counts are rate-normalised (per 1000 words in each class), so class imbalance
 does not matter. N-grams never cross punctuation (they live inside one clause
@@ -68,7 +68,11 @@ SPLITS = {"trn": lambda date: date <= "2004-06-30", "dev": lambda date: date <= 
 
 def data_path(gran, balanced, data_dir):
     import run as harness  # evals/run.py (resolves the shared data dir of worktrees)
-    path = os.path.join(harness.data_dir(data_dir), "dev.%s.%s.jsonl" % (gran, "bal" if balanced else "all"))
+    ddir = harness.data_dir(data_dir)
+    name = "%s.%s.jsonl" % (gran, "bal" if balanced else "all")
+    path = os.path.join(ddir, "trn." + name)
+    if not os.path.exists(path):          # data built before the trn/val/test split
+        path = os.path.join(ddir, "dev." + name)
     if "test" in os.path.basename(path):
         sys.exit("REFUSING: collocations.py works on dev only.")
     return path
@@ -135,7 +139,7 @@ def g2(c_t, c_o, n_t, n_o):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--gran", default="sent", choices=["sent", "100", "500"])
-    ap.add_argument("--balanced", action="store_true", help="use dev.*.bal (default: dev.*.all)")
+    ap.add_argument("--balanced", action="store_true", help="use trn.*.bal (default: trn.*.all)")
     ap.add_argument("--n", default="2,3,4", help="n-gram sizes, e.g. 2,3,4")
     ap.add_argument("--min-count", type=int, default=10, help="min hits in the favoured class")
     ap.add_argument("--min-speakers", type=int, default=5,
