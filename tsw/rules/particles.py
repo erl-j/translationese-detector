@@ -264,6 +264,21 @@ RULES = [
                   "(professional translators get the reflexive right), so a rate is used.",
         source="literature A20 (as a rate), A11",
         weight=0.8, cap=2.0),
+    RateRule(
+        "particles.han_hon",
+        description="3rd-person personal pronouns 'han/hon'",
+        words=["han", "hon"],
+        # trn (dev <= 2004-06, masked): O 552 .79/1000, T 1260 1.8/1000 (ln +0.82); dev-train
+        # subset .77/2.0; T 181 speakers, top-5 share 15%. Bursty (texts >= 1 hit: O 24% vs 32%
+        # Poisson) -> weight 0.5. Also flagged by the hybrid-ML coefficients (dev-train fit).
+        rate_o=0.79, rate_t=1.8,
+        direction="T",
+        rationale="INT/explicitation: English debate speakers refer back to the rapporteur, the "
+                  "Commissioner or a colleague with he/she, kept as han/hon in translation; Swedish "
+                  "speakers more often repeat the title (föredraganden, kommissionären) or use the "
+                  "name. Turn-structure dependent (replies to named members): low weight.",
+        source="literature A11 (pronoun profile, direction [exp]); hybrid-ML coefficients",
+        weight=0.5, cap=1.0),
     ChoiceRule(
         "particles.ni_vs_man",
         description="'ni' vs generic 'man'",
