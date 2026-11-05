@@ -9,9 +9,73 @@
    "turns_starting_with_address": 22455
   }
  },
- "dev_dates": "<= 2004-06-30",
+ "date_ranges": {
+  "test": {
+   "first": "2007-01-15",
+   "last": "2011-07-06",
+   "sessions": 250
+  },
+  "trn": {
+   "first": "1997-01-14",
+   "last": "2004-05-05",
+   "sessions": 483
+  },
+  "val": {
+   "first": "2004-07-20",
+   "last": "2006-12-18",
+   "sessions": 140
+  }
+ },
  "files": {
-  "dev.100.all.jsonl": {
+  "test.100.all.jsonl": {
+   "n": 35833,
+   "n_orig": 3058,
+   "n_trans": 32775,
+   "sha256": "1772e5c76d8cec44c7b476c318dadecbd5700f5d2f6d049a178197167bddc8e3",
+   "tokens_orig": 339022,
+   "tokens_trans": 3708290
+  },
+  "test.100.bal.jsonl": {
+   "n": 6116,
+   "n_orig": 3058,
+   "n_trans": 3058,
+   "sha256": "73a889a42960015827bd3f4203f75ad600ebaa9216ef3df25dd89af183bbadb3",
+   "tokens_orig": 339022,
+   "tokens_trans": 346062
+  },
+  "test.500.all.jsonl": {
+   "n": 7714,
+   "n_orig": 589,
+   "n_trans": 7125,
+   "sha256": "27a3f86a594fab91b2c682def413fbdccbc74619efe81ea265cdcc0806416545",
+   "tokens_orig": 301276,
+   "tokens_trans": 3656430
+  },
+  "test.500.bal.jsonl": {
+   "n": 1178,
+   "n_orig": 589,
+   "n_trans": 589,
+   "sha256": "afb187adcfd8d4cfbf312b9b6693b20ab8b347849b09342eae4d98a48f13e6dc",
+   "tokens_orig": 301276,
+   "tokens_trans": 302217
+  },
+  "test.sent.all.jsonl": {
+   "n": 195870,
+   "n_orig": 19332,
+   "n_trans": 176538,
+   "sha256": "ce2b01d13bcd0788b795a156c0bff6e12ae57a594d99d1c86b9dff83d8bb27a9",
+   "tokens_orig": 347240,
+   "tokens_trans": 3698059
+  },
+  "test.sent.bal.jsonl": {
+   "n": 38664,
+   "n_orig": 19332,
+   "n_trans": 19332,
+   "sha256": "954971a4c5809697603acfbb90cd88c5e79f93cf325b3cf6a31aee79ea3843b0",
+   "tokens_orig": 347240,
+   "tokens_trans": 404762
+  },
+  "trn.100.all.jsonl": {
    "n": 40689,
    "n_orig": 7085,
    "n_trans": 33604,
@@ -19,7 +83,7 @@
    "tokens_orig": 790068,
    "tokens_trans": 3821498
   },
-  "dev.100.bal.jsonl": {
+  "trn.100.bal.jsonl": {
    "n": 14170,
    "n_orig": 7085,
    "n_trans": 7085,
@@ -27,7 +91,7 @@
    "tokens_orig": 790068,
    "tokens_trans": 804646
   },
-  "dev.500.all.jsonl": {
+  "trn.500.all.jsonl": {
    "n": 8621,
    "n_orig": 1367,
    "n_trans": 7254,
@@ -35,7 +99,7 @@
    "tokens_orig": 699168,
    "tokens_trans": 3726520
   },
-  "dev.500.bal.jsonl": {
+  "trn.500.bal.jsonl": {
    "n": 2734,
    "n_orig": 1367,
    "n_trans": 1367,
@@ -43,7 +107,7 @@
    "tokens_orig": 699168,
    "tokens_trans": 701783
   },
-  "dev.sent.all.jsonl": {
+  "trn.sent.all.jsonl": {
    "n": 219783,
    "n_orig": 43952,
    "n_trans": 175831,
@@ -51,7 +115,7 @@
    "tokens_orig": 806106,
    "tokens_trans": 3824925
   },
-  "dev.sent.bal.jsonl": {
+  "trn.sent.bal.jsonl": {
    "n": 87904,
    "n_orig": 43952,
    "n_trans": 43952,
@@ -59,53 +123,53 @@
    "tokens_orig": 806106,
    "tokens_trans": 961435
   },
-  "test.100.all.jsonl": {
-   "n": 52273,
-   "n_orig": 4735,
-   "n_trans": 47538,
-   "sha256": "aa519ef289ef0eaf0f93baba96c4f42e95f6d980ce20f84d19f852ec123c32c2",
-   "tokens_orig": 524281,
-   "tokens_trans": 5373105
+  "val.100.all.jsonl": {
+   "n": 16440,
+   "n_orig": 1677,
+   "n_trans": 14763,
+   "sha256": "fc54c9dc6a76f4f00384d1ba0e83c02b36956abee8282d24f3c7667cf27e6f50",
+   "tokens_orig": 185259,
+   "tokens_trans": 1664815
   },
-  "test.100.bal.jsonl": {
-   "n": 9470,
-   "n_orig": 4735,
-   "n_trans": 4735,
-   "sha256": "8471851f6fc6a8a1e68c315512a942e4173e8ca4ad57979839f782486cda7e87",
-   "tokens_orig": 524281,
-   "tokens_trans": 535031
+  "val.100.bal.jsonl": {
+   "n": 3354,
+   "n_orig": 1677,
+   "n_trans": 1677,
+   "sha256": "e486783367585bf17ee4650180fef93f5b023f4ff8019a45346a52849a67fce2",
+   "tokens_orig": 185259,
+   "tokens_trans": 188832
   },
-  "test.500.all.jsonl": {
-   "n": 11220,
-   "n_orig": 907,
-   "n_trans": 10313,
-   "sha256": "ab347ac91d900bd0e1e485d1a25ec93c47bb0b00bf4534d58893c47bcfde1510",
-   "tokens_orig": 463450,
-   "tokens_trans": 5290831
+  "val.500.all.jsonl": {
+   "n": 3506,
+   "n_orig": 318,
+   "n_trans": 3188,
+   "sha256": "cf1da266f075c4a064f88a1aa99f1d19fb117ee2e046aecd272fea78cacb23b7",
+   "tokens_orig": 162174,
+   "tokens_trans": 1634401
   },
-  "test.500.bal.jsonl": {
-   "n": 1814,
-   "n_orig": 907,
-   "n_trans": 907,
-   "sha256": "e698e838cbac5023bf87457fe8a27aabff1e761771f6d17f8030d82a635967e8",
-   "tokens_orig": 463450,
-   "tokens_trans": 465454
+  "val.500.bal.jsonl": {
+   "n": 636,
+   "n_orig": 318,
+   "n_trans": 318,
+   "sha256": "af75bc2eb00cee3e28c4a98a907c3267d6c5f6da381a90cd47f8c5ae73906c6d",
+   "tokens_orig": 162174,
+   "tokens_trans": 163165
   },
-  "test.sent.all.jsonl": {
-   "n": 286859,
-   "n_orig": 30196,
-   "n_trans": 256663,
-   "sha256": "99504c25d0f9d34cf2ce0f3d5ac8267a96201a47de6ed5b959e8d4d2739fb6ee",
-   "tokens_orig": 537278,
-   "tokens_trans": 5360162
+  "val.sent.all.jsonl": {
+   "n": 90989,
+   "n_orig": 10864,
+   "n_trans": 80125,
+   "sha256": "325b5c15af39645c6d5bb464d340a7b78232351c92a3ec618534b87b2a1621fd",
+   "tokens_orig": 190038,
+   "tokens_trans": 1662103
   },
-  "test.sent.bal.jsonl": {
-   "n": 60392,
-   "n_orig": 30196,
-   "n_trans": 30196,
-   "sha256": "9c32620953f0fa7b7d4263518ac0de0c3b4f16c06d844c314993d3cb6dee8a8f",
-   "tokens_orig": 537278,
-   "tokens_trans": 632062
+  "val.sent.bal.jsonl": {
+   "n": 21728,
+   "n_orig": 10864,
+   "n_trans": 10864,
+   "sha256": "32f249dea5c38f07956a5735bf4d9b810f943047946d36c6bd232344e3a0a868",
+   "tokens_orig": 190038,
+   "tokens_trans": 225366
   }
  },
  "labelling_stats": {
@@ -272,15 +336,24 @@
  "source_sha256": "d109549ff35623ded3d375dc04040e3f0b399665680ed726281f877ff5995330",
  "speaker_overlap": {
   "orig": {
-   "both": 10,
-   "dev": 151,
-   "test": 146
+   "test": 85,
+   "trn": 151,
+   "trn&test": 1,
+   "trn&val": 10,
+   "val": 89,
+   "val&test": 28
   },
   "trans": {
-   "both": 94,
-   "dev": 394,
-   "test": 892
+   "test": 631,
+   "trn": 394,
+   "trn&test": 5,
+   "trn&val": 93,
+   "val": 460,
+   "val&test": 199
   }
  },
- "test_dates": "> 2004-06-30"
+ "test_dates": "> 2006-12-31",
+ "trn_dates": "<= 2004-06-30",
+ "trn_is_old_dev": true,
+ "val_dates": "> 2004-06-30 and <= 2006-12-31"
 }
