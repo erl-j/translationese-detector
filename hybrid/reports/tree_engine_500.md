@@ -1,12 +1,12 @@
 # Depth-3 tree over the engine's rule statistics + engine score (gran=500)
 
-Fitted on dev-train (prior P(trans)=0.47). `stat:<rule>:per1000` = hits per 1000 words, `:share_a` = share of the rule's variant A among its choices, `:mean` = unit mean.
+Fitted on trn (prior P(trans)=0.50). `stat:<rule>:per1000` = hits per 1000 words, `:share_a` = share of the rule's variant A among its choices, `:mean` = unit mean. Engine `tsw.engine:Default`, tsw hash `263693870a139a72`.
 
-- IF engine_score > 0.246 AND stat:starter.ska_vs_skall:choices_per1000 <= 5.81 AND stat:starter.sent_len:mean > 21.8 THEN P(trans)=0.90 (n=358)
-- IF engine_score <= 0.246 AND stat:starter.ska_vs_skall:choices_per1000 > 3.84 AND engine_score <= -1.44 THEN P(trans)=0.03 (n=328)
-- IF engine_score <= 0.246 AND stat:starter.ska_vs_skall:choices_per1000 > 3.84 AND engine_score > -1.44 THEN P(trans)=0.17 (n=325)
-- IF engine_score > 0.246 AND stat:starter.ska_vs_skall:choices_per1000 <= 5.81 AND stat:starter.sent_len:mean <= 21.8 THEN P(trans)=0.72 (n=312)
-- IF engine_score <= 0.246 AND stat:starter.ska_vs_skall:choices_per1000 <= 3.84 AND engine_score <= -1.21 THEN P(trans)=0.16 (n=124)
-- IF engine_score <= 0.246 AND stat:starter.ska_vs_skall:choices_per1000 <= 3.84 AND engine_score > -1.21 THEN P(trans)=0.61 (n=177)
-- IF engine_score > 0.246 AND stat:starter.ska_vs_skall:choices_per1000 > 5.81 AND engine_score > 1.97 THEN P(trans)=0.75 (n=63)
-- IF engine_score > 0.246 AND stat:starter.ska_vs_skall:choices_per1000 > 5.81 AND engine_score <= 1.97 THEN P(trans)=0.43 (n=136)
+- IF engine_score > 0.032 AND stat:starter.ska_vs_skall:choices_per1000 <= 5.81 AND engine_score > 0.822 THEN P(trans)=0.89 (n=801)
+- IF engine_score <= 0.032 AND stat:starter.ska_vs_skall:choices_per1000 > 1.97 AND engine_score <= -0.764 THEN P(trans)=0.06 (n=642)
+- IF engine_score <= 0.032 AND stat:starter.ska_vs_skall:choices_per1000 > 1.97 AND engine_score > -0.764 THEN P(trans)=0.23 (n=314)
+- IF engine_score > 0.032 AND stat:starter.ska_vs_skall:choices_per1000 <= 5.81 AND engine_score <= 0.822 THEN P(trans)=0.68 (n=350)
+- IF engine_score <= 0.032 AND stat:starter.ska_vs_skall:choices_per1000 <= 1.97 AND engine_score <= -1.49 THEN P(trans)=0.19 (n=99)
+- IF engine_score > 0.032 AND stat:starter.ska_vs_skall:choices_per1000 > 5.81 AND engine_score > 1.72 THEN P(trans)=0.76 (n=110)
+- IF engine_score > 0.032 AND stat:starter.ska_vs_skall:choices_per1000 > 5.81 AND engine_score <= 1.72 THEN P(trans)=0.40 (n=255)
+- IF engine_score <= 0.032 AND stat:starter.ska_vs_skall:choices_per1000 <= 1.97 AND engine_score > -1.49 THEN P(trans)=0.63 (n=163)

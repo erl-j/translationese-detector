@@ -16,17 +16,17 @@
 "stat:starter.sent_len:mean",
 "stat:starter.calques:per1000"
 ],
-"n_iter": 51,
+"n_iter": 69,
 "gran": "sent",
 "smean": [
-20.07986921203658,
-0.4382654132820245,
-16.74821356343457,
-0.4789755794349572,
-4.588216691187054,
-1.0608880943277048,
-19.963555654390255,
-0.19881927035351557
+20.04849608663997,
+0.4389189722121091,
+16.73547848389486,
+0.4795795223577224,
+4.473202579510401,
+0.8639212240859339,
+19.939896641417313,
+0.1975492918337295
 ],
 "stat_cols": [
 "n_words",
@@ -39,13 +39,14 @@
 "starter.calques:per1000"
 ],
 "engine": "tsw.engine:Default",
-"tsw_hash": "ae5041cbd85649bf",
-"engine_commit": "589bda5e57660e12a9b1f97c1ccbc42caca54a72",
+"tsw_hash": "263693870a139a72",
+"engine_commit": "e1dd1e9b413366afaa7d49991055b8a8c9a45d2d",
 "rule_cols": [
 "starter.dem_har_vs_denna",
 "starter.ska_vs_skall",
 "starter.modal_particles",
 "starter.sent_len",
 "starter.calques"
-]
+],
+"trained_on": "trn"
 }
