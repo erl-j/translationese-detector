@@ -8,8 +8,12 @@ data/manifest.json, and writes:
   runs.json    one row per eval run (branch, commit, clf, gran, mask, metrics)
   rules.json   per-rule diagnostics for the LATEST run of each
                (branch, clf, split, gran, mask, data) that has rules
-  corpus.json  example and token counts per split, granularity and class
-Stdlib only, a few seconds of CPU.
+  corpus.json  example and token counts per split (trn, val, test), granularity
+               and class, from data/manifest.json
+Splits: results recorded as "dev" are trn (the trn files are byte-identical to
+the old dev files) and are exported with split "trn" (split_raw keeps "dev").
+Results on the retired dev-train / dev-val halves of the old dev keep their
+split name and get legacy=true. Stdlib only, a few seconds of CPU.
 """
 import argparse
 import glob
@@ -19,6 +23,8 @@ import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SHARED = "./results/all"
+SPLIT_ALIASES = {"dev": "trn"}
+LEGACY_SPLITS = ("dev-train", "dev-val")
 
 
 def num(x, nd=4):
@@ -49,7 +55,10 @@ def main():
                 r = json.load(f)
         except (OSError, ValueError):
             continue
-        if current.get(r.get("data_file")) not in (None, r.get("data_sha256")):
+        dfile = r.get("data_file") or ""
+        if dfile.startswith("dev."):
+            dfile = "trn." + dfile[4:]  # old dev files == trn files (same sha256)
+        if current.get(dfile) not in (None, r.get("data_sha256")):
             stale += 1  # scored on an older build of the data
             continue
         m = r.get("metrics") or {}
@@ -60,7 +69,9 @@ def main():
             "branch": r.get("git_branch") or "unknown",
             "commit": commit + ("+dirty" if r.get("git_dirty") else ""),
             "clf": r.get("clf"),
-            "split": r.get("split"),
+            "split": SPLIT_ALIASES.get(r.get("split"), r.get("split")),
+            "split_raw": r.get("split"),
+            "legacy": r.get("split") in LEGACY_SPLITS,
             "gran": str(r.get("gran")),
             "data": "bal" if r.get("balanced", True) else "all",
             "masked": bool(r.get("mask_topic")),

@@ -3,8 +3,13 @@
 A fully rule-based expert system: tokenisation, regexes, word lists, counts and
 hand-written rules with **hand-set** parameters. No trained models, no tagger or
 parser, no automatic fitting or search over parameters. A knowledge engineer may
-look at dev statistics (`tsw/tools/rates.py`) and type rounded values (at most 2
-significant digits) into a rule, like an expert calibrating it.
+look at trn statistics (`tsw/tools/rates.py`) and type rounded values (at most
+2 significant digits) into a rule, like an expert calibrating it.
+
+Protocol: **calibrate and inspect on trn, compare on val (aggregate metrics
+only, sparingly), test once at the end.** trn = sessions 1997 – 2004-06-30 (the
+former dev split, byte-identical), val = 2004-07-01 – 2006-12-31, test =
+2007 – 2011 (locked).
 
 ```
 raw text ─ normalise (+ offset map) ─ sentences ─ tokens ─ Doc views
@@ -21,11 +26,11 @@ python3 -m tsw -f speech.txt --json            # Engine.annotate() as JSON
 python3 -m tsw --list-rules --all-rules
 python3 -m unittest discover -s tsw/tests -t .  # unit tests (fast, login node is fine)
 
-# evaluation (dev only); the full run goes through Slurm:
+# evaluation (trn + val by default); the full run goes through Slurm:
 srun -p berzelius-hopper-cpu --time=00:15:00 -c 1 --mem=8G \
     python3 evals/run_all.py --clf tsw.engine:Default --quiet
-python3 evals/run.py --clf 'tsw.engine:Families(only="starter")' --gran 500 --limit 500 --mask-topic
-python3 evals/run.py --clf 'tsw.engine:Engine(exclude="starter.sent_len")' --gran 100 --limit 500
+python3 evals/run.py --clf 'tsw.engine:Families(only="starter")' --split trn --gran 500 --limit 500 --mask-topic
+python3 evals/run.py --clf 'tsw.engine:Engine(exclude="starter.sent_len")' --split trn --gran 100 --limit 500
 ```
 
 Harness constructors (keyword literals only, parsed by `evals/run.py`):
@@ -50,7 +55,7 @@ Harness constructors (keyword literals only, parsed by `evals/run.py`):
 | `tsw/rules/<family>.py` | one module per family: `RULES = [...]`, optional `FAMILY`, `FAMILY_CAP` |
 | `tsw/engine.py` | `Engine`, `Default`, `Families` |
 | `tsw/__main__.py` | CLI |
-| `tsw/tools/rates.py` | calibration helper (dev only) |
+| `tsw/tools/rates.py` | calibration helper (trn only; refuses val and test) |
 | `tsw/tests/` | unit tests |
 
 ## Writing a rule family
@@ -62,7 +67,7 @@ never conflict.
 ```python
 """<family>: one paragraph on what the family covers and why.
 
-Calibration: python3 -m tsw.tools.rates ... on dev.500.bal, <date>.
+Calibration: python3 -m tsw.tools.rates ... on trn.500.bal, <date>.
 """
 from .base import ChoiceRule, HitRule, PredicateRule, RateRule, StatRule, words_rx
 
@@ -91,7 +96,8 @@ RULES = [
 Checklist for every rule: a `rationale` (mechanism) and a `source` (key from
 `docs/literature.md`, or `[exp]`), a direction that the constructor can check,
 values from `rates.py` rounded to ≤ 2 significant digits, a `cap`, and a
-`# dev.500.bal: ...` comment next to the numbers recording what you looked at.
+`# trn.500.bal: ...` comment next to the numbers recording what you looked at
+(older comments say `dev.500.bal`: the same file).
 
 ## Rule types and their maths
 
@@ -216,8 +222,23 @@ a capital follows. `Herr talman! Jag ...` is two sentences.
 
 ## Calibration protocol
 
+Calibrate and inspect on **trn**, compare on **val** (aggregate metrics only,
+sparingly), score **test** once at the end.
+
+| split | sessions | used for |
+|---|---|---|
+| trn | 1997-01 – 2004-06-30 (the former dev, byte-identical) | `rates.py`, KWIC, examples, `--show-errors`, ablations while developing |
+| val | 2004-07-01 – 2006-12-31 | aggregate metrics only: comparing and selecting rule sets, a handful of runs per branch |
+| test | 2007-01-01 – 2011 | one final, pre-registered run (`--i-mean-it`) |
+
+The cuts are by session date in `data/build.py`, so a session never straddles
+one. Balanced 500-token files: trn 1367 + 1367, val 318 + 318, test 589 + 589.
+val sits in the next parliamentary term, after the 2004 enlargement, so it also
+measures drift; nobody has read its texts.
+
 1. Write the rule's pattern(s) with a rationale *before* looking at numbers.
-2. Look at dev statistics (dev only; the tool refuses test):
+2. Look at trn statistics (the tool refuses `--split val` and `--split test`;
+   `trn` is the default, `dev` an alias):
 
    ```bash
    python3 -m tsw.tools.rates --rx '\bju\b(?!\s+\w+(re|are)\b)' --kwic 8 --by-speaker --by-year
@@ -230,14 +251,19 @@ a capital follows. `Herr talman! Jag ...` is two sentences.
    It prints, per class, hits, rate per 1000 words, share of texts with ≥ 1 hit,
    the rate rounded to 2 s.f., ln(T/O) per hit, the most frequent matched forms,
    P(A) for choices, random KWIC lines, speaker concentration (top-5 speakers'
-   share of hits) and per-year rates. Default data dev.500.bal (~0.7M words per
+   share of hits) and per-year rates. Default data trn.500.bal (~0.7M words per
    class); `--gran 100/sent`, `--unbalanced` (more T text for rare items),
    `--limit N`. A full pass takes a few seconds; anything heavier → `srun`.
 3. Read the KWIC lines: are the hits what you meant? Fix the regex, not the numbers.
 4. Type rounded values into the rule, with a comment of what you saw.
-5. Evaluate on dev (`evals/run_all.py` via `srun`), check the per-rule table in
-   the results JSON (`rules` → `auc`, `sign_acc`, `fire_O/T`) for **masked**
-   conditions, and the family-level ablation (`Engine(exclude="yourfamily")`).
+5. Evaluate on trn while developing (`evals/run.py --split trn`, `--show-errors`
+   for error reading), check the per-rule table in the results JSON (`rules` →
+   `auc`, `sign_acc`, `fire_O/T`) for **masked** conditions, and the
+   family-level ablation (`Engine(exclude="yourfamily")`).
+6. When a family is ready, score trn and val once (`evals/run_all.py` via
+   `srun`; default `--splits trn,val`). Compare masked AUC: a trn-minus-val gap
+   above ~0.03 at 500 tokens means the hand calibration fits trn (or the rule
+   is drifting). Do not iterate on val: a handful of val runs per branch.
 
 ## Anti-overfitting rules
 
@@ -255,9 +281,9 @@ a capital follows. `Herr talman! Jag ...` is two sentences.
   translated turns. That is an artefact of turn structure; do not build rules on
   it. Vocative-only sentences are flagged in `doc.is_address`; skip them in
   sentence-position and sentence-length rules (`sentence_lengths` does).
-- **Diachrony**: dev = 1997–mid 2004, test = mid 2004–2011. House-style and
-  language drift (skall → ska, kommer att → kommer, anglicisms) shifts rates
-  between dev and test. Prefer ratios between native variants of the same era,
+- **Diachrony**: trn = 1997–mid 2004, val = mid 2004–2006, test = 2007–2011.
+  House-style and language drift (skall → ska, kommer att → kommer, anglicisms)
+  shifts rates between trn and val/test; val measures exactly this. Prefer ratios between native variants of the same era,
   keep caps small for drifting items, and mention the risk in the rationale.
 - Europarl artefacts (procedural phrases, Commission formulae) belong in a
   separate family that can be excluded, not in the core families.
@@ -265,6 +291,10 @@ a capital follows. `Herr talman! Jag ...` is two sentences.
   values, no grid search over weights/caps/thresholds, not even "just to see".
 - Never look at the test split (no rates, no error inspection, no runs without a
   pre-registered reason; `evals/run.py` requires `--i-mean-it`).
+- val is metrics-only: never read its texts (`--show-errors` is refused,
+  `rates.py` refuses it), never tune a value until a val number moves, and run
+  it sparingly (a handful of runs per branch, to compare and select). Rates,
+  probabilities, KWIC lines and error reading come only from trn.
 
 ## Calibration findings so far (starter family, dev.500.bal)
 
