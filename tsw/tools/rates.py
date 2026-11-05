@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Knowledge-engineering helper: per-class statistics of a pattern on DEV ONLY.
+"""Knowledge-engineering helper: per-class statistics of a pattern on DEV-TRAIN ONLY.
 
 This prints descriptive statistics; a human reads them and types rounded
 values (<= 2 significant digits) into a rule definition. Nothing here writes
@@ -14,8 +14,11 @@ or tunes rule parameters.
 
 Regexes run on the lower-cased normalised text (doc.lower) unless --case.
 Rates are per 1000 word tokens as counted by tsw.doc.Doc (the same
-denominator RateRule uses). Default data: dev.500.bal (all 1367+1367 chunks).
-The test split is refused.
+denominator RateRule uses). Data: the dev-train part of dev.<gran>.bal
+(sessions before 2002-03-01, evals/devsplit.py; at 500 tokens 975 O + 848 T
+chunks). Calibration sees only dev-train: --split dev-val, dev and test are
+refused, because dev-val is where rule sets are compared and selected, and
+test is scored once at the end.
 """
 import argparse
 import importlib
@@ -40,21 +43,36 @@ from tsw.rules import base as B  # noqa: E402
 CLASSES = ((0, "O"), (1, "T"))
 
 
+CALIBRATION_SPLIT = "dev-train"
+
+
+def check_split(split):
+    """Calibration may only look at dev-train; everything else is refused."""
+    if split != CALIBRATION_SPLIT:
+        sys.exit("REFUSING: rates.py works on dev-train only (got --split %s). dev-val is for comparing "
+                 "and selecting rule sets with evals/run.py, test is locked until the final run, and "
+                 "'dev' contains dev-val." % split)
+
+
 def _data_file(gran, unbalanced, data_dir):
     import run as harness  # evals/run.py (also resolves worktree data dirs)
     ddir = harness.data_dir(data_dir)
     path = os.path.join(ddir, "dev.%s.%s.jsonl" % (gran, "all" if unbalanced else "bal"))
     if "test" in os.path.basename(path):
-        sys.exit("REFUSING: rates.py works on dev only.")
+        sys.exit("REFUSING: rates.py works on dev-train only.")
     return path
 
 
-def load(gran="500", unbalanced=False, limit=None, seed=0, mask=False, data_dir=None):
+def load(gran="500", unbalanced=False, limit=None, seed=0, mask=False, data_dir=None,
+         split=CALIBRATION_SPLIT):
+    check_split(split)
+    import devsplit  # evals/devsplit.py
     path = _data_file(gran, unbalanced, data_dir)
     recs = []
     with open(path, encoding="utf-8") as f:
         for line in f:
             recs.append(json.loads(line))
+    recs = devsplit.select(recs, split)
     if limit and limit < len(recs):
         rng = random.Random("rates|%d" % seed)
         recs = [recs[i] for i in sorted(rng.sample(range(len(recs)), limit))]
@@ -144,8 +162,8 @@ def analyse_matchers(recs, matchers, args):
         if chosen:
             any_choice[y] += 1
 
-    print("data: %d texts (O %d / T %d), words O %d / T %d%s"
-          % (len(recs), n_texts[0], n_texts[1], tot_words[0], tot_words[1],
+    print("data: %s, %d texts (O %d / T %d), words O %d / T %d%s"
+          % (args.split, len(recs), n_texts[0], n_texts[1], tot_words[0], tot_words[1],
              ", topic-masked" if args.mask_topic else ""))
     for tag, m in matchers:
         print("\n== %s: /%s/%s" % (tag, m.source if len(m.source) < 200 else m.source[:200] + "...",
@@ -266,12 +284,13 @@ def main(argv=None):
     ap.add_argument("--limit", type=int)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--data-dir")
-    ap.add_argument("--split", default="dev", help=argparse.SUPPRESS)
+    ap.add_argument("--split", default=CALIBRATION_SPLIT,
+                    help="only dev-train is allowed (dev-val, dev and test are refused)")
     args = ap.parse_args(argv)
-    if args.split != "dev":
-        sys.exit("REFUSING: rates.py works on dev only (never look at test).")
+    check_split(args.split)
 
-    recs = load(args.gran, args.unbalanced, args.limit, args.seed, args.mask_topic, args.data_dir)
+    recs = load(args.gran, args.unbalanced, args.limit, args.seed, args.mask_topic, args.data_dir,
+                split=args.split)
     if args.stat or (args.rule and isinstance(_resolve_rule(args.rule), B.StatRule)):
         if args.rule:
             r = _resolve_rule(args.rule)
