@@ -40,3 +40,15 @@ One line per `evals/run.py` invocation (appended automatically). AUC is ROC-AUC 
 | 20261105T223520Z | main | 69eb2eee+dirty | `tsw.engine:Default` | dev | 500 | bal | - | 2734 | 0.7714 | 0.7705 | 0.8473 |
 | 20261105T223526Z | main | 69eb2eee+dirty | `tsw.engine:Engine(exclude="starter.sent_len")` | dev | 500 | bal | masked | 2734 | 0.6335 | 0.6173 | 0.7082 |
 | 20261105T223528Z | main | 69eb2eee+dirty | `tsw.engine:Default` | dev | 500 | bal | masked | 2734 | 0.7714 | 0.7705 | 0.8468 |
+| 20261105T225427Z | feat/connpunct | 26aca3cb | `tsw.engine:Families(only="connpunct")` | dev | sent | bal | - | 87904 | 0.5692 | 0.5391 | 0.6369 |
+| 20261105T225429Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | sent | bal | - | 87904 | 0.5994 | 0.5977 | 0.6502 |
+| 20261105T225446Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | sent | bal | masked | 87904 | 0.5692 | 0.5391 | 0.6367 |
+| 20261105T225452Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | sent | bal | masked | 87904 | 0.5993 | 0.5975 | 0.6501 |
+| 20261105T225457Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 100 | bal | - | 14170 | 0.7128 | 0.7126 | 0.7837 |
+| 20261105T225506Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 100 | bal | - | 14170 | 0.7399 | 0.7399 | 0.8217 |
+| 20261105T225511Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 100 | bal | masked | 14170 | 0.7128 | 0.7126 | 0.7836 |
+| 20261105T225520Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 500 | bal | - | 2734 | 0.8537 | 0.8535 | 0.9322 |
+| 20261105T225524Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 100 | bal | masked | 14170 | 0.7397 | 0.7397 | 0.8215 |
+| 20261105T225532Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Families(only="connpunct")` | dev | 500 | bal | masked | 2734 | 0.8537 | 0.8535 | 0.9322 |
+| 20261105T225535Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 500 | bal | - | 2734 | 0.8961 | 0.8961 | 0.9577 |
+| 20261105T225550Z | feat/connpunct | 26aca3cb+dirty | `tsw.engine:Default` | dev | 500 | bal | masked | 2734 | 0.8961 | 0.8961 | 0.9576 |

@@ -1,0 +1,181 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"connpunct\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"connpunct\")",
+ "data_file": "dev.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 11.61,
+ "git_branch": "feat/connpunct",
+ "git_commit": "26aca3cbd848f030e34718051a8bb19a4eb20624",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.8536942209217264,
+  "confusion": {
+   "fn": 244,
+   "fp": 156,
+   "tn": 1211,
+   "tp": 1123
+  },
+  "macro_f1": 0.8535424879456468,
+  "n": 2734,
+  "n_orig": 1367,
+  "n_trans": 1367,
+  "pred_trans_rate": 0.46781272860277984,
+  "roc_auc": 0.9322321691838503
+ },
+ "rules": {
+  "cap:connpunct": {
+   "auc": 0.3988785720898448,
+   "fire_orig": 0.10021945866861741,
+   "fire_trans": 0.11338697878566203,
+   "log_odds": 0.1377580615321352,
+   "mean_orig": 0.072705151780297,
+   "mean_trans": -0.11044458563546641,
+   "n_fire": 292,
+   "sign_acc": 0.0
+  },
+  "connpunct.additive_ocksa": {
+   "auc": 0.7637287424499207,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.29416304101866514,
+   "mean_trans": 0.26069764026390685,
+   "n_fire": 2734,
+   "sign_acc": 0.7004389173372348
+  },
+  "connpunct.att_drop": {
+   "auc": 0.5492243492630395,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.031826662895635065,
+   "mean_trans": 0.02365666103140654,
+   "n_fire": 2734,
+   "sign_acc": 0.5299926847110461
+  },
+  "connpunct.calque_connectives": {
+   "auc": 0.6621206096894667,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.24780291500590326,
+   "mean_trans": 0.32794898594495026,
+   "n_fire": 2734,
+   "sign_acc": 0.6664228237015362
+  },
+  "connpunct.clause_comma_omission": {
+   "auc": 0.6058948278713044,
+   "fire_orig": 0.7417702999268471,
+   "fire_trans": 0.6949524506217996,
+   "log_odds": -0.23156405629166832,
+   "mean_orig": -0.06672587834952148,
+   "mean_trans": 0.08608351412092959,
+   "n_fire": 1964,
+   "sign_acc": 0.5936863543788188
+  },
+  "connpunct.exclamation": {
+   "auc": 0.587208732967337,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.05802517091118286,
+   "mean_trans": 0.06608478787319005,
+   "n_fire": 2734,
+   "sign_acc": 0.576444769568398
+  },
+  "connpunct.explanatory_parens": {
+   "auc": 0.5179379768383074,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.044068918800292796,
+   "mean_trans": 0.026121502560350996,
+   "n_fire": 2734,
+   "sign_acc": 0.5321872713972202
+  },
+  "connpunct.initial_adverbial_comma": {
+   "auc": 0.665448343731889,
+   "fire_orig": 0.916605705925384,
+   "fire_trans": 0.8434528163862473,
+   "log_odds": -0.7108737553583169,
+   "mean_orig": -0.15880561247885328,
+   "mean_trans": 0.1317319924537503,
+   "n_fire": 2406,
+   "sign_acc": 0.5806317539484622
+  },
+  "connpunct.initial_men": {
+   "auc": 0.5605007039694674,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.058674596698826686,
+   "mean_trans": 0.025145817575279086,
+   "n_fire": 2734,
+   "sign_acc": 0.570592538405267
+  },
+  "connpunct.initial_och": {
+   "auc": 0.5089073141651714,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.06790937088514981,
+   "mean_trans": 0.05811423408924651,
+   "n_fire": 2734,
+   "sign_acc": 0.5303584491587418
+  },
+  "connpunct.native_connectives": {
+   "auc": 0.8116420121272186,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.6052583750637832,
+   "mean_trans": 0.4057958432544813,
+   "n_fire": 2734,
+   "sign_acc": 0.7329919531821507
+  },
+  "connpunct.parenthetical_dash": {
+   "auc": 0.6213915210075085,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.14187974530133385,
+   "mean_trans": 0.1254983424336003,
+   "n_fire": 2734,
+   "sign_acc": 0.6166788588149232
+  },
+  "connpunct.som_drop": {
+   "auc": 0.5492778627155187,
+   "fire_orig": 0.34893928310168254,
+   "fire_trans": 0.359912216532553,
+   "log_odds": 0.0479182516951685,
+   "mean_orig": -0.01661125573509022,
+   "mean_trans": 0.035022322432647926,
+   "n_fire": 969,
+   "sign_acc": 0.5810113519091847
+  },
+  "connpunct.written_out_abbrev": {
+   "auc": 0.6664006156187573,
+   "fire_orig": 0.6949524506217996,
+   "fire_trans": 0.429407461594733,
+   "log_odds": -1.1067621115747464,
+   "mean_orig": -0.15434385235419948,
+   "mean_trans": 0.08993744991030159,
+   "n_fire": 1537,
+   "sign_acc": 0.6877033181522446
+  }
+ },
+ "split": "dev",
+ "timestamp": "20261105T225532Z",
+ "worktree": "worktrees/connpunct"
+}
