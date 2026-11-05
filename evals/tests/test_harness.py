@@ -94,5 +94,36 @@ class TestGuardAndMask(unittest.TestCase):
         self.assertNotEqual(c.score("x"), run.load_clf("baselines:Random(seed=8)").score("x"))
 
 
+class TestSplits(unittest.TestCase):
+    def _main(self, argv):
+        with contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(SystemExit) as cm:
+                run.main(argv)
+        return str(cm.exception.code)
+
+    def test_dev_is_alias_of_trn(self):
+        self.assertEqual(run.canon_split("dev"), "trn")
+        self.assertEqual(run.canon_split("val"), "val")
+        self.assertTrue(run.data_path("/d", "dev", "500", True).endswith("/trn.500.bal.jsonl"))
+        self.assertTrue(run.data_path("/d", "val", "sent", False).endswith("/val.sent.all.jsonl"))
+
+    def test_val_is_metrics_only(self):
+        run.check_test_guard("val", False)  # metrics on val are fine
+        with self.assertRaises(SystemExit):
+            run.check_test_guard("val", False, show_errors_n=3)
+        with self.assertRaises(SystemExit):
+            run.check_test_guard("val", True, show_errors_n=1)  # --i-mean-it does not unlock it
+        self.assertIn("REFUSING", self._main(["--clf", "baselines:Constant", "--split", "val", "--gran", "500",
+                                              "--show-errors", "2", "--no-save"]))
+
+    def test_trn_allows_errors(self):
+        run.check_test_guard("trn", False, show_errors_n=5)
+        run.check_test_guard("dev", False, show_errors_n=5)
+
+    def test_legacy_split_names_not_runnable(self):
+        with self.assertRaises(SystemExit):
+            run.check_test_guard("dev-val", False)
+
+
 if __name__ == "__main__":
     unittest.main()

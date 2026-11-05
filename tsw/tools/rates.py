@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Knowledge-engineering helper: per-class statistics of a pattern on DEV ONLY.
+"""Knowledge-engineering helper: per-class statistics of a pattern on TRN ONLY.
 
 This prints descriptive statistics; a human reads them and types rounded
 values (<= 2 significant digits) into a rule definition. Nothing here writes
@@ -14,8 +14,11 @@ or tunes rule parameters.
 
 Regexes run on the lower-cased normalised text (doc.lower) unless --case.
 Rates are per 1000 word tokens as counted by tsw.doc.Doc (the same
-denominator RateRule uses). Default data: dev.500.bal (all 1367+1367 chunks).
-The test split is refused.
+denominator RateRule uses). Data: trn.<gran>.bal (sessions 1997 .. 2004-06-30,
+the former dev split; at 500 tokens 1367 + 1367 chunks). Calibration and KWIC
+inspection see only trn: --split val and --split test are refused, because val
+is only ever looked at as aggregate metrics (evals/run.py) and test is scored
+once at the end. --split dev is accepted as the old name of trn.
 """
 import argparse
 import importlib
@@ -40,16 +43,29 @@ from tsw.rules import base as B  # noqa: E402
 CLASSES = ((0, "O"), (1, "T"))
 
 
+CALIBRATION_SPLIT = "trn"
+ALLOWED_SPLITS = ("trn", "dev")  # dev = old name of trn (same files)
+
+
+def check_split(split):
+    """Calibration and inspection may only look at trn; val and test are refused."""
+    if split not in ALLOWED_SPLITS:
+        sys.exit("REFUSING: rates.py works on trn only (got --split %s). val is looked at only as "
+                 "aggregate metrics via evals/run.py, and test is locked until the final run." % split)
+
+
 def _data_file(gran, unbalanced, data_dir):
     import run as harness  # evals/run.py (also resolves worktree data dirs)
     ddir = harness.data_dir(data_dir)
-    path = os.path.join(ddir, "dev.%s.%s.jsonl" % (gran, "all" if unbalanced else "bal"))
-    if "test" in os.path.basename(path):
-        sys.exit("REFUSING: rates.py works on dev only.")
+    path = os.path.join(ddir, "%s.%s.%s.jsonl" % (CALIBRATION_SPLIT, gran, "all" if unbalanced else "bal"))
+    if not os.path.basename(path).startswith(CALIBRATION_SPLIT + "."):
+        sys.exit("REFUSING: rates.py works on trn only.")
     return path
 
 
-def load(gran="500", unbalanced=False, limit=None, seed=0, mask=False, data_dir=None):
+def load(gran="500", unbalanced=False, limit=None, seed=0, mask=False, data_dir=None,
+         split=CALIBRATION_SPLIT):
+    check_split(split)
     path = _data_file(gran, unbalanced, data_dir)
     recs = []
     with open(path, encoding="utf-8") as f:
@@ -144,8 +160,8 @@ def analyse_matchers(recs, matchers, args):
         if chosen:
             any_choice[y] += 1
 
-    print("data: %d texts (O %d / T %d), words O %d / T %d%s"
-          % (len(recs), n_texts[0], n_texts[1], tot_words[0], tot_words[1],
+    print("data: %s, %d texts (O %d / T %d), words O %d / T %d%s"
+          % (CALIBRATION_SPLIT, len(recs), n_texts[0], n_texts[1], tot_words[0], tot_words[1],
              ", topic-masked" if args.mask_topic else ""))
     for tag, m in matchers:
         print("\n== %s: /%s/%s" % (tag, m.source if len(m.source) < 200 else m.source[:200] + "...",
@@ -255,7 +271,7 @@ def main(argv=None):
     g.add_argument("--rule", help="name of an existing rule: analyse its pattern(s)/units")
     g.add_argument("--stat", help="'sentlen' or module:function returning [(value, span)] per doc")
     ap.add_argument("--gran", default="500", choices=["sent", "100", "500"])
-    ap.add_argument("--unbalanced", action="store_true", help="use dev.*.all instead of dev.*.bal")
+    ap.add_argument("--unbalanced", action="store_true", help="use trn.*.all instead of trn.*.bal")
     ap.add_argument("--mask-topic", action="store_true")
     ap.add_argument("--case", action="store_true", help="match on case-preserved text")
     ap.add_argument("--kwic", type=int, default=0, metavar="N", help="N random concordance lines per class")
@@ -266,12 +282,13 @@ def main(argv=None):
     ap.add_argument("--limit", type=int)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--data-dir")
-    ap.add_argument("--split", default="dev", help=argparse.SUPPRESS)
+    ap.add_argument("--split", default=CALIBRATION_SPLIT,
+                    help="only trn is allowed ('dev' = trn); val and test are refused")
     args = ap.parse_args(argv)
-    if args.split != "dev":
-        sys.exit("REFUSING: rates.py works on dev only (never look at test).")
+    check_split(args.split)
 
-    recs = load(args.gran, args.unbalanced, args.limit, args.seed, args.mask_topic, args.data_dir)
+    recs = load(args.gran, args.unbalanced, args.limit, args.seed, args.mask_topic, args.data_dir,
+                split=args.split)
     if args.stat or (args.rule and isinstance(_resolve_rule(args.rule), B.StatRule)):
         if args.rule:
             r = _resolve_rule(args.rule)
