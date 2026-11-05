@@ -1,0 +1,83 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"wordorder\")",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"wordorder\")",
+ "data_file": "trn.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 6.06,
+ "git_branch": "feat/wordorder",
+ "git_commit": "b9a571f35c536197133a42768c5cae30b599ddc8",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.7099487929773226,
+  "confusion": {
+   "fn": 376,
+   "fp": 417,
+   "tn": 950,
+   "tp": 991
+  },
+  "macro_f1": 0.7098835486061628,
+  "n": 2734,
+  "n_orig": 1367,
+  "n_trans": 1367,
+  "pred_trans_rate": 0.514996342355523,
+  "roc_auc": 0.7831859662041142
+ },
+ "rules": {
+  "cap:wordorder": {
+   "auc": 0.4996342355523043,
+   "fire_orig": 0.0,
+   "fire_trans": 0.000731528895391368,
+   "log_odds": 1.0993438175961234,
+   "mean_orig": 0.0,
+   "mean_trans": -4.701880329915879e-05,
+   "n_fire": 1,
+   "sign_acc": 0.0
+  },
+  "wordorder.fronted_theme": {
+   "auc": 0.781014925437031,
+   "fire_orig": 0.986100950987564,
+   "fire_trans": 0.9334308705193856,
+   "log_odds": -1.6007954126100206,
+   "mean_orig": -1.124625046859572,
+   "mean_trans": -0.1340066677290672,
+   "n_fire": 2624,
+   "sign_acc": 0.6482469512195121
+  },
+  "wordorder.subject_theme": {
+   "auc": 0.5751612494106831,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.42464765850239683,
+   "mean_trans": 0.5581839115816621,
+   "n_fire": 2734,
+   "sign_acc": 0.5354791514264814
+  },
+  "wordorder.v2_violation": {
+   "auc": 0.5117087434024602,
+   "fire_orig": 0.002926115581565472,
+   "fire_trans": 0.026335040234089245,
+   "log_odds": 2.116983660843828,
+   "mean_orig": 0.0043891733723482075,
+   "mean_trans": 0.043891733723482075,
+   "n_fire": 40,
+   "sign_acc": 0.9
+  }
+ },
+ "split": "trn",
+ "timestamp": "20261105T230927Z",
+ "worktree": "worktrees/wordorder"
+}

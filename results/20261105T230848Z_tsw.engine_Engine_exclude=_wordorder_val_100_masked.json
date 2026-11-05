@@ -1,0 +1,93 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Engine(exclude=\"wordorder\")",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Engine(exclude=\"wordorder\")",
+ "data_file": "val.100.bal.jsonl",
+ "data_sha256": "e486783367585bf17ee4650180fef93f5b023f4ff8019a45346a52849a67fce2",
+ "elapsed_sec": 2.33,
+ "git_branch": "feat/wordorder",
+ "git_commit": "b9a571f35c536197133a42768c5cae30b599ddc8",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.610912343470483,
+  "confusion": {
+   "fn": 492,
+   "fp": 813,
+   "tn": 864,
+   "tp": 1185
+  },
+  "macro_f1": 0.6073154484345666,
+  "n": 3354,
+  "n_orig": 1677,
+  "n_trans": 1677,
+  "pred_trans_rate": 0.5957066189624329,
+  "roc_auc": 0.6400910064220794
+ },
+ "rules": {
+  "starter.calques": {
+   "auc": 0.4955494182935211,
+   "fire_orig": 0.016100178890876567,
+   "fire_trans": 0.007155635062611807,
+   "log_odds": -0.7975044667047566,
+   "mean_orig": 0.021765056648777578,
+   "mean_trans": 0.01138938580799046,
+   "n_fire": 39,
+   "sign_acc": 0.3076923076923077
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.49726081123510085,
+   "fire_orig": 0.7113893858079905,
+   "fire_trans": 0.7501490757304711,
+   "log_odds": 0.19708427422004593,
+   "mean_orig": -0.01252670130899277,
+   "mean_trans": 0.04453252597152227,
+   "n_fire": 2451,
+   "sign_acc": 0.5095879232966136
+  },
+  "starter.modal_particles": {
+   "auc": 0.5599247100890401,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.017631053890920196,
+   "mean_trans": 0.0748052030204231,
+   "n_fire": 3354,
+   "sign_acc": 0.522659511031604
+  },
+  "starter.sent_len": {
+   "auc": 0.679884892557023,
+   "fire_orig": 0.9928443649373881,
+   "fire_trans": 0.9922480620155039,
+   "log_odds": -0.07756164175478286,
+   "mean_orig": -0.15781945327399846,
+   "mean_trans": 0.06319209331894317,
+   "n_fire": 3329,
+   "sign_acc": 0.6374286572544308
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.5943044003742094,
+   "fire_orig": 0.48300536672629696,
+   "fire_trans": 0.2277877161598092,
+   "log_odds": -1.1519591760902905,
+   "mean_orig": 0.1552175066482536,
+   "mean_trans": 0.13880723646129775,
+   "n_fire": 1192,
+   "sign_acc": 0.6543624161073825
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230848Z",
+ "worktree": "worktrees/wordorder"
+}

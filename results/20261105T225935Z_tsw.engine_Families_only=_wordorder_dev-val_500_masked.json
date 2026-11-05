@@ -1,0 +1,82 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"wordorder\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"wordorder\")",
+ "data_file": "dev.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 2.25,
+ "git_branch": "feat/wordorder",
+ "git_commit": "75e241c8cf3d131320628f042646285e1a7e424f",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.6684961580680571,
+  "confusion": {
+   "fn": 190,
+   "fp": 112,
+   "tn": 280,
+   "tp": 329
+  },
+  "macro_f1": 0.6675343194122196,
+  "n": 911,
+  "n_orig": 392,
+  "n_trans": 519,
+  "pred_trans_rate": 0.4840834248079034,
+  "roc_auc": 0.7350846407927333
+ },
+ "rules": {
+  "cap:wordorder": {
+   "auc": 0.5012755102040817,
+   "fire_orig": 0.002551020408163265,
+   "fire_trans": 0.0,
+   "log_odds": -1.3814935837765336,
+   "mean_orig": -0.0009086128238389984,
+   "mean_trans": 0.0,
+   "n_fire": 1,
+   "sign_acc": 1.0
+  },
+  "wordorder.fronted_theme": {
+   "auc": 0.7579897565962801,
+   "fire_orig": 0.9897959183673469,
+   "fire_trans": 0.9364161849710982,
+   "log_odds": -1.782524310236389,
+   "mean_orig": -1.2499349346195778,
+   "mean_trans": -0.30301699571998725,
+   "n_fire": 874,
+   "sign_acc": 0.5755148741418764
+  },
+  "wordorder.subject_theme": {
+   "auc": 0.5293416499547796,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.28033027331681915,
+   "mean_orig": 0.5001316597740231,
+   "mean_trans": 0.5807918703686585,
+   "n_fire": 911,
+   "sign_acc": 0.5729967069154775
+  },
+  "wordorder.v2_violation": {
+   "auc": 0.512216880972042,
+   "fire_orig": 0.002551020408163265,
+   "fire_trans": 0.02697495183044316,
+   "log_odds": 2.0131210182886963,
+   "mean_orig": 0.003826530612244898,
+   "mean_trans": 0.046242774566473986,
+   "n_fire": 15,
+   "sign_acc": 0.9333333333333333
+  }
+ },
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T225935Z",
+ "worktree": "worktrees/wordorder"
+}
