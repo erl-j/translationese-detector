@@ -1,0 +1,40 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "baselines:Constant",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "baselines:Constant",
+ "data_file": "dev.sent.bal.jsonl",
+ "data_sha256": "ffad4bf48ca21fe3b0846bfa1cd05c8a746929c67328a1b8aea5690f0487872d",
+ "elapsed_sec": 0.75,
+ "git_branch": "main",
+ "git_commit": "e35cd8692f4ecdb8e07cb71b3d9ece7260f9e45a",
+ "git_dirty": false,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.5,
+  "confusion": {
+   "fn": 0,
+   "fp": 43952,
+   "tn": 0,
+   "tp": 43952
+  },
+  "macro_f1": 0.3333333333333333,
+  "n": 87904,
+  "n_orig": 43952,
+  "n_trans": 43952,
+  "pred_trans_rate": 1.0,
+  "roc_auc": 0.5
+ },
+ "rules": null,
+ "split": "dev",
+ "timestamp": "20261105T221720Z",
+ "worktree": "."
+}
