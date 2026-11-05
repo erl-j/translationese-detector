@@ -97,3 +97,62 @@ class Hybrid:
 
     def score(self, text):
         return self.score_and_explain(text)[0]
+
+
+class Stacked:
+    """Phase-B models (hybrid/stack.py): ML over the rule engine's explain() output.
+
+        python3 evals/run.py --clf "hybrid.clf:Stacked(model='stack_rules')" --split dev-val --gran 500
+
+    Inputs named in the model JSON: "engine_score", "rule:<rule name>" (pre-cap
+    contribution), "fam:<family>" (family subscore after its cap), "feat:<expert
+    feature>" (hybrid/features.py). The engine is tsw.engine:Default as found in
+    this checkout; the model JSON records the tsw hash it was fitted against.
+    explain() returns the learned per-input contributions w_j * x_j.
+    """
+
+    def __init__(self, model="stack_rules", gran=None, models_dir=None):
+        from tsw.engine import Default
+        self.engine = Default()
+        self.fam_of = {r.name: r.family for r in self.engine.rules}
+        self.inner = Hybrid(model=model, gran=gran, models_dir=models_dir)
+
+    def _inputs(self, text, m):
+        s, ex = self.engine.score_and_explain(text)
+        need_feat = any(i.startswith("feat:") for i in m["inputs"])
+        feats = {}
+        if need_feat:
+            fx = F.transform(np.asarray([F.raw_counts(text)], dtype=np.float64), np)[0]
+            feats = dict(zip(F.feature_names(), fx))
+        fam = {}
+        for k, v in ex.items():
+            f = k[4:] if k.startswith("cap:") else self.fam_of.get(k)
+            fam[f] = fam.get(f, 0.0) + v
+        x = []
+        for i in m["inputs"]:
+            if i == "engine_score":
+                x.append(s)
+            elif i.startswith("rule:"):
+                x.append(ex.get(i[5:], 0.0))
+            elif i.startswith("fam:"):
+                x.append(fam.get(i[4:], 0.0))
+            elif i.startswith("feat:"):
+                x.append(feats[i[5:]])
+        return np.asarray(x, dtype=np.float64)
+
+    def score_and_explain(self, text):
+        g = self.inner.gran or gran_for(text)
+        m = self.inner._model(g)
+        x = self._inputs(text, m)
+        if m["kind"] == "linear":
+            c = x * m["w_arr"]
+            return float(c.sum() + m["b"]), {m["inputs"][j]: float(c[j]) for j in np.flatnonzero(c)}
+        nodes, i = m["nodes"], 0
+        while nodes[i]["left"] >= 0:
+            i = nodes[i]["left"] if x[nodes[i]["f"]] <= nodes[i]["thr"] else nodes[i]["right"]
+        p = min(max(nodes[i]["p_trans"], 0.01), 0.99)
+        s = math.log(p / (1 - p))
+        return s, {"leaf%d" % i: s}
+
+    def score(self, text):
+        return self.score_and_explain(text)[0]

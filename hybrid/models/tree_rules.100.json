@@ -1,0 +1,160 @@
+{
+"kind": "tree",
+"depth": 3,
+"nodes": [
+{
+"feature": "engine_score",
+"f": 5,
+"thr": 0.055223124101758,
+"left": 1,
+"right": 8,
+"p_trans": 0.473326359832636,
+"n": 9560
+},
+{
+"feature": "starter.ska_vs_skall",
+"f": 1,
+"thr": -0.0029741250909864902,
+"left": 2,
+"right": 5,
+"p_trans": 0.3228039809606231,
+"n": 4622
+},
+{
+"feature": "engine_score",
+"f": 5,
+"thr": -1.1450225114822388,
+"left": 3,
+"right": 4,
+"p_trans": 0.19501625135427952,
+"n": 1846
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.05167958656330749,
+"n": 387
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.23303632625085674,
+"n": 1459
+},
+{
+"feature": "engine_score",
+"f": 5,
+"thr": -1.275696337223053,
+"left": 6,
+"right": 7,
+"p_trans": 0.40778097982708933,
+"n": 2776
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.17633928571428573,
+"n": 448
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.452319587628866,
+"n": 2328
+},
+{
+"feature": "starter.ska_vs_skall",
+"f": 1,
+"thr": -0.0029741250909864902,
+"left": 9,
+"right": 12,
+"p_trans": 0.6142162818955043,
+"n": 4938
+},
+{
+"feature": "starter.ska_vs_skall",
+"f": 1,
+"thr": -0.00892237527295947,
+"left": 10,
+"right": 11,
+"p_trans": 0.459546925566343,
+"n": 1545
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.3013392857142857,
+"n": 448
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.5241567912488605,
+"n": 1097
+},
+{
+"feature": "engine_score",
+"f": 5,
+"thr": 0.4330938458442688,
+"left": 13,
+"right": 14,
+"p_trans": 0.6846448570586502,
+"n": 3393
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.6088056680161943,
+"n": 1976
+},
+{
+"feature": null,
+"f": -2,
+"thr": -2.0,
+"left": -1,
+"right": -1,
+"p_trans": 0.7904022582921666,
+"n": 1417
+}
+],
+"inputs": [
+"rule:starter.dem_har_vs_denna",
+"rule:starter.ska_vs_skall",
+"rule:starter.modal_particles",
+"rule:starter.sent_len",
+"rule:starter.calques",
+"engine_score"
+],
+"gran": "100",
+"engine": "tsw.engine:Default",
+"tsw_hash": "ae5041cbd85649bf",
+"engine_commit": "8ccbf52bae6e97de3b9dc70ea21fe92ec7d9127b",
+"rule_cols": [
+"starter.dem_har_vs_denna",
+"starter.ska_vs_skall",
+"starter.modal_particles",
+"starter.sent_len",
+"starter.calques"
+]
+}

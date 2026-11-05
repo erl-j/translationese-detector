@@ -1,0 +1,32 @@
+{
+"kind": "linear",
+"C": 0.03,
+"cv_logloss": 0.6768742692798911,
+"mean": [
+0.0048643961384290235
+],
+"scale": [
+0.34779740267894727
+],
+"coef_std": [
+0.42990500186229236
+],
+"w": [
+1.2360788164342298
+],
+"b": -0.11520868283680298,
+"inputs": [
+"fam:starter"
+],
+"gran": "sent",
+"engine": "tsw.engine:Default",
+"tsw_hash": "ae5041cbd85649bf",
+"engine_commit": "8ccbf52bae6e97de3b9dc70ea21fe92ec7d9127b",
+"rule_cols": [
+"starter.dem_har_vs_denna",
+"starter.ska_vs_skall",
+"starter.modal_particles",
+"starter.sent_len",
+"starter.calques"
+]
+}

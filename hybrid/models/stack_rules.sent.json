@@ -1,0 +1,52 @@
+{
+"kind": "linear",
+"C": 3.0,
+"cv_logloss": 0.6700760221634788,
+"mean": [
+0.002606583114455468,
+1.6071619245389127e-05,
+-0.010853268321191057,
+0.005641117591929678,
+0.007453892133989544
+],
+"scale": [
+0.16283431605171644,
+0.022779505232423312,
+0.2440736982543547,
+0.13669084707584722,
+0.10189260198069348
+],
+"coef_std": [
+0.13094598029845722,
+1.7658266344870144,
+0.22942545673556483,
+0.293624858153585,
+0.10531833510554013
+],
+"w": [
+0.8041669807294708,
+77.51821720752815,
+0.9399843505320077,
+2.148094509873496,
+1.0336210191736566
+],
+"b": -0.07854536751089969,
+"inputs": [
+"rule:starter.dem_har_vs_denna",
+"rule:starter.ska_vs_skall",
+"rule:starter.modal_particles",
+"rule:starter.sent_len",
+"rule:starter.calques"
+],
+"gran": "sent",
+"engine": "tsw.engine:Default",
+"tsw_hash": "ae5041cbd85649bf",
+"engine_commit": "8ccbf52bae6e97de3b9dc70ea21fe92ec7d9127b",
+"rule_cols": [
+"starter.dem_har_vs_denna",
+"starter.ska_vs_skall",
+"starter.modal_particles",
+"starter.sent_len",
+"starter.calques"
+]
+}

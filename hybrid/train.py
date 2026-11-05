@@ -152,11 +152,6 @@ def bow_matrix(B, cols):
 # evaluation / reporting
 # --------------------------------------------------------------------------
 
-def git_short():
-    gi = run.git_info()
-    return gi
-
-
 def result_blob(clf_spec, gran, masked, labels, scores, data, extra, expl=None):
     gi = run.git_info()
     out = {"harness_version": run.HARNESS_VERSION,
@@ -193,6 +188,32 @@ def fmt_rule(conds, feat_desc):
     for f, op, thr in conds:
         parts.append("%s %s %.3g" % (f, op, thr))
     return " AND ".join(parts)
+
+
+def emit(mname, spec, g, yva, s_u, s_m, data_sha, extra, unseen, summary, save=True, expl_u=None,
+         expl_m=None, t1=None):
+    """Metrics on dev-val (unmasked, masked, unseen-speaker subset); print; save harness JSON."""
+    yva = np.asarray(yva).astype(int)
+    s_u, s_m = np.asarray(s_u, float), np.asarray(s_m, float)
+    mu = metrics.all_metrics(list(yva), list(s_u))
+    mm = metrics.all_metrics(list(yva), list(s_m))
+    mus = metrics.all_metrics(list(yva[unseen]), list(s_u[unseen]))
+    mus["note"] = "dev-val units none of whose speakers occur in dev-train (orig %d / trans %d)" % (
+        int((yva[unseen] == 0).sum()), int((yva[unseen] == 1).sum()))
+    extra = dict(extra, unseen_speaker_metrics=mus, n_unseen_speaker=int(unseen.sum()))
+    print("  %-14s unmasked acc=%.4f F1=%.4f AUC=%.4f | masked acc=%.4f F1=%.4f AUC=%.4f | unseen-spk AUC=%.4f%s"
+          % (mname, mu["accuracy"], mu["macro_f1"], mu["roc_auc"], mm["accuracy"], mm["macro_f1"], mm["roc_auc"],
+             mus["roc_auc"], "" if t1 is None else " (%.1fs)" % (time.time() - t1)))
+    for masked, s, ex in ((False, s_u, expl_u), (True, s_m, expl_m)):
+        blob = result_blob(spec, g, masked, yva, s, {"data_sha256": data_sha}, dict(extra), ex)
+        if masked:
+            blob["unmasked_metrics"] = mu
+            blob["topic_auc_drop"] = mu["roc_auc"] - mm["roc_auc"]
+        if save:
+            run.save_result(blob, quiet=True)
+        summary.setdefault(g, {}).setdefault(mname, {})["masked" if masked else "unmasked"] = {
+            k: blob["metrics"][k] for k in ("n", "accuracy", "macro_f1", "roc_auc")}
+    summary[g][mname]["unseen_speaker"] = {k: mus[k] for k in ("n", "accuracy", "macro_f1", "roc_auc")}
 
 
 def main(argv=None):
@@ -273,26 +294,8 @@ def main(argv=None):
             else:
                 sys.exit("unknown model %s" % mname)
             spec = "hybrid.clf:Hybrid(model='%s')" % mname
-            mu = metrics.all_metrics(list(yva), list(s_u))
-            mm = metrics.all_metrics(list(yva), list(s_m))
-            mus = metrics.all_metrics(list(yva[unseen]), list(np.asarray(s_u)[unseen]))
-            mus["note"] = "dev-val units none of whose speakers occur in dev-train (orig %d / trans %d)" % (
-                int((yva[unseen] == 0).sum()), int((yva[unseen] == 1).sum()))
-            extra["unseen_speaker_metrics"] = mus
-            extra["n_unseen_speaker"] = int(unseen.sum())
-            print("  %-10s unmasked acc=%.4f F1=%.4f AUC=%.4f | masked acc=%.4f F1=%.4f AUC=%.4f | unseen-spk AUC=%.4f"
-                  " (%.1fs)" % (mname, mu["accuracy"], mu["macro_f1"], mu["roc_auc"], mm["accuracy"], mm["macro_f1"],
-                                 mm["roc_auc"], mus["roc_auc"], time.time() - t1))
-            for masked, s, ex in ((False, s_u, expl_u), (True, s_m, expl_m)):
-                blob = result_blob(spec, g, masked, yva, s, d, dict(extra), ex)
-                if masked:
-                    blob["unmasked_metrics"] = mu
-                    blob["topic_auc_drop"] = mu["roc_auc"] - mm["roc_auc"]
-                if not args.no_save:
-                    run.save_result(blob, quiet=True)
-                summary.setdefault(g, {}).setdefault(mname, {})["masked" if masked else "unmasked"] = {
-                    k: blob["metrics"][k] for k in ("n", "accuracy", "macro_f1", "roc_auc")}
-            summary[g][mname]["unseen_speaker"] = {k: mus[k] for k in ("n", "accuracy", "macro_f1", "roc_auc")}
+            emit(mname, spec, g, yva, s_u, s_m, str(d["data_sha256"]), extra, unseen, summary,
+                 save=not args.no_save, expl_u=expl_u, expl_m=expl_m, t1=t1)
         print("  gran %s done in %.1fs" % (g, time.time() - t0))
     with open(summary_path, "w") as f:
         json.dump(summary, f, indent=1, sort_keys=True)
