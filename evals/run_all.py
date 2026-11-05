@@ -21,7 +21,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--clf", required=True)
     ap.add_argument("--grans", default="sent,100,500")
-    ap.add_argument("--split", default="dev", choices=["dev", "test"])
+    ap.add_argument("--split", default="dev", choices=["dev", "test", "dev-train", "dev-val"])
     ap.add_argument("--i-mean-it", action="store_true")
     ap.add_argument("--unbalanced", action="store_true")
     ap.add_argument("--limit", type=int, default=None)

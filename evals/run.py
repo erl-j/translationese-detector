@@ -42,6 +42,7 @@ for p in (ROOT, HERE):
     if p not in sys.path:
         sys.path.insert(0, p)
 
+import devsplit  # noqa: E402
 import metrics  # noqa: E402
 import topicmask  # noqa: E402
 
@@ -142,13 +143,20 @@ def scorer(clf):
 # data
 # --------------------------------------------------------------------------
 
+def file_split(split):
+    """Pseudo-splits dev-train / dev-val (evals/devsplit.py) live in the dev files."""
+    return "dev" if split in devsplit.SUBSETS else split
+
+
 def data_path(ddir, split, gran, balanced):
-    return os.path.join(ddir, "%s.%s.%s.jsonl" % (split, gran, "bal" if balanced else "all"))
+    return os.path.join(ddir, "%s.%s.%s.jsonl" % (file_split(split), gran, "bal" if balanced else "all"))
 
 
-def load_records(path, limit=None, seed=0):
+def load_records(path, limit=None, seed=0, subset=None):
     with open(path, encoding="utf-8") as f:
         recs = [json.loads(l) for l in f]
+    if subset:
+        recs = devsplit.select(recs, subset)
     if limit and limit < len(recs):
         # stratified random subset, deterministic, kept in corpus order
         rng = random.Random("limit|%d" % seed)
@@ -242,7 +250,8 @@ def run_one(clf, clf_spec, split, gran, balanced=True, mask_topic=False, limit=N
     path = data_path(ddir, split, gran, balanced)
     if not os.path.exists(path):
         sys.exit("missing %s; build it with: python3 -I data/build.py" % path)
-    recs = load_records(path, limit, seed)
+    subset = split if split in devsplit.SUBSETS else None
+    recs = load_records(path, limit, seed, subset=subset)
     res = evaluate(clf, recs, mask_topic)
     ref = evaluate(clf, recs, False) if (mask_topic and compare_unmasked) else None
     gi = git_info()
@@ -253,6 +262,8 @@ def run_one(clf, clf_spec, split, gran, balanced=True, mask_topic=False, limit=N
            "data_file": os.path.basename(path), "data_sha256": sha256_file(path),
            "metrics": res["metrics"], "rules": res["rules"],
            "elapsed_sec": None, "argv": argv}
+    if subset:
+        out["subset_rule"] = devsplit.describe(subset)
     if ref is not None:
         out["unmasked_metrics"] = ref["metrics"]
         out["topic_auc_drop"] = ref["metrics"]["roc_auc"] - res["metrics"]["roc_auc"]
@@ -274,32 +285,40 @@ def run_one(clf, clf_spec, split, gran, balanced=True, mask_topic=False, limit=N
             show_errors(recs, res, errors, mask_topic)
 
     if save:
-        name = "%s_%s_%s_%s%s%s.json" % (ts, safe_name(clf_spec), split, gran,
-                                         "" if balanced else "_all", "_masked" if mask_topic else "")
-        rdir = os.path.join(ROOT, "results")
-        os.makedirs(rdir, exist_ok=True)
-        blob = json.dumps(out, indent=1, sort_keys=True, allow_nan=True)
-        with open(os.path.join(rdir, name), "w", encoding="utf-8") as f:
-            f.write(blob + "\n")
-        shared = os.environ.get("TSW_SHARED_RESULTS", SHARED_DEFAULT)
-        try:
-            os.makedirs(shared, exist_ok=True)
-            sname = "%s_%s_%s" % (ts, safe_name(gi["git_branch"] or "nobranch"), name[len(ts) + 1:])
-            with open(os.path.join(shared, sname), "w", encoding="utf-8") as f:
-                f.write(blob + "\n")
-        except OSError as e:
-            print("WARNING: could not write shared copy to %s: %s" % (shared, e), file=sys.stderr)
-        m = res["metrics"]
-        append_leaderboard(os.path.join(rdir, "LEADERBOARD.md"),
-                           "| %s | %s | %s%s | `%s` | %s | %s | %s%s | %s | %d | %.4f | %.4f | %.4f |"
-                           % (ts, gi["git_branch"], (gi["git_commit"] or "?")[:8],
-                              "+dirty" if gi["git_dirty"] else "", clf_spec, split, gran,
-                              "bal" if balanced else "all", "" if not limit else " (limit %d)" % limit,
-                              "masked" if mask_topic else "-", m["n"], m["accuracy"], m["macro_f1"],
-                              m["roc_auc"]))
-        if not quiet:
-            print("\nwrote results/%s (+ shared copy, LEADERBOARD.md)" % name)
+        save_result(out, quiet=quiet)
     return out
+
+
+def save_result(out, quiet=False):
+    """Write results/<name>.json, the shared copy and a LEADERBOARD line for a result dict
+    built by run_one (or by an external evaluator that fills the same fields)."""
+    ts, clf_spec, split, gran = out["timestamp"], out["clf"], out["split"], out["gran"]
+    balanced, mask_topic, limit, gi = out["balanced"], out["mask_topic"], out["limit"], out
+    name = "%s_%s_%s_%s%s%s.json" % (ts, safe_name(clf_spec), split, gran,
+                                     "" if balanced else "_all", "_masked" if mask_topic else "")
+    rdir = os.path.join(ROOT, "results")
+    os.makedirs(rdir, exist_ok=True)
+    blob = json.dumps(out, indent=1, sort_keys=True, allow_nan=True)
+    with open(os.path.join(rdir, name), "w", encoding="utf-8") as f:
+        f.write(blob + "\n")
+    shared = os.environ.get("TSW_SHARED_RESULTS", SHARED_DEFAULT)
+    try:
+        os.makedirs(shared, exist_ok=True)
+        sname = "%s_%s_%s" % (ts, safe_name(gi["git_branch"] or "nobranch"), name[len(ts) + 1:])
+        with open(os.path.join(shared, sname), "w", encoding="utf-8") as f:
+            f.write(blob + "\n")
+    except OSError as e:
+        print("WARNING: could not write shared copy to %s: %s" % (shared, e), file=sys.stderr)
+    m = out["metrics"]
+    append_leaderboard(os.path.join(rdir, "LEADERBOARD.md"),
+                       "| %s | %s | %s%s | `%s` | %s | %s | %s%s | %s | %d | %.4f | %.4f | %.4f |"
+                       % (ts, gi["git_branch"], (gi["git_commit"] or "?")[:8],
+                          "+dirty" if gi["git_dirty"] else "", clf_spec, split, gran,
+                          "bal" if balanced else "all", "" if not limit else " (limit %d)" % limit,
+                          "masked" if mask_topic else "-", m["n"], m["accuracy"], m["macro_f1"],
+                          m["roc_auc"]))
+    if not quiet:
+        print("\nwrote results/%s (+ shared copy, LEADERBOARD.md)" % name)
 
 
 def check_test_guard(split, i_mean_it, show_errors_n=0):
@@ -313,7 +332,8 @@ def check_test_guard(split, i_mean_it, show_errors_n=0):
 def build_parser():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--clf", required=True, help='e.g. baselines:Constant or "baselines:Random(seed=3)"')
-    ap.add_argument("--split", default="dev", choices=["dev", "test"])
+    ap.add_argument("--split", default="dev", choices=["dev", "test"] + list(devsplit.SUBSETS),
+                    help="dev | test | dev-train / dev-val (date halves of dev, see evals/devsplit.py)")
     ap.add_argument("--gran", default="100", help="sent | 100 | 500")
     ap.add_argument("--unbalanced", action="store_true", help="use *.all.jsonl instead of the balanced *.bal.jsonl")
     ap.add_argument("--mask-topic", action="store_true",
