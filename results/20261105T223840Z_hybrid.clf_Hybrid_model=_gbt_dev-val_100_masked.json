@@ -1,0 +1,77 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/train.py"
+ ],
+ "balanced": true,
+ "clf": "hybrid.clf:Hybrid(model='gbt')",
+ "data_file": "dev.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": null,
+ "eval_mode": "cached features (hybrid/train.py); fitted on dev records with session date < 2002-03-01",
+ "git_branch": "hybrid-ml",
+ "git_commit": "cecddae953d553dd64d0783020ee0b8e0a5e1a12",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "hyper": {
+  "learning_rate": 0.08,
+  "max_leaf_nodes": 15,
+  "n_iter": 157
+ },
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.7963123644251627,
+  "confusion": {
+   "fn": 542,
+   "fp": 397,
+   "tn": 1653,
+   "tp": 2018
+  },
+  "macro_f1": 0.7950274339897367,
+  "n": 4610,
+  "n_orig": 2050,
+  "n_trans": 2560,
+  "pred_trans_rate": 0.5238611713665944,
+  "roc_auc": 0.8771076600609756
+ },
+ "n_unseen_speaker": 256,
+ "rules": null,
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T223840Z",
+ "topic_auc_drop": 0.0003128810975610019,
+ "unmasked_metrics": {
+  "accuracy": 0.79587852494577,
+  "confusion": {
+   "fn": 541,
+   "fp": 400,
+   "tn": 1650,
+   "tp": 2019
+  },
+  "macro_f1": 0.7945622972295951,
+  "n": 4610,
+  "n_orig": 2050,
+  "n_trans": 2560,
+  "pred_trans_rate": 0.5247288503253796,
+  "roc_auc": 0.8774205411585366
+ },
+ "unseen_speaker_metrics": {
+  "accuracy": 0.78515625,
+  "confusion": {
+   "fn": 42,
+   "fp": 13,
+   "tn": 50,
+   "tp": 151
+  },
+  "macro_f1": 0.7455498328363603,
+  "n": 256,
+  "n_orig": 63,
+  "n_trans": 193,
+  "note": "dev-val units none of whose speakers occur in dev-train (orig 63 / trans 193)",
+  "pred_trans_rate": 0.640625,
+  "roc_auc": 0.8884776708610905
+ },
+ "worktree": "worktrees/hybrid-ml"
+}

@@ -1,0 +1,60 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/train.py"
+ ],
+ "balanced": true,
+ "clf": "hybrid.clf:Hybrid(model='bow_lr')",
+ "data_file": "dev.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": null,
+ "eval_mode": "cached features (hybrid/train.py); fitted on dev records with session date < 2002-03-01",
+ "git_branch": "hybrid-ml",
+ "git_commit": "cecddae953d553dd64d0783020ee0b8e0a5e1a12",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "hyper": {
+  "C": 0.03,
+  "top_n": 300
+ },
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.8299349240780911,
+  "confusion": {
+   "fn": 417,
+   "fp": 367,
+   "tn": 1683,
+   "tp": 2143
+  },
+  "macro_f1": 0.8282246144340677,
+  "n": 4610,
+  "n_orig": 2050,
+  "n_trans": 2560,
+  "pred_trans_rate": 0.544468546637744,
+  "roc_auc": 0.9092852515243902
+ },
+ "n_unseen_speaker": 256,
+ "rules": null,
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T223842Z",
+ "unseen_speaker_metrics": {
+  "accuracy": 0.80078125,
+  "confusion": {
+   "fn": 44,
+   "fp": 7,
+   "tn": 56,
+   "tp": 149
+  },
+  "macro_f1": 0.7704923796297924,
+  "n": 256,
+  "n_orig": 63,
+  "n_trans": 193,
+  "note": "dev-val units none of whose speakers occur in dev-train (orig 63 / trans 193)",
+  "pred_trans_rate": 0.609375,
+  "roc_auc": 0.9324779998355128
+ },
+ "worktree": "worktrees/hybrid-ml"
+}

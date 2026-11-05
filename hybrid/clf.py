@@ -2,9 +2,14 @@
 
     python3 evals/run.py --clf "hybrid.clf:Hybrid(model='lr_expert')" --split dev-val --gran 500
 
-One model is fitted per granularity; for a given text the model is chosen by
-its whitespace-token length, mirroring how the data was cut: < 100 tokens ->
-sentence model, < 500 -> 100-token model, otherwise 500-token model.
+One model is fitted per granularity. Pass gran='sent'|'100'|'500' to force
+one; by default the model is chosen by whitespace-token length: < 90 tokens ->
+sentence model, < 300 -> 100-token model, otherwise 500-token model. The cut
+points sit away from 100/500 because topic masking merges multi-word names
+(e.g. "Förenade kungariket" -> XTOPIC) and would otherwise push a 500-token
+chunk into the 100-token model. 35 of 87,904 dev sentences are >= 90 tokens and
+get routed to the 100-token model (the cached evaluation in train.py uses
+the sentence model for them).
 
 lr_expert / bow_lr / tree_d3 / tree_d4 load JSON from hybrid/models/ and need
 only the standard library + numpy; gbt loads a pickle from
@@ -26,7 +31,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 from hybrid import features as F  # noqa: E402
 
-GRAN_BY_LEN = ((100, "sent"), (500, "100"), (None, "500"))
+GRAN_BY_LEN = ((90, "sent"), (300, "100"), (None, "500"))
 
 
 def gran_for(text):
@@ -37,8 +42,9 @@ def gran_for(text):
 
 
 class Hybrid:
-    def __init__(self, model="lr_expert", models_dir=None):
+    def __init__(self, model="lr_expert", gran=None, models_dir=None):
         self.name = model
+        self.gran = {"sentence": "sent", "s": "sent"}.get(gran, gran)
         self.dir = models_dir or os.path.join(HERE, "models")
         self.models = {}
 
@@ -69,7 +75,7 @@ class Hybrid:
         return F.transform(np.asarray([F.raw_counts(text)], dtype=np.float64), np)[0]
 
     def score_and_explain(self, text):
-        g = gran_for(text)
+        g = self.gran or gran_for(text)
         m = self._model(g)
         if self.name == "gbt":
             x = self._x(text, {})
