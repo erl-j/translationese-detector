@@ -1,0 +1,91 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Engine(exclude=\"starter.sent_len\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Engine(exclude=\"starter.sent_len\")",
+ "data_file": "dev.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 5.15,
+ "git_branch": "main",
+ "git_commit": "69eb2eee24e66b73f496764f109688962c5a9eab",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.6335040234089246,
+  "confusion": {
+   "fn": 220,
+   "fp": 782,
+   "tn": 585,
+   "tp": 1147
+  },
+  "macro_f1": 0.6173345893901196,
+  "n": 2734,
+  "n_orig": 1367,
+  "n_trans": 1367,
+  "pred_trans_rate": 0.7055596196049744,
+  "roc_auc": 0.708389946106602
+ },
+ "rules": {
+  "cap:starter": {
+   "auc": 0.49890270665691294,
+   "fire_orig": 0.0,
+   "fire_trans": 0.0021945866861741038,
+   "log_odds": 1.9481063432030563,
+   "mean_orig": 0.0,
+   "mean_trans": -0.0003263939265011669,
+   "n_fire": 3,
+   "sign_acc": 0.0
+  },
+  "starter.calques": {
+   "auc": 0.5657645547225889,
+   "fire_orig": 0.051207022677395755,
+   "fire_trans": 0.18141916605705927,
+   "log_odds": 1.407387314719695,
+   "mean_orig": 0.07037307973664951,
+   "mean_trans": 0.2795171909290427,
+   "n_fire": 318,
+   "sign_acc": 0.779874213836478
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.5049786240514071,
+   "fire_orig": 0.9948792977322605,
+   "fire_trans": 0.9963423555230432,
+   "log_odds": 0.3116238966179372,
+   "mean_orig": -0.19063379798958952,
+   "mean_trans": 0.1544115871802804,
+   "n_fire": 2722,
+   "sign_acc": 0.5797207935341661
+  },
+  "starter.modal_particles": {
+   "auc": 0.6723266953463096,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.4655078699074006,
+   "mean_trans": 0.35977188180976155,
+   "n_fire": 2734,
+   "sign_acc": 0.6521580102414045
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.753993307607633,
+   "fire_orig": 0.9231894659839064,
+   "fire_trans": 0.6803218727139722,
+   "log_odds": -1.7274928379487573,
+   "mean_orig": -0.013926027384463116,
+   "mean_trans": 0.004768862657366246,
+   "n_fire": 2192,
+   "sign_acc": 0.5807481751824818
+  }
+ },
+ "split": "dev",
+ "timestamp": "20261105T223518Z",
+ "worktree": "."
+}
