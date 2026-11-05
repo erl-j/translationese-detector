@@ -25,6 +25,22 @@ with sqrt(n) as an independent-units model does, so no ad-hoc `weight` < 1 is
 needed. tau was read off rates.py-style output (text-mean SD at 500 words minus
 sd^2/n) and typed in rounded. A statistic that is undefined (no units) gives 0.
 
+Minimum length (MIN_WORDS = 50). With the trn parameters, the class
+separation of a text mean at n words is d'(n) = (mu_t - mu_o) / s(n):
+
+    n words        20     50    100    500
+    long_words   .094   .14   .18    .25
+    av_nominal   .11    .18   .25    .49
+    av_other     .15    .23   .31    .57
+
+On a single sentence (~20 words) the long-word share has a spread of about
+.12 around a class gap of .01, so a sentence's word lengths say next to
+nothing about its class while their noise is shared with other length-related
+rules. Below ~50 words all three rules are at d' <= .15 (AUC <= .54), so they
+abstain there (contribution 0, "undefined" in describe). The threshold
+follows from these trn noise figures, one value for the family; it was not
+chosen by scoring candidate thresholds on any split.
+
 Negative results on dev.500.bal (masked; O vs T text means, AUC of the raw
 statistic, within-class r with mean sentence length) -- not turned into rules:
   - lexical variety: MATTR-50 .830 vs .828 (AUC .54 for O), MSTTR-50 same,
@@ -70,6 +86,7 @@ FAMILY_CAP = 2.0
 
 WINDOW = 50          # MATTR window (words)
 LONG = 6             # LIX: a long word has MORE than 6 letters
+MIN_WORDS = 50       # every rule abstains on texts with fewer counted words (see "Minimum length")
 PLACEHOLDER = "xtopic"  # evals/topicmask.py placeholder (lower-cased): not a word of the text
 
 # Definite nominalisations ("genomförandet", "användningen", "tillämpningen", "definitionen",
@@ -310,7 +327,7 @@ RULES = [
                   "1997-2004, but the level rises for both classes from 2000 (drift risk on test).",
         source="Björnsson (1968) LIX; Volansky et al. (2015) mean word length 66% [direction from dev]; "
                "literature C6/E5",
-        cap=1.0),
+        min_units=MIN_WORDS, cap=1.0),
     LengthStat(
         "stats.av_nominal",
         description="'av' after a definite nominalisation ('genomförandet av')",
@@ -327,7 +344,7 @@ RULES = [
                   "a compound or an s-genitive. Disjoint from stats.av_other (every 'av' is counted "
                   "once).",
         source="Nilsson (2004); Danielsson (2003) (av among T keywords); literature A6/C5",
-        span_min=0.05, cap=1.0),
+        min_units=MIN_WORDS, span_min=0.05, cap=1.0),
     LengthStat(
         "stats.av_other",
         description="'av' elsewhere (of-periphrasis, by-agent)",
@@ -345,5 +362,5 @@ RULES = [
                   "translations. A lexical rate, but kept here as the periphrasis/compounding "
                   "indicator of the simplification family.",
         source="Nilsson (2004); Danielsson (2003); literature A6",
-        span_min=0.05, cap=1.5),
+        min_units=MIN_WORDS, span_min=0.05, cap=1.5),
 ]

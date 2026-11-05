@@ -130,7 +130,9 @@ class TestLengthStat(unittest.TestCase):
         hits, resid = r.evidence(d)
         self.assertEqual(len(hits), 3)  # one span per sentence (word units grouped)
         self.assertAlmostEqual(sum(h.share for h in hits) + resid, r.contribution(d))
+        d = Doc(FILL + d.text)
         for rr in S.RULES:
+            self.assertNotEqual(rr.contribution(d), 0.0)
             hits, resid = rr.evidence(d)
             self.assertAlmostEqual(sum(h.share for h in hits) + resid, rr.contribution(d))
 
@@ -153,6 +155,10 @@ class TestLengthStat(unittest.TestCase):
             S.LengthStat("t.bad2", units=S.long_word_units, mu_o=0.2, mu_t=0.4, sd=0.5, tau=-1)
 
 
+# neutral filler (short words, no 'av') to lift short examples over MIN_WORDS
+FILL = "Vi har talat om det här i dag och vi ska tala om det i morgon igen. " * 4  # 64 words
+
+
 class TestRules(unittest.TestCase):
     def test_discovered_and_named(self):
         rules, caps, _ = discover()
@@ -162,46 +168,66 @@ class TestRules(unittest.TestCase):
         for r in mine:
             self.assertTrue(r.rationale and r.source)
             self.assertEqual(r.direction, "T")
+            self.assertEqual(r.min_units, S.MIN_WORDS)
 
-    def test_av_short_text_matches_poisson(self):
-        # at sentence length a hit is worth ~ ln(rate_t / rate_o), as in a RateRule
+    def test_abstains_below_min_words(self):
+        body = "Genomförandet av direktivet är en del av lösningen för kommissionens förslag."
+        d = Doc(body)
+        self.assertLess(len(S.word_items(d)), S.MIN_WORDS)
+        for r in S.RULES:
+            self.assertEqual(r.contribution(d), 0.0)
+            self.assertEqual(r.evidence(d), ([], 0.0))
+            self.assertIn("undefined", r.describe(d))
+        # exactly at the threshold the rules fire
+        words = ("ord " * (S.MIN_WORDS - 1)).split()
+        at = Doc("Genomförandet " + " ".join(words) + ".")
+        self.assertEqual(len(S.word_items(at)), S.MIN_WORDS)
+        self.assertNotEqual(rule("stats.long_words").contribution(at), 0.0)
+
+    def test_av_hit_worth_about_poisson(self):
+        # one extra 'av' is worth ~ (slope(n)/n) * 1 ~ ln(rate_t / rate_o) when n is moderate
         r = rule("stats.av_other")
-        with_av = Doc("Det är en del av lösningen som vi har talat om här i dag.")
-        without = Doc("Det är en bit på lösningen som vi har talat om här i dag.")
+        with_av = Doc(FILL + "Det är en del av lösningen.")
+        without = Doc(FILL + "Det är en bit på lösningen.")
+        n = len(S.word_items(with_av))
         diff = r.contribution(with_av) - r.contribution(without)
-        self.assertAlmostEqual(diff, math.log(0.017 / 0.013), delta=0.03)
+        self.assertAlmostEqual(diff, r._slope(n) / n)
+        self.assertGreater(diff, 0.5 * math.log(0.017 / 0.013))
+        self.assertLess(diff, math.log(0.017 / 0.013))
 
     def test_metamorphic_av_periphrasis(self):
         # replacing a compound by an X-av-Y periphrasis moves the family toward T
         e = Families(only="stats")
-        native = "Vi stöder genomförandet. Miljöskyddet är viktigt för oss alla i unionen."
-        periph = "Vi stöder genomförandet. Skyddet av miljön är viktigt för oss alla i unionen."
-        nominal = "Vi stöder genomförandet av direktivet. Miljöskyddet är viktigt för oss alla."
+        native = FILL + "Vi stöder genomförandet. Miljöskyddet är viktigt för oss alla i unionen."
+        periph = FILL + "Vi stöder genomförandet. Skyddet av miljön är viktigt för oss alla i unionen."
+        nominal = FILL + "Vi stöder genomförandet av direktivet. Miljöskyddet är viktigt för oss alla."
         self.assertGreater(e.score(periph), e.score(native))
-        self.assertGreater(rule("stats.av_nominal").contribution(Doc(nominal)), 0)
+        self.assertGreater(rule("stats.av_nominal").contribution(Doc(nominal)),
+                           rule("stats.av_nominal").contribution(Doc(native)))
 
     def test_metamorphic_long_words(self):
         r = rule("stats.long_words")
-        short = Doc("Vi vill ha en bra lag nu. Det är dags att gå.")
-        long_ = Doc("Vi vill ha en bra lagstiftning. Det är nödvändigt att genomföra.")
+        short = Doc("Vi vill ha en bra lag nu. Det är dags att gå. " * 6)
+        long_ = Doc("Vi vill ha en bra lagstiftning. Det är nödvändigt att genomföra. " * 6)
         self.assertLess(r.contribution(short), 0)
         self.assertGreater(r.contribution(long_), r.contribution(short))
 
     def test_case_and_topic_invariance(self):
-        t = "Genomförandet av direktivet om vattenkvalitet är viktigt för Sverige och Irland."
-        masked = "Genomförandet av direktivet om vattenkvalitet är viktigt för XTOPIC och XTOPIC."
-        no_topic = "Genomförandet av direktivet om vattenkvalitet är viktigt för och."
+        t = FILL + "Genomförandet av direktivet om vattenkvalitet är viktigt för Sverige och Irland."
+        masked = FILL + "Genomförandet av direktivet om vattenkvalitet är viktigt för XTOPIC och XTOPIC."
+        no_topic = FILL + "Genomförandet av direktivet om vattenkvalitet är viktigt för och."
         for r in S.RULES:
+            self.assertNotEqual(r.contribution(Doc(t)), 0.0)
             self.assertAlmostEqual(r.contribution(Doc(t)), r.contribution(Doc(t.upper().capitalize())))
             self.assertAlmostEqual(r.contribution(Doc(masked)), r.contribution(Doc(no_topic)))
 
     def test_vocative_ignored(self):
-        body = "Genomförandet av direktivet är en del av lösningen."
+        body = FILL + "Genomförandet av direktivet är en del av lösningen."
         for r in S.RULES:
             self.assertAlmostEqual(r.contribution(Doc("Herr talman! " + body)), r.contribution(Doc(body)))
 
     def test_describe(self):
-        d = Doc("Genomförandet av direktivet är en del av lösningen.")
+        d = Doc(FILL + "Genomförandet av direktivet är en del av lösningen.")
         for r in S.RULES:
             self.assertIn("toward", r.describe(d))
         self.assertIn("undefined", rule("stats.long_words").describe(Doc("Herr talman!")))
