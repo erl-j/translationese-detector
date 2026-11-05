@@ -326,17 +326,20 @@ RULES = [
                   "model holds.",
         source="[exp] collocations.py ('försöka att', 'att försöka att')",
         cap=1.5),
-    ChoiceRule(
+    HitRule(
         "calques.pied_piped_relative",
-        description="pied-piped 'P + vilken/vilket/vilka' vs 'som'",
-        a=_PIED_PIPED, b=_B + r"som" + _E,
-        label_a="P + vilken/vilket/vilka", label_b="som",
-        # dev-train: A 203 / B 12911 in O (0.0155), A 2006 / B 52765 in T (0.037); A by 45 O / 216 T speakers
-        p_o=0.015, p_t=0.037,
+        description="pied-piped relative 'P + vilken/vilket/vilka'",
+        pattern=_PIED_PIPED,
+        # trn (all old dev), per 1000 words: O 268 hits 0.33 / T 2841 hits 0.75 (51/241 speakers);
+        # ln(T/O) = +0.80; 2002-04 alone 0.28 / 0.60. Same per-hit value on dev-train.
+        per_hit=0.8,
+        label="pied-piped relative '{m}'",
         direction="T",
-        rationale="INT: EN 'in which / for which / on whom' -> 'i vilket / för vilka'; native Swedish "
-                  "uses 'som ... P' (stranding), 'där', 'vari', 'varav'. 'som' has the same rate in "
-                  "both classes (22.5 vs 21.9 per 1000 on dev-train), so it is a fair denominator.",
+        rationale="INT: EN 'in which / for which / from whom' -> 'i vilket / för vilka / från vilka'; "
+                  "native Swedish strands the preposition ('som ... i'), or uses 'där', 'vari', "
+                  "'varav'. First written as a ChoiceRule against 'som', but 'som' carries no "
+                  "information (22 per 1000 in both classes) and its period-dependent rate only added "
+                  "noise (100-word AUC 0.48 on 2002-04), so only the calque is counted.",
         source="literature A18",
         cap=1.5),
 ]

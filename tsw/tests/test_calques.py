@@ -147,8 +147,8 @@ class TestNativeAndChoices(unittest.TestCase):
         for t in ["I vilken utsträckning gäller detta?", "Det beror på vilket sätt man väljer.",
                   "Frågan om vilka åtgärder som behövs.", "I vilket fall som helst röstar vi nej."]:
             with self.subTest(text=t):
-                self.assertEqual(r.matcher_a.count(Doc(t)), 0)
-        self.assertLess(r.contribution(Doc("Det är en process som alla deltar i.")), 0)
+                self.assertEqual(r.contribution(Doc(t)), 0.0)
+        self.assertEqual(r.contribution(Doc("Det är en process som alla deltar i.")), 0.0)
 
 
 class TestMetamorphic(unittest.TestCase):
