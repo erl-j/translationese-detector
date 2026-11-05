@@ -6,7 +6,7 @@
 from tsw/rules/*.py (see tsw/rules/__init__.py and docs/ENGINE.md).
 
 Harness entry points (evals/run.py loads "module:Name(kw=literal, ...)"):
-    tsw.engine:Default                                   all enabled rules
+    tsw.engine:Default  (alias tsw.engine:Expert)        all enabled rules
     tsw.engine:Families(only="wordorder,calques")        only these families
     tsw.engine:Engine(exclude="starter.sent_len")        drop rules or families
     tsw.engine:Engine(family_caps={"stats": 1.0}, weights={"starter.skall_ska": 0.5})
@@ -210,6 +210,9 @@ class Engine:
 
 class Default(Engine):
     """All enabled rules from all discovered families."""
+
+
+Expert = Default  # name used in README examples
 
 
 class Families(Engine):
