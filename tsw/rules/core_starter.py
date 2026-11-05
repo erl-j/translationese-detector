@@ -47,7 +47,8 @@ RULES = [
                   "the dev direction; expect it to be weaker outside EP. 'den/det där' excluded "
                   "(ambiguous with locative 'där').",
         source="Danielsson (2003) [direction reversed on EP dev]",
-        cap=3.0),
+        # disabled: replaced by register.dem_har_rate (choice assumption violated, AUC .505)
+        enabled=False, cap=3.0),
     ChoiceRule(
         "starter.ska_vs_skall",
         description="'ska' vs 'skall'",
@@ -59,7 +60,8 @@ RULES = [
                   "'skall' (>98%); the few 'ska' are in translations. Strongly diachronic (Språkrådet "
                   "recommends 'ska'; EP switched later), so low weight and a small cap.",
         source="Danielsson (2003) [direction reversed on EP dev; diachronic]",
-        weight=0.5, cap=1.0),
+        # disabled: replaced by register.kommer_att_vs_ska (spelling-robust future choice)
+        enabled=False, weight=0.5, cap=1.0),
     RateRule(
         "starter.modal_particles",
         description="modal particles ju/nog/väl/visst",

@@ -1,0 +1,153 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"register\")",
+  "--splits",
+  "val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"register\")",
+ "data_file": "val.sent.bal.jsonl",
+ "data_sha256": "32f249dea5c38f07956a5735bf4d9b810f943047946d36c6bd232344e3a0a868",
+ "elapsed_sec": 3.21,
+ "git_branch": "feat/register",
+ "git_commit": "f7c1f3d52df718cad61c8405afee27377f6f61c3",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5622238586156112,
+  "confusion": {
+   "fn": 6907,
+   "fp": 2605,
+   "tn": 8259,
+   "tp": 3957
+  },
+  "macro_f1": 0.5443622313093524,
+  "n": 21728,
+  "n_orig": 10864,
+  "n_trans": 10864,
+  "pred_trans_rate": 0.3020066273932253,
+  "roc_auc": 0.5717343714075863
+ },
+ "rules": {
+  "register.av_rate": {
+   "auc": 0.49614902996018795,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.005868159182037978,
+   "mean_trans": 0.00144526119769273,
+   "n_fire": 21728,
+   "sign_acc": 0.531940353460972
+  },
+  "register.aven_vs_ocksa": {
+   "auc": 0.5033245501077995,
+   "fire_orig": 0.0856958762886598,
+   "fire_trans": 0.08634020618556701,
+   "log_odds": 0.008191600555905065,
+   "mean_orig": -0.0008720436670860569,
+   "mean_trans": 0.0009258042028451893,
+   "n_fire": 1869,
+   "sign_acc": 0.5200642054574639
+  },
+  "register.bland_annat": {
+   "auc": 0.585385606974217,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.008097233891752422,
+   "mean_trans": 0.00281165158321047,
+   "n_fire": 21728,
+   "sign_acc": 0.5032216494845361
+  },
+  "register.bra": {
+   "auc": 0.5863428030600858,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.009971230196063574,
+   "mean_trans": 0.005556634325066903,
+   "n_fire": 21728,
+   "sign_acc": 0.5059370397643593
+  },
+  "register.dem_har_rate": {
+   "auc": 0.4238722888121664,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0014535581008885876,
+   "mean_trans": 0.003415435661562142,
+   "n_fire": 21728,
+   "sign_acc": 0.5037739322533137
+  },
+  "register.kommer_att_vs_ska": {
+   "auc": 0.5609636712420912,
+   "fire_orig": 0.1405559646539028,
+   "fire_trans": 0.12647275405007363,
+   "log_odds": -0.12179513125442587,
+   "mean_orig": -0.05719907388084561,
+   "mean_trans": 0.05279061042399102,
+   "n_fire": 2901,
+   "sign_acc": 0.7435367114788004
+  },
+  "register.samt": {
+   "auc": 0.5800750240013903,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0013992331974482701,
+   "mean_trans": 0.0005465901243832874,
+   "n_fire": 21728,
+   "sign_acc": 0.5
+  },
+  "register.sjalvklart": {
+   "auc": 0.5826913051794743,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.00010786524300441608,
+   "mean_trans": 0.003409191826215038,
+   "n_fire": 21728,
+   "sign_acc": 0.5008284241531664
+  },
+  "register.skulle_vilja_vs_vill": {
+   "auc": 0.4967380121155168,
+   "fire_orig": 0.040316642120765835,
+   "fire_trans": 0.06010677466863034,
+   "log_odds": 0.41981882730347664,
+   "mean_orig": -0.0045731224841818975,
+   "mean_trans": -0.0003643976134012439,
+   "n_fire": 1091,
+   "sign_acc": 0.46837763519706693
+  },
+  "register.tycker_vs_anser": {
+   "auc": 0.49767210745627827,
+   "fire_orig": 0.05697717231222386,
+   "fire_trans": 0.029178939617083947,
+   "log_odds": -0.6974851629580576,
+   "mean_orig": 0.011308576712985215,
+   "mean_trans": 0.013434878512146475,
+   "n_fire": 936,
+   "sign_acc": 0.47435897435897434
+  },
+  "register.valdigt_vs_mycket": {
+   "auc": 0.5088071876674201,
+   "fire_orig": 0.029823269513991165,
+   "fire_trans": 0.03405743740795287,
+   "log_odds": 0.1369415785066881,
+   "mean_orig": -0.005925300454038771,
+   "mean_trans": 0.009101086084901367,
+   "n_fire": 694,
+   "sign_acc": 0.6397694524495677
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230320Z",
+ "worktree": "worktrees/register"
+}
