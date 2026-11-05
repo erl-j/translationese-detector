@@ -76,6 +76,15 @@ class TestMaths(unittest.TestCase):
         r = rule("register.bland_annat")
         self.assertEqual(r.matcher.count(Doc("Vi har bl.a. fisket och bland annat jordbruket.")), 2)
 
+    def test_sjalvklart_rate(self):
+        d = Doc("Det är självklart viktigt. " + FILLER)
+        raw = math.log(0.058 / 0.31) - d.n_words * (0.058 - 0.31) / 1000
+        self.assertAlmostEqual(c("register.sjalvklart", "Det är självklart viktigt. " + FILLER), max(raw, -1.5))
+        # 'naturligtvis' is not counted (neither direction)
+        d2 = Doc("Det är naturligtvis viktigt. " + FILLER)
+        self.assertAlmostEqual(rule("register.sjalvklart").contribution(d2),
+                               -d2.n_words * (0.058 - 0.31) / 1000)
+
     def test_mycket_adj(self):
         r = rule("register.valdigt_vs_mycket")
         self.assertEqual(r.counts(Doc("Det är mycket viktigt och väldigt svårt, men mycket pengar.")), (1, 1))

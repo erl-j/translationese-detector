@@ -33,7 +33,10 @@ for också) and av (16 vs 20).
 from .base import ChoiceRule, RateRule, words_rx
 
 FAMILY = "register"
-FAMILY_CAP = 4.0
+# 6.0 (not the default 4.0): on dev-train 500 masked the cap bound on 32% O / 22% T texts and
+# the removed amount had AUC .27 (it removed correct evidence). The rules count disjoint tokens,
+# so the cap only has to guard against the shared spoken-register style of O speakers.
+FAMILY_CAP = 6.0
 
 _W = r"(?<![\w-])"   # left word boundary that also refuses hyphen compounds
 _E = r"(?![\w-])"    # right word boundary
@@ -127,22 +130,25 @@ RULES = [
                   "originals, so the cap is small.",
         source="Danielsson (2003) O keyword väldigt; literature A4, A21",
         cap=1.5),
-    ChoiceRule(
-        "register.sjalvklart_vs_naturligtvis",
-        description="'självklart' vs 'naturligtvis/givetvis/självfallet'",
-        a=_W + r"självklart" + _E, b=_W + r"(?:naturligtvis|givetvis|självfallet)" + _E,
-        label_a="självklart", label_b="naturligtvis/givetvis/självfallet",
-        # dev.500.bal masked: självklart O 208 (0.30/1000w), T 30 (0.043); naturligtvis/givetvis/
-        # självfallet O 693 (0.99), T 349 (0.50). P(självklart) O 0.23, T 0.079. O hits from 41
-        # speakers (top-5 28%); T from 26 speakers.
-        # dev-train masked: P(självklart) O 156/658 = 0.24, T 25/289 = 0.087
-        p_o=0.24, p_t=0.087,
+    RateRule(
+        "register.sjalvklart",
+        description="stance adverb 'självklart'",
+        words=["självklart"],
+        # dev.500.bal masked: självklart O 208 (0.30/1000w), T 30 (0.043); O from 41 speakers (top-5 28%).
+        # dev-train masked: O 156 (0.31/1000w, 14% of texts), T 25 (0.058, 2.9%).
+        # Replaces a ChoiceRule självklart vs naturligtvis/givetvis/självfallet, which had rule-alone
+        # AUC .50 on dev-train (100 and 500 masked): the B group is itself O-leaning by rate
+        # (1.0 vs 0.61), so B hits were wrongly counted as T evidence (same failure as
+        # starter.dem_har_vs_denna). The naturligtvis group is not used at all: the literature
+        # expects T, and Wallström (both classes) uses it equally (1.3 O vs 1.4 T per 1000 words),
+        # so its O lean looks like idiolect.
+        rate_o=0.31, rate_t=0.058,
         direction="O",
-        rationale="EN 'of course / naturally' maps onto the dictionary equivalents 'naturligtvis/"
-                  "givetvis'; 'självklart' (adjective-derived, more colloquial) is the native choice. "
-                  "The literature expects naturligtvis = T; on EP the whole group is more frequent in "
-                  "originals, so only the choice within the group is used.",
-        source="literature A7 / G10 [direction refined on EP dev]",
+        rationale="Swedish political speech marks shared ground with 'självklart' (adjective-derived, "
+                  "more colloquial); EN 'of course / naturally' is rendered with the dictionary "
+                  "equivalents 'naturligtvis/givetvis', so translations rarely contain 'självklart' "
+                  "(NORM + unique-item effect).",
+        source="literature A7 / G10 [refined on EP dev]; [exp]",
         cap=1.5),
     ChoiceRule(
         "register.aven_vs_ocksa",
