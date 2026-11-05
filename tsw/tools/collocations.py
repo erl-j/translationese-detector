@@ -13,9 +13,9 @@ accepted item with `tsw.tools.rates --rx ... --by-speaker --by-year --kwic`.
     python3 -m tsw.tools.collocations --contains 'vilk' --direction both
     python3 -m tsw.tools.collocations --mask-topic --hide-topic
 
-Split: only dev-train (dev sessions dated < 2002-03-01) is read; dev-val
-(>= 2002-03-01) and test are refused, so that dev-val stays a clean
-held-out check of the rules this tool helps write.
+Split: only trn (= the old dev split, sessions <= 2004-06-30; 'dev' is an
+alias) is read. 'val' (2004-07..2006) and 'test' (2007..2011) are refused:
+never look at their n-grams.
 
 Data: dev.sent.all by default (every sentence carries its own speaker, and the
 unbalanced file has ~4.8x more translated text, which helps for rare items).
@@ -63,7 +63,7 @@ from tsw.text import TOKEN_RX, is_word, normalise  # noqa: E402
 
 CLASSES = ((0, "O"), (1, "T"))
 BOS = "<s>"
-SPLITS = {"dev-train": lambda date: date < "2002-03-01"}   # dev-val = dev sessions >= 2002-03-01
+SPLITS = {"trn": lambda date: date <= "2004-06-30", "dev": lambda date: date <= "2004-06-30"}
 
 
 def data_path(gran, balanced, data_dir):
@@ -74,7 +74,7 @@ def data_path(gran, balanced, data_dir):
     return path
 
 
-def load(path, limit=None, seed=0, mask=False, split="dev-train"):
+def load(path, limit=None, seed=0, mask=False, split="trn"):
     keep = SPLITS[split]
     recs = []
     with open(path, encoding="utf-8") as f:
@@ -152,12 +152,12 @@ def main(argv=None):
     ap.add_argument("--limit", type=int)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--data-dir")
-    ap.add_argument("--split", default="dev-train",
-                    help="only dev-train (dev sessions < 2002-03-01) is allowed; dev-val and test are refused")
+    ap.add_argument("--split", default="trn",
+                    help="only trn (old dev, sessions <= 2004-06-30; alias 'dev') is allowed; val and test are refused")
     args = ap.parse_args(argv)
     if args.split not in SPLITS:
-        sys.exit("REFUSING: collocations.py works on dev-train only (got %r; dev-val and test are "
-                 "held out)." % args.split)
+        sys.exit("REFUSING: collocations.py works on trn only (got %r; val and test are held out)."
+                 % args.split)
     ns = sorted({int(x) for x in args.n.split(",")})
     contains = re.compile(args.contains) if args.contains else None
 

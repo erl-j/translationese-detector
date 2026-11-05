@@ -34,6 +34,8 @@ O/T per entry in the comments as "O cO / T cT (rO/rT per 1000 words; sO/sT
 distinct speakers)". O = 0.57M words, T = 2.4M words. 2026-11-05. An earlier
 screening pass (before the dev-train/dev-val protocol) looked at full dev; every entry was
 re-checked and its value re-read on dev-train only.
+(Protocol since revised: trn = all of the old dev; dev-train is a subset of trn, so the
+values stand.)
 """
 from .base import ChoiceRule, HitRule
 
