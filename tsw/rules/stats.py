@@ -51,13 +51,15 @@ statistic, within-class r with mean sentence length) -- not turned into rules:
     (.59 for O) correlate with mean sentence length (r .7 / -.5): double
     counting starter.sent_len.
 
-Calibration: dev-train = dev.500.bal sessions dated < 2002-03-01 (dev.100.bal
-for tau), topic-masked, 2026-11-05; values typed by hand, <= 2 significant
-digits. First drafted on full dev (1997-2004); re-checked on dev-train only,
-where all values round the same except av_nominal mu_o (.0013 -> .0012).
-dev-val (>= 2002-03-01) was never used for calibration. The negative results
-below are full-dev numbers; dev-train gives the same picture (MATTR .828/.825,
-OVIX 63.7/63.1, top-48 .382/.381, sentence-length CV .513/.524).
+Calibration: trn = the old dev period (sessions <= 2004-06-30), dev.500.bal
+(dev.100.bal for tau), topic-masked, 2026-11-05; values typed by hand, <= 2
+significant digits. Every value was also checked on the pre-2002-03 part of
+trn alone (the comments quote both) and rounds the same, except av_nominal
+mu_o (.00126 on all of trn -> .0013; .00124 on the early part -> .0012):
+trn is used. val (2004-07..2006) and test are never inspected. The negative
+results below are all-trn numbers; the early part of trn gives the same
+picture (MATTR .828/.825, OVIX 63.7/63.1, top-48 .382/.381, sentence-length
+CV .513/.524).
 """
 import math
 
@@ -291,10 +293,10 @@ RULES = [
         "stats.long_words",
         description="share of long words (> 6 letters, the LIX criterion)",
         units=long_word_units, unit_name="word", unit_label="long-word share of sentence",
-        # dev-train (dev.500.bal, date < 2002-03-01, masked), words with a letter outside
+        # trn before 2002-03-01 (dev.500.bal, masked), words with a letter outside
         # vocatives: O .2764 (sd of text means .038), T .2874 (.039); text-level AUC .57;
         # non-Commission speakers O .2756, T .2829 (Commission speech is wordier in both classes).
-        # Full dev 1997-2004 gave .2776/.2925. Pooled unit sd .45 (Bernoulli). Text-mean sd at 500
+        # All of trn (1997-2004): .2776/.2925. Pooled unit sd .45 (Bernoulli). Text-mean sd at 500
         # words .038 vs .020 predicted -> tau .033 (at 100 words .040-.042): tau .035.
         # Within-class r with mean sentence length .01 O / .14 T.
         mu_o=0.28, mu_t=0.29, sd=0.45, tau=0.035, fmt="%.3f",
@@ -313,12 +315,12 @@ RULES = [
         "stats.av_nominal",
         description="'av' after a definite nominalisation ('genomförandet av')",
         units=av_nominal_units, unit_name="word", unit_label="nominalisation + 'av' (EN 'the X-ing of')",
-        # dev-train masked, per word: O .00124, T .00238 (1.2 vs 2.4 per 1000; text AUC .62);
-        # non-Commission speakers .0012/.0022 (full dev: .00126/.00243; 42% vs 64% of texts;
+        # all of trn, masked, per word: O .00126, T .00243 (before 2002-03: .00124/.00238; text
+        # AUC .62); non-Commission speakers .0012/.0022 (all trn: 42% vs 64% of texts;
         # T > O every year, O .7-1.5, T 1.7-2.6 per 1000; top-5 speakers 31% O / 24% T of hits).
         # Pooled unit sd .043; text-mean sd .0018/.0026 at 500 vs .0016/.0022 predicted ->
         # tau .0009-.0015: .0012. Within-class r with mean sentence length .10 / .07.
-        mu_o=0.0012, mu_t=0.0024, sd=0.043, tau=0.0012, scale=1000, fmt="%.2f/1000w",
+        mu_o=0.0013, mu_t=0.0024, sd=0.043, tau=0.0012, scale=1000, fmt="%.2f/1000w",
         direction="T",
         rationale="Transfer of English 'the implementation/use/introduction of X' as a definite "
                   "nominalisation + av-phrase; native Swedish prefers a verb clause ('att genomföra'), "
@@ -330,7 +332,7 @@ RULES = [
         "stats.av_other",
         description="'av' elsewhere (of-periphrasis, by-agent)",
         units=av_other_units, unit_name="word", unit_label="'av'",
-        # dev-train masked, per word: O .01272, T .01686 (12.7 vs 16.9 per 1000; text AUC .67);
+        # trn before 2002-03, masked, per word: O .01272, T .01686 (all trn .01257/.01678) (12.7 vs 16.9 per 1000; text AUC .67);
         # non-Commission .0126/.0165. All 'av': 14.0 vs 19.3 per 1000 (ln ratio .32), T > O every
         # year 1997-2004 (full dev), top-5 speakers 28% O / 22% T of hits. Pooled unit sd .12;
         # text-mean sd .0062/.0073 at 500 vs .0050/.0058 predicted -> tau .0037-.0045 (100
