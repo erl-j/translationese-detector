@@ -1,0 +1,122 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Default",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "dev.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 2.18,
+ "git_branch": "feat/wordorder",
+ "git_commit": "66c07ac36ba65c5c65247157432a3c87a319e23a",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.8002195389681669,
+  "confusion": {
+   "fn": 90,
+   "fp": 92,
+   "tn": 300,
+   "tp": 429
+  },
+  "macro_f1": 0.7961317135549872,
+  "n": 911,
+  "n_orig": 392,
+  "n_trans": 519,
+  "pred_trans_rate": 0.5718990120746432,
+  "roc_auc": 0.873382879163226
+ },
+ "rules": {
+  "cap:starter": {
+   "auc": 0.4980732177263969,
+   "fire_orig": 0.0,
+   "fire_trans": 0.0038535645472061657,
+   "log_odds": 1.3329649245170394,
+   "mean_orig": 0.0,
+   "mean_trans": -0.0036817470558259255,
+   "n_fire": 2,
+   "sign_acc": 0.0
+  },
+  "starter.calques": {
+   "auc": 0.5502536274625457,
+   "fire_orig": 0.05612244897959184,
+   "fire_trans": 0.15606936416184972,
+   "log_odds": 1.1185813439603467,
+   "mean_orig": 0.08086734693877554,
+   "mean_trans": 0.2348747591522155,
+   "n_fire": 103,
+   "sign_acc": 0.7864077669902912
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.5351539459714522,
+   "fire_orig": 0.9974489795918368,
+   "fire_trans": 1.0,
+   "log_odds": 1.3814935837765336,
+   "mean_orig": -0.19671723989928605,
+   "mean_trans": 0.24579480472682033,
+   "n_fire": 910,
+   "sign_acc": 0.5560439560439561
+  },
+  "starter.modal_particles": {
+   "auc": 0.6031713263340018,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.28033027331681915,
+   "mean_orig": -0.04294484953717538,
+   "mean_trans": 0.38898008760163644,
+   "n_fire": 911,
+   "sign_acc": 0.6355653128430296
+  },
+  "starter.sent_len": {
+   "auc": 0.8368600330305532,
+   "fire_orig": 0.9974489795918368,
+   "fire_trans": 0.9961464354527938,
+   "log_odds": -0.2318016140573249,
+   "mean_orig": -0.5698737139483894,
+   "mean_trans": 0.575423175528273,
+   "n_fire": 908,
+   "sign_acc": 0.7533039647577092
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.7450970272502064,
+   "fire_orig": 0.9132653061224489,
+   "fire_trans": 0.6763005780346821,
+   "log_odds": -1.6056953745440579,
+   "mean_orig": -0.006677998235783008,
+   "mean_trans": -0.008320673986939232,
+   "n_fire": 709,
+   "sign_acc": 0.4978843441466855
+  },
+  "wordorder.opening_type": {
+   "auc": 0.729805650583933,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.28033027331681915,
+   "mean_orig": -0.7718499240183503,
+   "mean_trans": 0.29974379039037924,
+   "n_fire": 911,
+   "sign_acc": 0.6619099890230515
+  },
+  "wordorder.v2_violation": {
+   "auc": 0.512216880972042,
+   "fire_orig": 0.002551020408163265,
+   "fire_trans": 0.02697495183044316,
+   "log_odds": 2.0131210182886963,
+   "mean_orig": 0.003826530612244898,
+   "mean_trans": 0.046242774566473986,
+   "n_fire": 15,
+   "sign_acc": 0.9333333333333333
+  }
+ },
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T225642Z",
+ "worktree": "worktrees/wordorder"
+}

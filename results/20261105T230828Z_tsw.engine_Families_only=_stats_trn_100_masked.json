@@ -1,0 +1,83 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"stats\")",
+  "--splits",
+  "trn",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"stats\")",
+ "data_file": "trn.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": 8.08,
+ "git_branch": "feat/stats",
+ "git_commit": "668dcd02f24abde4d514df038d4c220f05e9a579",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5810162314749471,
+  "confusion": {
+   "fn": 3591,
+   "fp": 2346,
+   "tn": 4739,
+   "tp": 3494
+  },
+  "macro_f1": 0.5777566501517337,
+  "n": 14170,
+  "n_orig": 7085,
+  "n_trans": 7085,
+  "pred_trans_rate": 0.41213832039520115,
+  "roc_auc": 0.611299807907708
+ },
+ "rules": {
+  "cap:stats": {
+   "auc": 0.4985886470815867,
+   "fire_orig": 0.0008468595624558928,
+   "fire_trans": 0.003669724770642202,
+   "log_odds": 1.408171612366031,
+   "mean_orig": -0.0002561793227339306,
+   "mean_trans": -0.0009478637382173009,
+   "n_fire": 32,
+   "sign_acc": 0.1875
+  },
+  "stats.av_nominal": {
+   "auc": 0.5103065259085537,
+   "fire_orig": 1.0,
+   "fire_trans": 0.9997177134791814,
+   "log_odds": -1.6097202188796196,
+   "mean_orig": -0.03585905095697284,
+   "mean_trans": 0.018721558115417154,
+   "n_fire": 14168,
+   "sign_acc": 0.539455110107284
+  },
+  "stats.av_other": {
+   "auc": 0.5939399438913207,
+   "fire_orig": 1.0,
+   "fire_trans": 0.9997177134791814,
+   "log_odds": -1.6097202188796196,
+   "mean_orig": -0.06617583339818489,
+   "mean_trans": 0.04314528689499673,
+   "n_fire": 14168,
+   "sign_acc": 0.57714568040655
+  },
+  "stats.long_words": {
+   "auc": 0.5536399571888685,
+   "fire_orig": 1.0,
+   "fire_trans": 0.9997177134791814,
+   "log_odds": -1.6097202188796196,
+   "mean_orig": -0.02468145540638686,
+   "mean_trans": 0.011974807462850278,
+   "n_fire": 14168,
+   "sign_acc": 0.5373376623376623
+  }
+ },
+ "split": "trn",
+ "timestamp": "20261105T230828Z",
+ "worktree": "worktrees/stats"
+}

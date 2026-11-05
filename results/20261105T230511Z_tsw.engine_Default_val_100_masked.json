@@ -1,0 +1,223 @@
+{
+ "argv": [
+  "worktrees/connpunct/evals/run_all.py",
+  "--clf",
+  "tsw.engine:Default",
+  "--split",
+  "val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "val.100.bal.jsonl",
+ "data_sha256": "e486783367585bf17ee4650180fef93f5b023f4ff8019a45346a52849a67fce2",
+ "elapsed_sec": 4.15,
+ "git_branch": "feat/connpunct",
+ "git_commit": "fdab6a67a93de8fe43861a7fd8fb5f3dfa0b43b7",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.6481812760882528,
+  "confusion": {
+   "fn": 520,
+   "fp": 660,
+   "tn": 1017,
+   "tp": 1157
+  },
+  "macro_f1": 0.6475672225370614,
+  "n": 3354,
+  "n_orig": 1677,
+  "n_trans": 1677,
+  "pred_trans_rate": 0.5417412045319022,
+  "roc_auc": 0.6990563692939198
+ },
+ "rules": {
+  "connpunct.additive_ocksa": {
+   "auc": 0.5549672531201009,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.0011296663640270735,
+   "mean_trans": 0.03930042111548494,
+   "n_fire": 3354,
+   "sign_acc": 0.52623732856291
+  },
+  "connpunct.att_drop": {
+   "auc": 0.5510594599707218,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0047073384076804295,
+   "mean_trans": 0.006451992068016667,
+   "n_fire": 3354,
+   "sign_acc": 0.5062611806797853
+  },
+  "connpunct.calque_connectives": {
+   "auc": 0.48861477444495294,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.05508527131009839,
+   "mean_trans": 0.01588278851378131,
+   "n_fire": 3354,
+   "sign_acc": 0.528324388789505
+  },
+  "connpunct.clause_comma_omission": {
+   "auc": 0.48052254910431885,
+   "fire_orig": 0.2504472271914132,
+   "fire_trans": 0.2766845557543232,
+   "log_odds": 0.1351339556481287,
+   "mean_orig": 0.04972235898316574,
+   "mean_trans": 0.03806728641755418,
+   "n_fire": 884,
+   "sign_acc": 0.4604072398190045
+  },
+  "connpunct.exclamation": {
+   "auc": 0.5410168938271447,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.002448526261380549,
+   "mean_trans": 0.00304337295260236,
+   "n_fire": 3354,
+   "sign_acc": 0.5
+  },
+  "connpunct.explanatory_parens": {
+   "auc": 0.46926337565768445,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.001211632677400131,
+   "mean_trans": 0.021559986881335723,
+   "n_fire": 3354,
+   "sign_acc": 0.5113297555158021
+  },
+  "connpunct.initial_adverbial_comma": {
+   "auc": 0.5334804356104851,
+   "fire_orig": 0.4537865235539654,
+   "fire_trans": 0.3905784138342278,
+   "log_odds": -0.25933568976865906,
+   "mean_orig": -0.03283664038770424,
+   "mean_trans": -0.026997897360892056,
+   "n_fire": 1416,
+   "sign_acc": 0.5353107344632768
+  },
+  "connpunct.initial_men": {
+   "auc": 0.4738734337269928,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.002565491487599138,
+   "mean_trans": 0.011316788318034584,
+   "n_fire": 3354,
+   "sign_acc": 0.5101371496720334
+  },
+  "connpunct.initial_och": {
+   "auc": 0.4590821344159947,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.001052948121645801,
+   "mean_trans": 0.01157895527728084,
+   "n_fire": 3354,
+   "sign_acc": 0.5026833631484794
+  },
+  "connpunct.native_connectives": {
+   "auc": 0.6379145185360603,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.18019118873933793,
+   "mean_trans": 0.03478168231041871,
+   "n_fire": 3354,
+   "sign_acc": 0.6028622540250447
+  },
+  "connpunct.parenthetical_dash": {
+   "auc": 0.5112065480247866,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.03681504056292714,
+   "mean_trans": 0.018135605209933788,
+   "n_fire": 3354,
+   "sign_acc": 0.5408467501490757
+  },
+  "connpunct.som_drop": {
+   "auc": 0.5021677762452401,
+   "fire_orig": 0.08348240906380441,
+   "fire_trans": 0.08825283243887895,
+   "log_odds": 0.060594305558668626,
+   "mean_orig": 0.0018926561685596696,
+   "mean_trans": 0.0027144697480345694,
+   "n_fire": 288,
+   "sign_acc": 0.5138888888888888
+  },
+  "connpunct.written_out_abbrev": {
+   "auc": 0.530377313607334,
+   "fire_orig": 0.20870602265951102,
+   "fire_trans": 0.09302325581395349,
+   "log_odds": -0.9427039127153687,
+   "mean_orig": 0.0007368559221493845,
+   "mean_trans": 0.021090435806201836,
+   "n_fire": 506,
+   "sign_acc": 0.6106719367588933
+  },
+  "starter.calques": {
+   "auc": 0.4955494182935211,
+   "fire_orig": 0.016100178890876567,
+   "fire_trans": 0.007155635062611807,
+   "log_odds": -0.7975044667047566,
+   "mean_orig": 0.021765056648777578,
+   "mean_trans": 0.01138938580799046,
+   "n_fire": 39,
+   "sign_acc": 0.3076923076923077
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.49726081123510085,
+   "fire_orig": 0.7113893858079905,
+   "fire_trans": 0.7501490757304711,
+   "log_odds": 0.19708427422004593,
+   "mean_orig": -0.01252670130899277,
+   "mean_trans": 0.04453252597152227,
+   "n_fire": 2451,
+   "sign_acc": 0.5095879232966136
+  },
+  "starter.modal_particles": {
+   "auc": 0.5599247100890401,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.017631053890920196,
+   "mean_trans": 0.0748052030204231,
+   "n_fire": 3354,
+   "sign_acc": 0.522659511031604
+  },
+  "starter.sent_len": {
+   "auc": 0.679884892557023,
+   "fire_orig": 0.9928443649373881,
+   "fire_trans": 0.9922480620155039,
+   "log_odds": -0.07756164175478286,
+   "mean_orig": -0.15781945327399846,
+   "mean_trans": 0.06319209331894317,
+   "n_fire": 3329,
+   "sign_acc": 0.6374286572544308
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.5943044003742094,
+   "fire_orig": 0.48300536672629696,
+   "fire_trans": 0.2277877161598092,
+   "log_odds": -1.1519591760902905,
+   "mean_orig": 0.1552175066482536,
+   "mean_trans": 0.13880723646129775,
+   "n_fire": 1192,
+   "sign_acc": 0.6543624161073825
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230511Z",
+ "worktree": "worktrees/connpunct"
+}

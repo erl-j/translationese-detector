@@ -1,0 +1,82 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"stats\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"stats\")",
+ "data_file": "dev.sent.bal.jsonl",
+ "data_sha256": "ffad4bf48ca21fe3b0846bfa1cd05c8a746929c67328a1b8aea5690f0487872d",
+ "elapsed_sec": 5.16,
+ "git_branch": "feat/stats",
+ "git_commit": "406c3a6a6e998d63b465452c9a16c70022d83931",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.5398409427632364,
+  "confusion": {
+   "fn": 17070,
+   "fp": 9951,
+   "tn": 20930,
+   "tp": 10770
+  },
+  "macro_f1": 0.5256402894292826,
+  "n": 58721,
+  "n_orig": 30881,
+  "n_trans": 27840,
+  "pred_trans_rate": 0.35287205599359683,
+  "roc_auc": 0.5345016541529274
+ },
+ "rules": {
+  "cap:stats": {
+   "auc": 0.4999640804597701,
+   "fire_orig": 0.0,
+   "fire_trans": 7.183908045977011e-05,
+   "log_odds": 1.713175256836145,
+   "mean_orig": 0.0,
+   "mean_trans": -9.439842147786028e-06,
+   "n_fire": 2,
+   "sign_acc": 0.0
+  },
+  "stats.av_nominal": {
+   "auc": 0.4493815327711456,
+   "fire_orig": 0.992519672290405,
+   "fire_trans": 0.9988864942528736,
+   "log_odds": 1.8973210411718906,
+   "mean_orig": -0.006898559007406236,
+   "mean_trans": 0.005713209985923647,
+   "n_fire": 58459,
+   "sign_acc": 0.5346311089823637
+  },
+  "stats.av_other": {
+   "auc": 0.511691343917716,
+   "fire_orig": 0.992519672290405,
+   "fire_trans": 0.9988864942528736,
+   "log_odds": 1.8973210411718906,
+   "mean_orig": -0.012298960845184878,
+   "mean_trans": 0.0072214454495972144,
+   "n_fire": 58459,
+   "sign_acc": 0.5520108109957406
+  },
+  "stats.long_words": {
+   "auc": 0.5172582864207691,
+   "fire_orig": 0.992519672290405,
+   "fire_trans": 0.9988864942528736,
+   "log_odds": 1.8973210411718906,
+   "mean_orig": -0.003963202511272293,
+   "mean_trans": 0.002150584259427779,
+   "n_fire": 58459,
+   "sign_acc": 0.5119485451341966
+  }
+ },
+ "split": "dev-train",
+ "subset_rule": "dev records with session date < 2002-03-01",
+ "timestamp": "20261105T225555Z",
+ "worktree": "worktrees/stats"
+}

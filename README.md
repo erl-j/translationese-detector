@@ -70,6 +70,30 @@ n_turns, granularity, n_tokens`.
 in `tsw/rules/`, auto-discovered), the rule maths, the calibration protocol and
 anti-overfitting rules are in [docs/ENGINE.md](docs/ENGINE.md).
 
+**49 enabled rules in 7 families** (60 defined; all values hand-set from trn):
+
+| family | rules | covers |
+|---|---:|---|
+| `starter` | 2 | modal particles ju/nog/väl/visst; words per sentence |
+| `connpunct` | 13 | native vs. calqued connectives, att/som drop, initial Och/Men, comma habits, dashes, parentheses, abbreviations, exclamations |
+| `particles` | 15 | nämligen, ändå, alltså, stance adverbs, anaphoric då, of-course choice, dvs., particle verbs, ta itu med, pronoun profile (man, det är, possessives, han/hon, ni vs man) |
+| `register` | 9 | kommer att vs ska, skulle vilja vs vill, tycka vs anse, väldigt vs mycket, självklart, den/det här, bland annat, samt, bra |
+| `calques` | 4 | 43-entry English calque lexicon, native counterparts, försöka att, pied-piped relatives |
+| `wordorder` | 3 | V2 sentence openings (fronted vs. subject theme), V2 violations |
+| `stats` | 3 | long-word share, nominal 'av', other 'av' |
+
+How the families were combined without double counting (overlap table, cap
+findings, leave-one-family-out ablation): [docs/INTEGRATION.md](docs/INTEGRATION.md).
+
+Current numbers (balanced, topic-masked, acc / AUC; one val run, metrics only):
+
+| | sent | 100 | 500 |
+|---|---|---|---|
+| Default, trn | .653 / .723 | .822 / .907 | .945 / .990 |
+| Default, val | .613 / .666 | .747 / .833 | .920 / .977 |
+| starter engine, val | .560 / .577 | .611 / .640 | .700 / .790 |
+| MeanSentLen, val | .563 / .583 | .633 / .671 | .708 / .792 |
+
 ```bash
 python3 -m tsw "Herr talman! Det här är ju viktigt."     # verdict + evidence + highlighted spans
 python3 -m tsw -f speech.txt --json                      # Engine.annotate() as JSON

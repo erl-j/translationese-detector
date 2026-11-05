@@ -19,18 +19,30 @@ _DEM_HAR = r"(?<![\w-])(?:den|det|de|dom)\s+här(?![\w-])"
 _DEM_DENNA = r"(?<![\w-])(?:denna|detta|dessa|denne)(?![\w-])"
 
 # Modal particles, with the disambiguating contexts of docs/literature.md A5.
-_FIN_V = r"(?:är|var|har|hade|kan|kunde|ska|skall|blir|blev|finns|fanns|måste|bör|vill|gör|går)"
+# Revised 2026-11-05 (particles branch, after the coordinator's error analysis):
+# 'nog' after a -t adverb/adjective ("tråkigt nog", "långt nog") or as degree
+# "enough" is not the modal particle; 'väl' + -da/-de/-ta participles
+# ("väl förberedda", "väl värda") is the adverb "well"; "ju mer/fler ... desto".
+_FIN = r"(?:är|var|har|hade|kan|kunde|ska|skall|blir|blev|finns|fanns|måste|bör|vill|gör)"
 _SUBJ = r"(?:det|den|vi|ni|de|han|hon|man|jag|du|detta)"
 _MODAL_PARTICLES = {
-    # not comparative "ju större ... desto"
-    "modal particle 'ju'": r"(?<![\w-])ju(?![\w-])(?!\s+\w+(?:re|are)\b)",
-    # not "nog med", "nog för att", "nog att" (= enough)
-    "modal particle 'nog'": r"(?<![\w-])nog(?![\w-])(?!\s+(?:med|för|att)\b)",
-    # only after a finite verb (+ subject), not "väl fungerande" / "väl medveten"
-    "modal particle 'väl'": r"(?<![\w-])" + _FIN_V + r"\s+(?:" + _SUBJ + r"\s+)?väl(?![\w-])"
-                            r"(?!\s+\w+(?:ad|at|ade|en|et|na|d|t)\b)|(?<![\w-])väl\s*\?",
-    # not the determiner "ett visst (antal)", "i visst (mån)"
-    "modal particle 'visst'": r"(?<!ett )(?<![\w-]i )(?<![\w-])visst(?![\w-])",
+    # not comparative "ju större/mer/fler ... desto"
+    "modal particle 'ju'": r"(?<![\w-])ju(?![\w-])"
+                           r"(?!\s+(?:\w+(?:re|are)|mer|mera|fler|flera|förr|mest)\b)",
+    # not "nog med/för/att/av" (= enough), not "<adverb in -t> nog" ("tråkigt nog",
+    # "långt nog", but "det nog" is kept), "glädjande/bra/nära/mer än/inte nog",
+    # and not clause-final "... nog." (= enough)
+    "modal particle 'nog'": r"(?<![\w-])(?:(?<!t )|(?<=det ))(?<!nde )(?<!bra )(?<!nära )(?<!än )"
+                            r"(?<!inte )(?<!aldrig är )nog(?![\w-])"
+                            r"(?!\s+(?:med|för|att|av)\b)(?!\s*[.,;:!?])",
+    # only after a finite verb (+ subject), not "väl fungerande/medveten/förberedda/värda/kända",
+    # not "väl så <adj>" (= quite as); 'inte/heller/knappast/...' after väl are particle contexts
+    "modal particle 'väl'": r"(?<![\w-])" + _FIN + r"\s+(?:" + _SUBJ + r"\s+)?väl(?![\w-])"
+                            r"(?!\s+(?!(?:inte|heller|knappast|just|egentligen)\b)"
+                            r"\w+(?:ad|at|ade|en|et|na|d|t|da|de|ta|te)\b)"
+                            r"(?!\s+så\s+(?!att\b)\w)|(?<![\w-])väl\s*\?",
+    # not the determiner "ett visst (antal)", "i visst (mån)", "med visst (beklagande)"
+    "modal particle 'visst'": r"(?<!ett )(?<!\bi )(?<!med )(?<![\w-])visst(?![\w-])",
 }
 
 RULES = [
@@ -47,7 +59,8 @@ RULES = [
                   "the dev direction; expect it to be weaker outside EP. 'den/det där' excluded "
                   "(ambiguous with locative 'där').",
         source="Danielsson (2003) [direction reversed on EP dev]",
-        cap=3.0),
+        # disabled: replaced by register.dem_har_rate (choice assumption violated, AUC .505)
+        enabled=False, cap=3.0),
     ChoiceRule(
         "starter.ska_vs_skall",
         description="'ska' vs 'skall'",
@@ -59,13 +72,20 @@ RULES = [
                   "'skall' (>98%); the few 'ska' are in translations. Strongly diachronic (Språkrådet "
                   "recommends 'ska'; EP switched later), so low weight and a small cap.",
         source="Danielsson (2003) [direction reversed on EP dev; diachronic]",
-        weight=0.5, cap=1.0),
+        # disabled: replaced by register.kommer_att_vs_ska (spelling-robust future choice)
+        enabled=False, weight=0.5, cap=1.0),
     RateRule(
         "starter.modal_particles",
         description="modal particles ju/nog/väl/visst",
         pattern=_MODAL_PARTICLES,
-        # dev.500.bal per 1000 words: ju .96/.054, nog .18/.12, väl .10/.020, visst .066/.017
-        rate_o=1.3, rate_t=0.21,
+        # dev.500.bal per 1000 words (revised regexes, 2026-11-05): ju .94/.041, nog .12/.019,
+        # väl .080/.011, visst .063/.014; total O 842 hits 1.2, T 60 hits .086.
+        # (before the fix: ju .96/.054, nog .18/.12, väl .10/.020, visst .066/.017; total 1.3/.21)
+        # Particles inside questions (EN tag questions): ju O 10 / T 0, väl O 13 / T 5 hits on
+        # dev, so no separate question discount.
+        # dev-train (< 2002-03-01): O 725 hits 1.5 (1997-99 2.0-2.7, 2000-02 .88-.95), T 40 .092.
+        # O typed from 2000-02 (strong drift toward the test period).
+        rate_o=0.92, rate_t=0.092,
         direction="O",
         rationale="Unique items: Swedish modal particles have no English trigger, so translators "
                   "rarely create them (of course -> naturligtvis, not ju).",
@@ -117,5 +137,6 @@ RULES = [
                   "på plats). 'i termer av', 'på basis av', 'i ljuset av', 'implementera' were checked "
                   "and show no T lean on EP dev, so they are not included.",
         source="literature A12, A16 / §4.6 (c19, c20, c09, c25)",
-        cap=3.0),
+        # superseded by the calques family (tsw/rules/calques.py), which absorbs these entries
+        enabled=False, cap=3.0),
 ]

@@ -1,0 +1,83 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"stats\")",
+  "--splits",
+  "trn",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"stats\")",
+ "data_file": "trn.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": 4.33,
+ "git_branch": "feat/stats",
+ "git_commit": "668dcd02f24abde4d514df038d4c220f05e9a579",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.6558156547183613,
+  "confusion": {
+   "fn": 557,
+   "fp": 384,
+   "tn": 983,
+   "tp": 810
+  },
+  "macro_f1": 0.6544319968751456,
+  "n": 2734,
+  "n_orig": 1367,
+  "n_trans": 1367,
+  "pred_trans_rate": 0.4367227505486467,
+  "roc_auc": 0.7048098961357401
+ },
+ "rules": {
+  "cap:stats": {
+   "auc": 0.4824186903224667,
+   "fire_orig": 0.0073152889539136795,
+   "fire_trans": 0.040965618141916606,
+   "log_odds": 1.7173386334900802,
+   "mean_orig": -0.0020587045213278626,
+   "mean_trans": -0.019084162829173967,
+   "n_fire": 66,
+   "sign_acc": 0.13636363636363635
+  },
+  "stats.av_nominal": {
+   "auc": 0.6199166902571803,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.1346099185036337,
+   "mean_trans": 0.08084328156194512,
+   "n_fire": 2734,
+   "sign_acc": 0.6068032187271397
+  },
+  "stats.av_other": {
+   "auc": 0.672245890033066,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.20647631862977164,
+   "mean_trans": 0.13045636842354824,
+   "n_fire": 2734,
+   "sign_acc": 0.6269202633504023
+  },
+  "stats.long_words": {
+   "auc": 0.6018064001018896,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.02077864956832652,
+   "mean_trans": 0.06644146615689629,
+   "n_fire": 2734,
+   "sign_acc": 0.5632772494513534
+  }
+ },
+ "split": "trn",
+ "timestamp": "20261105T230832Z",
+ "worktree": "worktrees/stats"
+}

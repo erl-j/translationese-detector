@@ -1,0 +1,241 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Default",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "dev.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": 11.25,
+ "git_branch": "feat/particles",
+ "git_commit": "a721822d59da4eeaa78750147c8e35462867364d",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.7151023288637968,
+  "confusion": {
+   "fn": 1776,
+   "fp": 2261,
+   "tn": 4824,
+   "tp": 5309
+  },
+  "macro_f1": 0.7147681786434479,
+  "n": 14170,
+  "n_orig": 7085,
+  "n_trans": 7085,
+  "pred_trans_rate": 0.534227240649259,
+  "roc_auc": 0.7912471655554665
+ },
+ "rules": {
+  "cap:particles": {
+   "auc": 0.4924548717583492,
+   "fire_orig": 0.014255469301340862,
+   "fire_trans": 0.0008468595624558928,
+   "log_odds": -2.761766497137671,
+   "mean_orig": 0.010156312589648806,
+   "mean_trans": -0.0003384579364288934,
+   "n_fire": 107,
+   "sign_acc": 0.0
+  },
+  "particles.alltsa": {
+   "auc": 0.5574881380395031,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.02541680612731641,
+   "mean_trans": 0.015102655006545155,
+   "n_fire": 14170,
+   "sign_acc": 0.5173606210303457
+  },
+  "particles.anda": {
+   "auc": 0.5584787804505129,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0262871129763964,
+   "mean_trans": 0.0098550533380574,
+   "n_fire": 14170,
+   "sign_acc": 0.5177134791813691
+  },
+  "particles.copular_det": {
+   "auc": 0.5874642373159074,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.03715719805448344,
+   "mean_trans": 0.01403541940995265,
+   "n_fire": 14170,
+   "sign_acc": 0.5604798870853916
+  },
+  "particles.da_anaphoric": {
+   "auc": 0.5555851344372125,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.036191996256071286,
+   "mean_trans": 0.014787518211179887,
+   "n_fire": 14170,
+   "sign_acc": 0.5166549047282992
+  },
+  "particles.dvs": {
+   "auc": 0.5645211264168487,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0395733756048189,
+   "mean_trans": 0.02193134001405616,
+   "n_fire": 14170,
+   "sign_acc": 0.5230769230769231
+  },
+  "particles.generic_man": {
+   "auc": 0.5921221143200645,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.031095907615044993,
+   "mean_trans": 0.014219379058005237,
+   "n_fire": 14170,
+   "sign_acc": 0.5613267466478475
+  },
+  "particles.namligen": {
+   "auc": 0.5628028242597076,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.06973267466478489,
+   "mean_trans": 0.043099788285109124,
+   "n_fire": 14170,
+   "sign_acc": 0.5220183486238532
+  },
+  "particles.ni_vs_man": {
+   "auc": 0.5743697286055155,
+   "fire_orig": 0.35455187014820044,
+   "fire_trans": 0.2701482004234298,
+   "log_odds": -0.39470578717142113,
+   "mean_orig": -0.06724060901237489,
+   "mean_trans": 0.027899497003450614,
+   "n_fire": 4426,
+   "sign_acc": 0.6276547672842295
+  },
+  "particles.of_course": {
+   "auc": 0.5144503107492496,
+   "fire_orig": 0.12745236414961186,
+   "fire_trans": 0.06182074805928017,
+   "log_odds": -0.7954344219416489,
+   "mean_orig": -0.017050855744332526,
+   "mean_trans": 0.009071050344170337,
+   "n_fire": 1341,
+   "sign_acc": 0.5824011931394482
+  },
+  "particles.particle_verbs": {
+   "auc": 0.5545969124787277,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.02237625748938324,
+   "mean_trans": 0.012431833543169206,
+   "n_fire": 14170,
+   "sign_acc": 0.515666901905434
+  },
+  "particles.poss_1st": {
+   "auc": 0.5434094016153284,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0236986931080488,
+   "mean_trans": 0.03272362175421129,
+   "n_fire": 14170,
+   "sign_acc": 0.5521524347212421
+  },
+  "particles.poss_3rd": {
+   "auc": 0.538356363324865,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.06544462910572019,
+   "mean_trans": 0.07356341789132675,
+   "n_fire": 14170,
+   "sign_acc": 0.5649964714184897
+  },
+  "particles.stance": {
+   "auc": 0.5603825709488921,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.03817804654746985,
+   "mean_trans": 0.0261360567935294,
+   "n_fire": 14170,
+   "sign_acc": 0.5213832039520113
+  },
+  "particles.ta_itu_med": {
+   "auc": 0.4766376826607447,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.023572910151567546,
+   "mean_trans": 0.03881181083719505,
+   "n_fire": 14170,
+   "sign_acc": 0.5162314749470712
+  },
+  "starter.calques": {
+   "auc": 0.5172467003903104,
+   "fire_orig": 0.011432604093154553,
+   "fire_trans": 0.045871559633027525,
+   "log_odds": 1.4202153892391625,
+   "mean_orig": 0.015045871559633009,
+   "mean_trans": 0.06422018348623885,
+   "n_fire": 406,
+   "sign_acc": 0.8004926108374384
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.4837085715395622,
+   "fire_orig": 0.747635850388144,
+   "fire_trans": 0.8022582921665491,
+   "log_odds": 0.31434234952093654,
+   "mean_orig": -0.03862092941562397,
+   "mean_trans": 0.06647944235998061,
+   "n_fire": 10981,
+   "sign_acc": 0.5198069392587196
+  },
+  "starter.modal_particles": {
+   "auc": 0.5914764511384842,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.19038446331457054,
+   "mean_trans": 0.06561059808997716,
+   "n_fire": 14170,
+   "sign_acc": 0.55257586450247
+  },
+  "starter.sent_len": {
+   "auc": 0.6746077696526053,
+   "fire_orig": 0.9922371206774877,
+   "fire_trans": 0.9916725476358504,
+   "log_odds": -0.07016240328926582,
+   "mean_orig": -0.0893883014400114,
+   "mean_trans": 0.12962929480861077,
+   "n_fire": 14056,
+   "sign_acc": 0.6294820717131474
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.6232297104072985,
+   "fire_orig": 0.45942131263232183,
+   "fire_trans": 0.23613267466478477,
+   "log_odds": -1.0111443823794053,
+   "mean_orig": -0.002665371595219462,
+   "mean_trans": 0.001057707109441618,
+   "n_fire": 4928,
+   "sign_acc": 0.6623376623376623
+  }
+ },
+ "split": "dev",
+ "timestamp": "20261105T225448Z",
+ "worktree": "worktrees/particles"
+}

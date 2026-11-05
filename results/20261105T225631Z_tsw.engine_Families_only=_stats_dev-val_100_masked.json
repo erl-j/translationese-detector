@@ -1,0 +1,82 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"stats\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"stats\")",
+ "data_file": "dev.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": 2.83,
+ "git_branch": "feat/stats",
+ "git_commit": "406c3a6a6e998d63b465452c9a16c70022d83931",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5813449023861171,
+  "confusion": {
+   "fn": 1224,
+   "fp": 706,
+   "tn": 1344,
+   "tp": 1336
+  },
+  "macro_f1": 0.5813436416162667,
+  "n": 4610,
+  "n_orig": 2050,
+  "n_trans": 2560,
+  "pred_trans_rate": 0.4429501084598699,
+  "roc_auc": 0.6282871570121952
+ },
+ "rules": {
+  "cap:stats": {
+   "auc": 0.49853544207317074,
+   "fire_orig": 0.000975609756097561,
+   "fire_trans": 0.00390625,
+   "log_odds": 1.2159029249132667,
+   "mean_orig": -0.00019910676321957736,
+   "mean_trans": -0.0007731713291031135,
+   "n_fire": 12,
+   "sign_acc": 0.16666666666666666
+  },
+  "stats.av_nominal": {
+   "auc": 0.5024576981707317,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.2221188860704899,
+   "mean_orig": -0.03477942180658722,
+   "mean_trans": 0.016434951425722953,
+   "n_fire": 4610,
+   "sign_acc": 0.4986984815618221
+  },
+  "stats.av_other": {
+   "auc": 0.6013711890243902,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.2221188860704899,
+   "mean_orig": -0.0744095346530996,
+   "mean_trans": 0.04723690969093862,
+   "n_fire": 4610,
+   "sign_acc": 0.5741865509761388
+  },
+  "stats.long_words": {
+   "auc": 0.5836584413109757,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.2221188860704899,
+   "mean_orig": -0.012863766996795912,
+   "mean_trans": 0.04238831613595726,
+   "n_fire": 4610,
+   "sign_acc": 0.5598698481561822
+  }
+ },
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T225631Z",
+ "worktree": "worktrees/stats"
+}

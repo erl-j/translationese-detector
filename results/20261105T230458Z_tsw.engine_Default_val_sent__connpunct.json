@@ -1,0 +1,223 @@
+{
+ "argv": [
+  "worktrees/connpunct/evals/run_all.py",
+  "--clf",
+  "tsw.engine:Default",
+  "--split",
+  "val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "val.sent.bal.jsonl",
+ "data_sha256": "32f249dea5c38f07956a5735bf4d9b810f943047946d36c6bd232344e3a0a868",
+ "elapsed_sec": 4.75,
+ "git_branch": "feat/connpunct",
+ "git_commit": "fdab6a67a93de8fe43861a7fd8fb5f3dfa0b43b7",
+ "git_dirty": false,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.571520618556701,
+  "confusion": {
+   "fn": 5339,
+   "fp": 3971,
+   "tn": 6893,
+   "tp": 5525
+  },
+  "macro_f1": 0.5698153704398077,
+  "n": 21728,
+  "n_orig": 10864,
+  "n_trans": 10864,
+  "pred_trans_rate": 0.437039764359352,
+  "roc_auc": 0.5958529938904567
+ },
+ "rules": {
+  "connpunct.additive_ocksa": {
+   "auc": 0.5753301741669938,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.00011652918989486204,
+   "mean_trans": 0.0055085635938621185,
+   "n_fire": 21728,
+   "sign_acc": 0.5015187776141384
+  },
+  "connpunct.att_drop": {
+   "auc": 0.5833021637785468,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.0009421259031310793,
+   "mean_trans": 0.0014987154159817528,
+   "n_fire": 21728,
+   "sign_acc": 0.5012886597938144
+  },
+  "connpunct.calque_connectives": {
+   "auc": 0.42830196789032865,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.008702918294906558,
+   "mean_trans": 0.0031826758618894936,
+   "n_fire": 21728,
+   "sign_acc": 0.5062592047128129
+  },
+  "connpunct.clause_comma_omission": {
+   "auc": 0.49632830326505667,
+   "fire_orig": 0.04399852724594993,
+   "fire_trans": 0.05430780559646539,
+   "log_odds": 0.22115521333922228,
+   "mean_orig": 0.007808937027190267,
+   "mean_trans": 0.008207754648207699,
+   "n_fire": 1068,
+   "sign_acc": 0.46254681647940077
+  },
+  "connpunct.exclamation": {
+   "auc": 0.58114890575079,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.00134756403534191,
+   "mean_trans": 0.0020486711198663588,
+   "n_fire": 21728,
+   "sign_acc": 0.4999539764359352
+  },
+  "connpunct.explanatory_parens": {
+   "auc": 0.4213377604635488,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.00021955633284241358,
+   "mean_trans": 0.00326977503681894,
+   "n_fire": 21728,
+   "sign_acc": 0.5020250368188512
+  },
+  "connpunct.initial_adverbial_comma": {
+   "auc": 0.5047130222352785,
+   "fire_orig": 0.10014727540500737,
+   "fire_trans": 0.09526877761413843,
+   "log_odds": -0.05532272122029491,
+   "mean_orig": -0.005293239881778366,
+   "mean_trans": 0.00012178109724341396,
+   "n_fire": 2123,
+   "sign_acc": 0.5247291568535092
+  },
+  "connpunct.initial_men": {
+   "auc": 0.4234678330194603,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.0005175333251958538,
+   "mean_trans": 0.0021993949426802393,
+   "n_fire": 21728,
+   "sign_acc": 0.5028994845360825
+  },
+  "connpunct.initial_och": {
+   "auc": 0.41843715329818826,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.0004434193667157561,
+   "mean_trans": 0.0017924379602356527,
+   "n_fire": 21728,
+   "sign_acc": 0.500460235640648
+  },
+  "connpunct.native_connectives": {
+   "auc": 0.5959448673287734,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.029315480766376533,
+   "mean_trans": 0.007608513472432473,
+   "n_fire": 21728,
+   "sign_acc": 0.5268777614138439
+  },
+  "connpunct.parenthetical_dash": {
+   "auc": 0.436444609861162,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.005797052847068424,
+   "mean_trans": 0.002538075293238976,
+   "n_fire": 21728,
+   "sign_acc": 0.5093888070692194
+  },
+  "connpunct.som_drop": {
+   "auc": 0.5001810483300292,
+   "fire_orig": 0.013899116347569955,
+   "fire_trans": 0.015740058910162003,
+   "log_odds": 0.12586618987155873,
+   "mean_orig": 0.0003888567054674166,
+   "mean_trans": 0.0006305374197123594,
+   "n_fire": 322,
+   "sign_acc": 0.5062111801242236
+  },
+  "connpunct.written_out_abbrev": {
+   "auc": 0.5076516674696502,
+   "fire_orig": 0.03746318114874816,
+   "fire_trans": 0.020986745213549336,
+   "log_odds": -0.5954767804424654,
+   "mean_orig": 3.00433105827991e-05,
+   "mean_trans": 0.0048696921063257825,
+   "n_fire": 635,
+   "sign_acc": 0.6330708661417322
+  },
+  "starter.calques": {
+   "auc": 0.5004607651827603,
+   "fire_orig": 0.002577319587628866,
+   "fire_trans": 0.0034977908689248897,
+   "log_odds": 0.3016773872472456,
+   "mean_orig": 0.003359720176730486,
+   "mean_trans": 0.004860088365243004,
+   "n_fire": 66,
+   "sign_acc": 0.5757575757575758
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.49020246691048086,
+   "fire_orig": 0.19918998527245949,
+   "fire_trans": 0.23205081001472755,
+   "log_odds": 0.19456227730342035,
+   "mean_orig": -0.0018007688504282425,
+   "mean_trans": 0.008238415777112837,
+   "n_fire": 4685,
+   "sign_acc": 0.4794023479188901
+  },
+  "starter.modal_particles": {
+   "auc": 0.585812968640533,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.00467312847542691,
+   "mean_trans": 0.014429702635037723,
+   "n_fire": 21728,
+   "sign_acc": 0.5042801914580265
+  },
+  "starter.sent_len": {
+   "auc": 0.5814980815833082,
+   "fire_orig": 0.9959499263622975,
+   "fire_trans": 0.9989874815905744,
+   "log_odds": 1.3561872793451304,
+   "mean_orig": -0.025748472474105517,
+   "mean_trans": 0.013349496099027441,
+   "n_fire": 21673,
+   "sign_acc": 0.5617127301250404
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.5286872110479328,
+   "fire_orig": 0.11597938144329897,
+   "fire_trans": 0.04657584683357879,
+   "log_odds": -0.9873151229982131,
+   "mean_orig": 0.03294665599023936,
+   "mean_trans": 0.028516859187247817,
+   "n_fire": 1766,
+   "sign_acc": 0.6823329558323896
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230458Z",
+ "worktree": "worktrees/connpunct"
+}
