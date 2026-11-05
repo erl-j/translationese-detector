@@ -18,38 +18,38 @@
   "phase_b": {
    "engine": "tsw.engine:Default",
    "engine_calib": {
-    "C": 0.3,
-    "cv_auc": 0.7104372303449045
+    "C": 3.0,
+    "cv_auc": 0.906644321473946
    },
-   "engine_trn_auc": 0.7108994670522125,
+   "engine_trn_auc": 0.9067634117224608,
    "gbt_all": {
-    "n_iter": 216
+    "n_iter": 234
    },
    "gbt_engine": {
-    "n_iter": 108
+    "n_iter": 189
    },
    "hybrid_plus": {
-    "C": 0.1,
-    "cv_auc": 0.8050583274274624
+    "C": 0.3,
+    "cv_auc": 0.9159124433671383
    },
    "lr_all": {
-    "C": 0.1,
-    "cv_auc": 0.8927845513372502
+    "C": 0.03,
+    "cv_auc": 0.9361877872731013
    },
    "lr_engine": {
-    "C": 0.1,
-    "cv_auc": 0.7634056364669561
+    "C": 0.03,
+    "cv_auc": 0.9215305826168677
    },
    "stack_families": {
     "C": 0.3,
-    "cv_auc": 0.7104372303449045
+    "cv_auc": 0.9114295262337709
    },
    "stack_rules": {
-    "C": 0.003,
-    "cv_auc": 0.7171426408531547
+    "C": 0.03,
+    "cv_auc": 0.9192730873071171
    },
    "tree_engine": {},
-   "tsw_hash": "263693870a139a72"
+   "tsw_hash": "00a590c8e3449552"
   },
   "tree_d3": {
    "max_depth": 3,
@@ -79,38 +79,38 @@
   "phase_b": {
    "engine": "tsw.engine:Default",
    "engine_calib": {
-    "C": 0.3,
-    "cv_auc": 0.8460803269029785
+    "C": 3.0,
+    "cv_auc": 0.9899432168755743
    },
-   "engine_trn_auc": 0.8472675228462307,
+   "engine_trn_auc": 0.99007004375795,
    "gbt_all": {
-    "n_iter": 232
+    "n_iter": 201
    },
    "gbt_engine": {
-    "n_iter": 72
+    "n_iter": 245
    },
    "hybrid_plus": {
-    "C": 0.3,
-    "cv_auc": 0.9463998557277321
+    "C": 3.0,
+    "cv_auc": 0.9915561123332989
    },
    "lr_all": {
-    "C": 0.1,
-    "cv_auc": 0.9845629743633103
+    "C": 0.03,
+    "cv_auc": 0.9942719200466209
    },
    "lr_engine": {
     "C": 0.1,
-    "cv_auc": 0.9020709170974945
+    "cv_auc": 0.9924669112944957
    },
    "stack_families": {
-    "C": 0.3,
-    "cv_auc": 0.8460803269029785
+    "C": 1.0,
+    "cv_auc": 0.9905313297183213
    },
    "stack_rules": {
-    "C": 0.03,
-    "cv_auc": 0.852931654223897
+    "C": 0.1,
+    "cv_auc": 0.9928821756857348
    },
    "tree_engine": {},
-   "tsw_hash": "263693870a139a72"
+   "tsw_hash": "00a590c8e3449552"
   },
   "tree_d3": {
    "max_depth": 3,
@@ -140,38 +140,38 @@
   "phase_b": {
    "engine": "tsw.engine:Default",
    "engine_calib": {
-    "C": 0.1,
-    "cv_auc": 0.5855700331439275
+    "C": 0.3,
+    "cv_auc": 0.7227547061735714
    },
-   "engine_trn_auc": 0.5867144175670378,
+   "engine_trn_auc": 0.7230257111325338,
    "gbt_all": {
-    "n_iter": 254
+    "n_iter": 280
    },
    "gbt_engine": {
-    "n_iter": 69
+    "n_iter": 277
    },
    "hybrid_plus": {
-    "C": 0.01,
-    "cv_auc": 0.6407013009397583
+    "C": 0.03,
+    "cv_auc": 0.7302202714354535
    },
    "lr_all": {
     "C": 0.01,
-    "cv_auc": 0.7096909863627913
+    "cv_auc": 0.7533257126279435
    },
    "lr_engine": {
     "C": 0.03,
-    "cv_auc": 0.6221430036828905
+    "cv_auc": 0.7354675565297165
    },
    "stack_families": {
-    "C": 0.1,
-    "cv_auc": 0.5855700331439275
+    "C": 0.03,
+    "cv_auc": 0.7256798676624955
    },
    "stack_rules": {
-    "C": 0.003,
-    "cv_auc": 0.5904237345135852
+    "C": 0.01,
+    "cv_auc": 0.7287157683079559
    },
    "tree_engine": {},
-   "tsw_hash": "263693870a139a72"
+   "tsw_hash": "00a590c8e3449552"
   },
   "tree_d3": {
    "max_depth": 3,
