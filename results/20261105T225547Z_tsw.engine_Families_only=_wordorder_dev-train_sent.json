@@ -1,0 +1,62 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"wordorder\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"wordorder\")",
+ "data_file": "dev.sent.bal.jsonl",
+ "data_sha256": "ffad4bf48ca21fe3b0846bfa1cd05c8a746929c67328a1b8aea5690f0487872d",
+ "elapsed_sec": 4.12,
+ "git_branch": "feat/wordorder",
+ "git_commit": "66c07ac36ba65c5c65247157432a3c87a319e23a",
+ "git_dirty": false,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.5468571720508847,
+  "confusion": {
+   "fn": 18554,
+   "fp": 8055,
+   "tn": 22826,
+   "tp": 9286
+  },
+  "macro_f1": 0.5214115757357243,
+  "n": 58721,
+  "n_orig": 30881,
+  "n_trans": 27840,
+  "pred_trans_rate": 0.29531172834250097,
+  "roc_auc": 0.5651984617117545
+ },
+ "rules": {
+  "wordorder.opening_type": {
+   "auc": 0.5646024097369323,
+   "fire_orig": 0.6819079693015122,
+   "fire_trans": 0.6582974137931035,
+   "log_odds": -0.10683598313661147,
+   "mean_orig": -0.039542983400411555,
+   "mean_trans": 0.0215298543160734,
+   "n_fire": 39385,
+   "sign_acc": 0.5650628411831916
+  },
+  "wordorder.v2_violation": {
+   "auc": 0.5006321291232156,
+   "fire_orig": 6.476474207441469e-05,
+   "fire_trans": 0.001329022988505747,
+   "log_odds": 2.8129808223653354,
+   "mean_orig": 9.714711311162203e-05,
+   "mean_trans": 0.0019935344827586208,
+   "n_fire": 39,
+   "sign_acc": 0.9487179487179487
+  }
+ },
+ "split": "dev-train",
+ "subset_rule": "dev records with session date < 2002-03-01",
+ "timestamp": "20261105T225547Z",
+ "worktree": "worktrees/wordorder"
+}

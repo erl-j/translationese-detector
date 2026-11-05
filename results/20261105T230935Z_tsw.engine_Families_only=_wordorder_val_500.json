@@ -1,0 +1,83 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"wordorder\")",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"wordorder\")",
+ "data_file": "val.500.bal.jsonl",
+ "data_sha256": "af75bc2eb00cee3e28c4a98a907c3267d6c5f6da381a90cd47f8c5ae73906c6d",
+ "elapsed_sec": 0.95,
+ "git_branch": "feat/wordorder",
+ "git_commit": "b9a571f35c536197133a42768c5cae30b599ddc8",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.6949685534591195,
+  "confusion": {
+   "fn": 109,
+   "fp": 85,
+   "tn": 233,
+   "tp": 209
+  },
+  "macro_f1": 0.6945335710041592,
+  "n": 636,
+  "n_orig": 318,
+  "n_trans": 318,
+  "pred_trans_rate": 0.46226415094339623,
+  "roc_auc": 0.7661138799889244
+ },
+ "rules": {
+  "cap:wordorder": {
+   "auc": 0.49842767295597484,
+   "fire_orig": 0.0,
+   "fire_trans": 0.0031446540880503146,
+   "log_odds": 1.1017569453475815,
+   "mean_orig": 0.0,
+   "mean_trans": -0.00032323995070607676,
+   "n_fire": 1,
+   "sign_acc": 0.0
+  },
+  "wordorder.fronted_theme": {
+   "auc": 0.761144733198845,
+   "fire_orig": 0.9716981132075472,
+   "fire_trans": 0.9465408805031447,
+   "log_odds": -0.6370971582803842,
+   "mean_orig": -1.2237339370493285,
+   "mean_trans": -0.2674644099475474,
+   "n_fire": 610,
+   "sign_acc": 0.6409836065573771
+  },
+  "wordorder.subject_theme": {
+   "auc": 0.5703838851311261,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": 0.4770771829899612,
+   "mean_trans": 0.5899474469908431,
+   "n_fire": 636,
+   "sign_acc": 0.5424528301886793
+  },
+  "wordorder.v2_violation": {
+   "auc": 0.5015723270440252,
+   "fire_orig": 0.012578616352201259,
+   "fire_trans": 0.015723270440251572,
+   "log_odds": 0.20385541152967068,
+   "mean_orig": 0.018867924528301886,
+   "mean_trans": 0.02358490566037736,
+   "n_fire": 9,
+   "sign_acc": 0.5555555555555556
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230935Z",
+ "worktree": "worktrees/wordorder"
+}

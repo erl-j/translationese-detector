@@ -1,0 +1,72 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "tsw.engine:Families(only=\"wordorder\")",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Families(only=\"wordorder\")",
+ "data_file": "dev.sent.bal.jsonl",
+ "data_sha256": "ffad4bf48ca21fe3b0846bfa1cd05c8a746929c67328a1b8aea5690f0487872d",
+ "elapsed_sec": 6.58,
+ "git_branch": "feat/wordorder",
+ "git_commit": "75e241c8cf3d131320628f042646285e1a7e424f",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5468571720508847,
+  "confusion": {
+   "fn": 18554,
+   "fp": 8055,
+   "tn": 22826,
+   "tp": 9286
+  },
+  "macro_f1": 0.5214115757357243,
+  "n": 58721,
+  "n_orig": 30881,
+  "n_trans": 27840,
+  "pred_trans_rate": 0.29531172834250097,
+  "roc_auc": 0.5651773317493888
+ },
+ "rules": {
+  "wordorder.fronted_theme": {
+   "auc": 0.5322041307436369,
+   "fire_orig": 0.16029273663417634,
+   "fire_trans": 0.11914511494252873,
+   "log_odds": -0.34445048992775873,
+   "mean_orig": -0.05139577016077773,
+   "mean_trans": -0.008211199177770393,
+   "n_fire": 8267,
+   "sign_acc": 0.627313414781662
+  },
+  "wordorder.subject_theme": {
+   "auc": 0.5381504686650311,
+   "fire_orig": 0.5223600272011917,
+   "fire_trans": 0.5400862068965517,
+   "log_odds": 0.07118700531460291,
+   "mean_orig": 0.011852786760364177,
+   "mean_trans": 0.029734007383379633,
+   "n_fire": 31167,
+   "sign_acc": 0.5483684666474156
+  },
+  "wordorder.v2_violation": {
+   "auc": 0.5006321291232156,
+   "fire_orig": 6.476474207441469e-05,
+   "fire_trans": 0.001329022988505747,
+   "log_odds": 2.8129808223653354,
+   "mean_orig": 9.714711311162203e-05,
+   "mean_trans": 0.0019935344827586208,
+   "n_fire": 39,
+   "sign_acc": 0.9487179487179487
+  }
+ },
+ "split": "dev-train",
+ "subset_rule": "dev records with session date < 2002-03-01",
+ "timestamp": "20261105T225907Z",
+ "worktree": "worktrees/wordorder"
+}
