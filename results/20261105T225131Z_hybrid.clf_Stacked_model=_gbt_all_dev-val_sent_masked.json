@@ -1,0 +1,79 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/stack.py"
+ ],
+ "balanced": true,
+ "clf": "hybrid.clf:Stacked(model='gbt_all')",
+ "data_file": "dev.sent.bal.jsonl",
+ "data_sha256": "ffad4bf48ca21fe3b0846bfa1cd05c8a746929c67328a1b8aea5690f0487872d",
+ "elapsed_sec": null,
+ "engine": "tsw.engine:Default",
+ "engine_tsw_hash": "ae5041cbd85649bf",
+ "eval_mode": "cached features (hybrid/train.py); fitted on dev records with session date < 2002-03-01",
+ "git_branch": "hybrid-ml",
+ "git_commit": "ec3e9f5c06bf22e0b7c829bfc63a5503ae2ebfc7",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "hyper": {
+  "learning_rate": 0.08,
+  "max_leaf_nodes": 15,
+  "n_iter": 239
+ },
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.638556693965665,
+  "confusion": {
+   "fn": 6650,
+   "fp": 3898,
+   "tn": 9173,
+   "tp": 9462
+  },
+  "macro_f1": 0.6385212437734331,
+  "n": 29183,
+  "n_orig": 13071,
+  "n_trans": 16112,
+  "pred_trans_rate": 0.45780077442346573,
+  "roc_auc": 0.7052802201018545
+ },
+ "n_unseen_speaker": 2139,
+ "rules": null,
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T225131Z",
+ "topic_auc_drop": 5.1896972891984916e-05,
+ "unmasked_metrics": {
+  "accuracy": 0.6386252270157283,
+  "confusion": {
+   "fn": 6623,
+   "fp": 3923,
+   "tn": 9148,
+   "tp": 9489
+  },
+  "macro_f1": 0.6385758794174459,
+  "n": 29183,
+  "n_orig": 13071,
+  "n_trans": 16112,
+  "pred_trans_rate": 0.45958263372511393,
+  "roc_auc": 0.7053321170747465
+ },
+ "unseen_speaker_metrics": {
+  "accuracy": 0.6344086021505376,
+  "confusion": {
+   "fn": 569,
+   "fp": 213,
+   "tn": 564,
+   "tp": 793
+  },
+  "macro_f1": 0.6301697148719401,
+  "n": 2139,
+  "n_orig": 777,
+  "n_trans": 1362,
+  "note": "dev-val units none of whose speakers occur in dev-train (orig 777 / trans 1362)",
+  "pred_trans_rate": 0.47031323048153345,
+  "roc_auc": 0.7044848498592992
+ },
+ "worktree": "worktrees/hybrid-ml"
+}

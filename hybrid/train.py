@@ -17,7 +17,7 @@ Evaluation runs on the cached dev-val features, unmasked and topic-masked (the
 masked text is exactly what `evals/run.py --mask-topic` would feed), and writes
 harness-format results JSON (split="dev-val") via evals/run.py:save_result.
 `hybrid.clf:Hybrid` re-computes the same scores from raw text through the
-harness (see tests/README in hybrid/README.md for the consistency check).
+harness with identical scores (checked; see hybrid/README.md).
 """
 import argparse
 import datetime

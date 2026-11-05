@@ -1,0 +1,89 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/stack.py"
+ ],
+ "balanced": true,
+ "clf": "hybrid.clf:Stacked(model='hybrid_plus')",
+ "data_file": "dev.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": null,
+ "engine": "tsw.engine:Default",
+ "engine_tsw_hash": "ae5041cbd85649bf",
+ "eval_mode": "cached features (hybrid/train.py); fitted on dev records with session date < 2002-03-01",
+ "git_branch": "hybrid-ml",
+ "git_commit": "ec3e9f5c06bf22e0b7c829bfc63a5503ae2ebfc7",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "hyper": {
+  "C": 0.3
+ },
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.8616904500548848,
+  "confusion": {
+   "fn": 61,
+   "fp": 65,
+   "tn": 327,
+   "tp": 458
+  },
+  "macro_f1": 0.8587701166395985,
+  "n": 911,
+  "n_orig": 392,
+  "n_trans": 519,
+  "pred_trans_rate": 0.5740944017563118,
+  "roc_auc": 0.9335358420824977
+ },
+ "n_unseen_speaker": 23,
+ "plus_features": [
+  "rate_p_ju",
+  "mean_word_len",
+  "mean_sent_len",
+  "rate_inte_minst",
+  "rate_p_namligen",
+  "rate_pr_jag",
+  "share_si_adv_comma",
+  "rate_dem_T",
+  "rate_pr_vi",
+  "rate_skall"
+ ],
+ "rules": null,
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T225144Z",
+ "topic_auc_drop": 0.00020152569698395073,
+ "unmasked_metrics": {
+  "accuracy": 0.8638858397365532,
+  "confusion": {
+   "fn": 59,
+   "fp": 65,
+   "tn": 327,
+   "tp": 460
+  },
+  "macro_f1": 0.8609215101104117,
+  "n": 911,
+  "n_orig": 392,
+  "n_trans": 519,
+  "pred_trans_rate": 0.5762897914379802,
+  "roc_auc": 0.9337373677794817
+ },
+ "unseen_speaker_metrics": {
+  "accuracy": 0.8260869565217391,
+  "confusion": {
+   "fn": 4,
+   "fp": 0,
+   "tn": 0,
+   "tp": 19
+  },
+  "macro_f1": 0.4523809523809524,
+  "n": 23,
+  "n_orig": 0,
+  "n_trans": 23,
+  "note": "dev-val units none of whose speakers occur in dev-train (orig 0 / trans 23)",
+  "pred_trans_rate": 0.8260869565217391,
+  "roc_auc": NaN
+ },
+ "worktree": "worktrees/hybrid-ml"
+}
