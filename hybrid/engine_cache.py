@@ -53,15 +53,24 @@ def path(gran, tag="default"):
     return os.path.join(cache.CACHE_DIR, "engine.%s.%s.npz" % (tag, gran))
 
 
+def _kind(r):
+    """Rule type by inheritance (subclasses such as stats.LengthStat count as their base)."""
+    from tsw.rules.base import ChoiceRule, HitRule, RateRule, StatRule
+    for k, cls in (("hitrate", HitRule), ("hitrate", RateRule), ("choice", ChoiceRule), ("stat", StatRule)):
+        if isinstance(r, cls):
+            return k
+    return None
+
+
 def stat_names(clf):
     out = ["n_words"]
     for r in getattr(clf, "rules", []):
-        k = type(r).__name__
-        if k in ("HitRule", "RateRule"):
+        k = _kind(r)
+        if k == "hitrate":
             out.append(r.name + ":per1000")
-        elif k == "ChoiceRule":
+        elif k == "choice":
             out += [r.name + ":share_a", r.name + ":choices_per1000"]
-        elif k == "StatRule":
+        elif k == "stat":
             out.append(r.name + ":mean")
     return out
 
@@ -69,17 +78,18 @@ def stat_names(clf):
 def rule_stats(clf, doc):
     """The raw statistics each rule computes before turning them into an LLR:
     hits per 1000 words (Hit/Rate), share of variant A + choices per 1000 words
-    (Choice), the unit mean (Stat; NaN if no units). Order = stat_names()."""
+    (Choice), the unit mean (Stat and subclasses; NaN if no units). Predicate
+    rules have no statistic (their contribution is used). Order = stat_names()."""
     n = doc.n_words
     out = [float(n)]
     for r in getattr(clf, "rules", []):
-        k = type(r).__name__
-        if k in ("HitRule", "RateRule"):
+        k = _kind(r)
+        if k == "hitrate":
             out.append(1000.0 * r.matcher.count(doc) / max(n, 1))
-        elif k == "ChoiceRule":
+        elif k == "choice":
             ka, kb = r.counts(doc)
             out += [(ka + 0.5) / (ka + kb + 1.0), 1000.0 * (ka + kb) / max(n, 1)]
-        elif k == "StatRule":
+        elif k == "stat":
             out.append(float(r.statistic(doc)[0]))
     return out
 
