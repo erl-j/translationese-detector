@@ -1,0 +1,93 @@
+{
+ "argv": [
+  "worktrees/connpunct/evals/run_all.py",
+  "--clf",
+  "tsw.engine:Engine(exclude=\"connpunct\")",
+  "--split",
+  "val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Engine(exclude=\"connpunct\")",
+ "data_file": "val.sent.bal.jsonl",
+ "data_sha256": "32f249dea5c38f07956a5735bf4d9b810f943047946d36c6bd232344e3a0a868",
+ "elapsed_sec": 2.15,
+ "git_branch": "feat/connpunct",
+ "git_commit": "fdab6a67a93de8fe43861a7fd8fb5f3dfa0b43b7",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.5597846097201767,
+  "confusion": {
+   "fn": 5153,
+   "fp": 4412,
+   "tn": 6452,
+   "tp": 5711
+  },
+  "macro_f1": 0.5592720227870358,
+  "n": 21728,
+  "n_orig": 10864,
+  "n_trans": 10864,
+  "pred_trans_rate": 0.46589653902798234,
+  "roc_auc": 0.5767490843750881
+ },
+ "rules": {
+  "starter.calques": {
+   "auc": 0.5004607651827603,
+   "fire_orig": 0.002577319587628866,
+   "fire_trans": 0.0034977908689248897,
+   "log_odds": 0.3016773872472456,
+   "mean_orig": 0.003359720176730486,
+   "mean_trans": 0.004860088365243004,
+   "n_fire": 66,
+   "sign_acc": 0.5757575757575758
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.49020246691048086,
+   "fire_orig": 0.19918998527245949,
+   "fire_trans": 0.23205081001472755,
+   "log_odds": 0.19456227730342035,
+   "mean_orig": -0.0018007688504282425,
+   "mean_trans": 0.008238415777112837,
+   "n_fire": 4685,
+   "sign_acc": 0.4794023479188901
+  },
+  "starter.modal_particles": {
+   "auc": 0.585812968640533,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.0,
+   "mean_orig": -0.00467312847542691,
+   "mean_trans": 0.014429702635037723,
+   "n_fire": 21728,
+   "sign_acc": 0.5042801914580265
+  },
+  "starter.sent_len": {
+   "auc": 0.5814980815833082,
+   "fire_orig": 0.9959499263622975,
+   "fire_trans": 0.9989874815905744,
+   "log_odds": 1.3561872793451304,
+   "mean_orig": -0.025748472474105517,
+   "mean_trans": 0.013349496099027441,
+   "n_fire": 21673,
+   "sign_acc": 0.5617127301250404
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.5286872110479328,
+   "fire_orig": 0.11597938144329897,
+   "fire_trans": 0.04657584683357879,
+   "log_odds": -0.9873151229982131,
+   "mean_orig": 0.03294665599023936,
+   "mean_trans": 0.028516859187247817,
+   "n_fire": 1766,
+   "sign_acc": 0.6823329558323896
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230520Z",
+ "worktree": "worktrees/connpunct"
+}
