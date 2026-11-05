@@ -1,0 +1,63 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "baselines:TopicCheat",
+  "--splits",
+  "trn,val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "baselines:TopicCheat",
+ "data_file": "val.500.bal.jsonl",
+ "data_sha256": "af75bc2eb00cee3e28c4a98a907c3267d6c5f6da381a90cd47f8c5ae73906c6d",
+ "elapsed_sec": 0.25,
+ "git_branch": "main",
+ "git_commit": "80d27ff3fef212069cbb24bad177af5cf9e81bff",
+ "git_dirty": true,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.6415094339622641,
+  "confusion": {
+   "fn": 208,
+   "fp": 20,
+   "tn": 298,
+   "tp": 110
+  },
+  "macro_f1": 0.6071861997226075,
+  "n": 636,
+  "n_orig": 318,
+  "n_trans": 318,
+  "pred_trans_rate": 0.20440251572327045,
+  "roc_auc": 0.7728877417823662
+ },
+ "rules": {
+  "mentions_sweden": {
+   "auc": 0.7021231359519007,
+   "fire_orig": 0.4276729559748428,
+   "fire_trans": 0.025157232704402517,
+   "log_odds": -3.307692179479731,
+   "mean_orig": -0.940251572327044,
+   "mean_trans": -0.0660377358490566,
+   "n_fire": 144,
+   "sign_acc": 0.9444444444444444
+  },
+  "mentions_uk_ie": {
+   "auc": 0.6308838653534274,
+   "fire_orig": 0.1069182389937107,
+   "fire_trans": 0.3553459119496855,
+   "log_odds": 1.5161307325142397,
+   "mean_orig": 0.14150943396226415,
+   "mean_trans": 0.8522012578616353,
+   "n_fire": 147,
+   "sign_acc": 0.7687074829931972
+  }
+ },
+ "split": "val",
+ "timestamp": "20261105T230205Z",
+ "worktree": "."
+}
