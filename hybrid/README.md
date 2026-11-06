@@ -30,7 +30,7 @@ sbatch --export=ALL,STEPS=phase_b hybrid/slurm/retrain_val.sh       # after merg
 ```
 
 Steps (all `python -m hybrid.<step>` with the venv python
-`.venv-hybrid/bin/python`, numpy/scipy/scikit-learn):
+`.venv-hybrid/bin/python (repo root)`, numpy/scipy/scikit-learn):
 `cache` (trn feature cache) → `train` (Phase A fits) → `engine_cache` (engine contributions +
 rule statistics on trn) → `stack` (Phase B fits) → `eval_val` (harness on val) → `report`.
 

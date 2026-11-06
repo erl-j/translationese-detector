@@ -11,7 +11,7 @@
 #SBATCH -o data/cache/hybrid/slurm-%j.out
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:-$(dirname "$0")/../..}"
-PY=.venv-hybrid/bin/python
+PY="$PWD/.venv-hybrid/bin/python"
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONWARNINGS=ignore
 STEPS=${STEPS:-all}
 t() { echo "== $(date +%T) $*"; /usr/bin/time -f "   [%U s user, %e s wall, %M KB]" timeout 900 "$@"; }
