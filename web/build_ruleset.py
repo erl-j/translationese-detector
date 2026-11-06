@@ -54,6 +54,7 @@ def matcher(m):
     d = {"rx": rx(m.source), "case": bool(m.case)}
     if m.labels:
         d["groups"] = {g: label_template(lab) for g, lab in m.labels.items()}
+        d["groups_raw"] = dict(m.labels)   # ChoiceRule span labels use the raw key
     return d
 
 
