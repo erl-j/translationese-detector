@@ -1,0 +1,18 @@
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Three leaves of the depth-4 decision trees over the literature features, fitted on trn,
+read as candidate rules. \texttt{rate\_x}: hits per 1000 words (\texttt{p\_} = particle,
+\texttt{poss\_nonrefl} = \emph{hans/hennes/deras}); \texttt{mean\_sent\_len}: words per sentence.
+P(T): share of translated units in the leaf on trn; $n$: units in the leaf.
+Source: \texttt{hybrid/reports/tree\_rules.md}.}
+\label{tab-trees}
+\begin{tabularx}{\textwidth}{@{}l X r r@{}}
+\toprule
+unit & condition & P(T) & $n$ \\
+\midrule
+500 tokens & \texttt{mean\_sent\_len} $>$ 19.7 $\wedge$ \texttt{rate\_p\_ju} $\le$ 1.86 $\wedge$ \texttt{rate\_p\_namligen} $\le$ 0.871 $\wedge$ \texttt{rate\_skall} $\le$ 7.12 & 0.89 & 960 \\
+500 tokens & \texttt{mean\_sent\_len} $>$ 19.7 $\wedge$ \texttt{rate\_p\_ju} $>$ 1.86 $\wedge$ \texttt{rate\_poss\_nonrefl} $\le$ 1.86 $\wedge$ \texttt{rate\_av} $\le$ 16.7 & 0.01 & 84 \\
+100 tokens & \texttt{mean\_sent\_len} $\le$ 20.8 $\wedge$ \texttt{rate\_skall} $\le$ 7.44 $\wedge$ \texttt{rate\_p\_ju} $>$ 3.38 & 0.05 & 257 \\
+\bottomrule
+\end{tabularx}
+\end{table}

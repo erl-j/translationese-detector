@@ -173,7 +173,7 @@ def md_rows(md, start_marker, stop=r"^\s*$"):
     for ln in lines[i + 1:]:
         if ln.startswith("|"):
             started = True
-            cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+            cells = [c.strip() for c in re.split(r"(?<!\\)\|", ln.strip().strip("|"))]
             if not all(set(c) <= set("-: ") for c in cells):
                 rows.append(cells)
         elif started:
@@ -341,12 +341,13 @@ def build_appendix(eng):
                     % (FAMILY_NAME[fam], len(rs), eng.family_caps[fam]))
         for r in rs:
             rows.append(r"\texttt{%s} & %s & %s & %g & %.2f & %s \\"
-                        % (tex(r.name), kind(r), r.direction, r.cap, r.weight, tex(r.description)))
+                        % (tex(r.name.split(".", 1)[1]), kind(r), r.direction, r.cap, r.weight,
+                           tex(r.description)))
     write("tab_rules_appendix.tex", r"""{\footnotesize
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth} l c r r >{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.21\textwidth} l c r r >{\raggedright\arraybackslash}p{0.54\textwidth}@{}}
 \caption{All %d enabled rules, generated from the rule metadata (\texttt{python3 -m tsw --list-rules}).
 Type: hit, rate (Poisson), choice (binomial), stat (Gaussian), pred.\ (predicate).
-Dir: direction of a hit (for choice rules, of variant A). Cap: per-rule cap on $|w \cdot \mathrm{LLR}|$; w: weight.}
+Rules are named \texttt{family.rule}; the family prefix is given by the group headings. Dir: direction of a hit (for choice rules, of variant A). Cap: per-rule cap on $|w \cdot \mathrm{LLR}|$; w: weight.}
 \label{tab-appendix}\\
 \toprule
 rule & type & dir & cap & w & description \\
@@ -506,6 +507,65 @@ model & key & sentence & 100 tokens & 500 tokens \\
 """ % "\n".join(rows))
 
 
+# Readable candidate rules from the shallow decision trees: (gran, leaf rank in the report).
+TREE_LEAVES = [("500", 1), ("500", 4), ("100", 5)]
+
+
+def tree_rules():
+    """hybrid/reports/tree_rules.md: {gran: [(conditions, p_trans, n)]} for tree_d4."""
+    md = read("hybrid/reports/tree_rules.md")
+    out = {}
+    for gran in ("sent", "100", "500"):
+        sec = md[md.index("## tree_d4, gran = %s" % gran):].split("\n## ")[0]
+        out[gran] = [(m.group(1), m.group(2), m.group(3)) for m in
+                     re.finditer(r"^- IF (.*?) THEN P\(trans\) = ([\d.]+) \(n = (\d+)\)", sec, re.M)]
+    return out
+
+
+def build_tree_table():
+    trees = tree_rules()
+    rows = []
+    for gran, k in TREE_LEAVES:
+        cond, p, n = trees[gran][k - 1]
+        parts = []
+        for c in cond.split(" AND "):
+            f, op, v = c.split(" ")
+            parts.append(r"\texttt{%s} %s %s" % (tex(f), {"<=": r"$\le$", ">": "$>$"}[op], v))
+        rows.append(r"%s & %s & %s & %s \\" % ("100 tokens" if gran == "100" else "500 tokens",
+                                               r" $\wedge$ ".join(parts), p, "{:,}".format(int(n))))
+    write("tab_trees.tex", r"""\begin{table}[tbp]
+\centering\footnotesize
+\caption{Three leaves of the depth-4 decision trees over the literature features, fitted on trn,
+read as candidate rules. \texttt{rate\_x}: hits per 1000 words (\texttt{p\_} = particle,
+\texttt{poss\_nonrefl} = \emph{hans/hennes/deras}); \texttt{mean\_sent\_len}: words per sentence.
+P(T): share of translated units in the leaf on trn; $n$: units in the leaf.
+Source: \texttt{hybrid/reports/tree\_rules.md}.}
+\label{tab-trees}
+\begin{tabularx}{\textwidth}{@{}l X r r@{}}
+\toprule
+unit & condition & P(T) & $n$ \\
+\midrule
+%s
+\bottomrule
+\end{tabularx}
+\end{table}
+""" % "\n".join(rows))
+
+
+def literature_check_counts():
+    md = read("hybrid/reports/literature_check.md")
+    head, rows = md_rows(md, "# Literature directions vs trn data")
+    idx = head.index("verdict")
+    c = {"confirmed": 0, "contradicted": 0, "weak/mixed": 0, "none": 0}
+    for r in rows:
+        v = strip_md(r[idx])
+        if v.startswith("no prediction"):
+            c["none"] += 1
+        else:
+            c[v] += 1
+    return len(rows), c
+
+
 def build_numbers(eng, stack):
     """LaTeX macros for numbers quoted in the prose that are derived, not copied."""
     lines = [r"\newcommand{\nRules}{%d}" % len(eng.rules),
@@ -519,6 +579,12 @@ def build_numbers(eng, stack):
         lines.append(r"\newcommand{\multMax%s}{%s}" % (tag, max(vs, key=lambda v: v["mult"])["mult_s"]))
         lines.append(r"\newcommand{\multNeg%s}{%d}" % (tag, sum(m < 0 for m in ms)))
         lines.append(r"\newcommand{\multIn%s}{%d}" % (tag, sum(0.5 <= m <= 2.0 for m in ms)))
+    n, c = literature_check_counts()
+    lines += [r"\newcommand{\litN}{%d}" % n, r"\newcommand{\litConfirmed}{%d}" % c["confirmed"],
+              r"\newcommand{\litContradicted}{%d}" % c["contradicted"],
+              r"\newcommand{\litWeak}{%d}" % c["weak/mixed"],
+              r"\newcommand{\litNoPred}{%d}" % c["none"],
+              r"\newcommand{\litPredicted}{%d}" % (n - c["none"])]
     write("numbers.tex", "\n".join(lines) + "\n")
 
 
@@ -675,7 +741,7 @@ def build_examples(eng):
                  % (k, gran, outcome, "translated" if truth else "original", a["prob"],
                     a["score"], a["n_words"]))
         gloss = (r"\par\smallskip{\small\textit{`%s'}}" % tex(ex["gloss"])) if ex["gloss"] else ""
-        boxes.append(r"""\begin{exbox}{%s}
+        boxes.append(r"""\begin{exbox}[%s]{%s}
 {\setlength{\parindent}{0pt}\raggedright %s}%s
 \par\medskip
 {\footnotesize
@@ -685,7 +751,7 @@ def build_examples(eng):
 %s}
 \par\smallskip{\small\textbf{Note.} %s}
 \end{exbox}
-""" % (title, body, gloss, "\n".join(items),
+""" % ("unbreakable" if ex["gran"] == "sent" else "", title, body, gloss, "\n".join(items),
        (r"\par " + "; ".join(tail) + ".") if tail else "", ex["note"]))
         print("example %d %s %s score %+.3f" % (k, ex["id"], outcome, a["score"]))
     write("examples.tex", "\n".join(boxes))
@@ -711,6 +777,7 @@ def main():
     build_results_table(res, hyb)
     build_ablation_table()
     build_hybrid_table(hyb)
+    build_tree_table()
     build_examples(eng)
     if not args.no_figure:
         build_figure(res, hyb)

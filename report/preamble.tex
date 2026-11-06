@@ -8,7 +8,9 @@
 \usepackage{lua-ul}
 \usepackage[most]{tcolorbox}
 \usepackage{amsmath}
-\usepackage[section]{placeins}
+\usepackage[section,above]{placeins}
+\usepackage{tikz}
+\usetikzlibrary{positioning,fit,arrows.meta,calc,backgrounds}
 
 % Highlight colours: toward translated (orange), toward original (blue).
 \definecolor{tsT}{HTML}{EB6834}
@@ -16,10 +18,10 @@
 \definecolor{exframe}{HTML}{8A8984}
 \definecolor{exback}{HTML}{FCFCFB}
 
-\newtcolorbox{exbox}[1]{breakable, enhanced, colback=exback, colframe=exframe,
+\newtcolorbox{exbox}[2][]{breakable, enhanced, colback=exback, colframe=exframe,
   boxrule=0.4pt, arc=1.5pt, left=5pt, right=5pt, top=4pt, bottom=4pt,
   fonttitle=\small\sffamily, coltitle=black, colbacktitle=black!6,
-  title={#1}, before skip=8pt, after skip=8pt}
+  title={#2}, before skip=8pt, after skip=8pt, #1}
 
 \newcommand{\hlT}[1]{\highLight[tsT!45]{#1}}
 \newcommand{\hlO}[1]{\highLight[tsO!45]{#1}}
@@ -31,3 +33,7 @@
 \raggedbottom
 
 \AtBeginDocument{\author{Nicolas Jonason\\[2pt]\normalsize\texttt{nicolas.jonason@aiforscience.se}}}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}

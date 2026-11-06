@@ -8,7 +8,7 @@ make -C report      # = python build_assets.py && quarto render report.qmd
 ```
 
 - `build_assets.py` writes everything in `assets/`: the data, feature, results, ablation and
-  hybrid tables, the AUC figure, the appendix rule list and the annotated example boxes. It
+  hybrid and decision-tree tables, the AUC figure, the appendix rule list and the annotated example boxes. It
   reads the numbers from `docs/INTEGRATION.md`, `hybrid/reports/*.md`, `data/MANIFEST.md`
   and the rule metadata in `tsw/rules/`, so the tables cannot drift from those sources.
 - The examples are trn units whose texts are stored in `examples_trn.json` (re-extract
