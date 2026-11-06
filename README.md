@@ -4,8 +4,9 @@ A fully rule-based expert system that tells Swedish written in Swedish apart
 from Swedish translated from English.
 
 - **49 hand-written rules** over regexes, word lists and counts, in 7 families.
-  Every parameter was set by hand from training-split statistics. There is no
-  trained model, POS tagger or parser anywhere in `tsw/`.
+  Every parameter was typed by hand, from training-split statistics or
+  linguistic judgement. There is no trained model, POS tagger or parser
+  anywhere in `tsw/`.
 - **Every verdict explains itself:** which rules fired, how much each
   contributed, and on which words.
 - **Evaluated on Europarl** with a date-based train/validation/test split and
@@ -39,16 +40,16 @@ Balanced classes, country/nationality/party words masked. Figures are accuracy /
 - **Test has not been run yet.** It covers 2007–2011 and is locked for one
   final run.
 - **Expect test to be lower than val.** Several markers of original Swedish
-  become rarer over 1997–2006, and val already scores below trn.
+  become rarer from 1997 to 2004, and val already scores below trn.
 - **Masking topic words changes AUC by at most .001**, so the rules don't key
   on what speakers talk about.
 
 ## What gives a translation away (Europarl, 1997–2004)
 
-Leave-one-family-out ablation on trn ranks the families: connectives and
-punctuation > register > particles > calques ≈ the starter rules (sentence
-length, modal particles) > word order. The statistics
-family adds almost nothing once the others are in. Details are in
+Removing one family at a time (trn, AUC at 100 tokens) ranks them:
+connectives and punctuation > register > particles > calques ≈ the starter
+rules (sentence length, modal particles) > word order. The statistics family
+adds almost nothing once the others are in. Details are in
 [docs/INTEGRATION.md](docs/INTEGRATION.md).
 
 **More frequent in originals:**
@@ -83,13 +84,13 @@ The full feature catalogue with sources is in [docs/literature.md](docs/literatu
 
 - **One domain.** The rules were built for edited European Parliament
   transcripts. A few rules partly encode EP or transcription conventions and
-  say so in their docstrings: written-out abbreviations, dash-delimited
+  say so in their rationale: written-out abbreviations, dash-delimited
   asides, exclamation marks. Nothing has been tested on fiction or news.
 - **Drift over time.** Several markers of original Swedish decline over the
   period. Rule values reflect 1997–2004.
 - **Speaker mix.** The translated side is dominated by European Commission
-  speakers. Every rule was checked for speaker concentration (`rates.py
-  --by-speaker`), but the confound can't be removed entirely.
+  speakers. The rule families were checked for speaker concentration
+  (`rates.py --by-speaker`), but the confound can't be removed entirely.
 - **Short texts.** A single sentence carries little evidence; AUC is .67 on
   sentences against .98 on 500-token chunks.
 
@@ -98,10 +99,10 @@ The full feature catalogue with sources is in [docs/literature.md](docs/literatu
 | path | contents |
 |---|---|
 | `tsw/` | the expert system: `text.py` (normaliser, sentence splitter, tokenizer), `doc.py`, `engine.py`, `rules/` (one file per family, auto-discovered), `tools/` (`rates.py`, `collocations.py`: trn-only calibration helpers) |
-| `evals/` | harness (`run.py`, `run_all.py`), metrics, topic mask, baselines, dashboard exporters |
+| `evals/` | harness (`run.py`, `run_all.py`), metrics, topic mask, baselines, dashboard exporters, `integration/` (rule-overlap analysis) |
 | `data/` | `build.py` (Europarl → labelled splits), `MANIFEST.md` (counts, sha256) |
 | `hybrid/` | ML on top of the expert features: measurement only, not used by `tsw/` |
-| `docs/` | `literature.md` (feature catalogue with sources), `ENGINE.md` (engine, rule maths, how to write a rule), `INTEGRATION.md` (how the families were combined) |
+| `docs/` | `literature.md` (feature catalogue with sources), `ENGINE.md` (engine, rule maths, how to write a rule), `INTEGRATION.md` (how the families were combined; data in `integration/`) |
 | `results/` | one JSON per eval run plus `LEADERBOARD.md` |
 
 ## Data
@@ -153,7 +154,7 @@ srun -p berzelius-hopper-cpu --time=00:20:00 -c 2 --mem=8G python3 -I data/build
 ```bash
 python3 -m tsw "Det vet vi ju alla."                    # verdict, evidence, highlighted spans
 python3 -m tsw -f speech.txt --json                     # Engine.annotate() as JSON
-python3 -m tsw --list-rules                             # every rule with direction, rationale, source
+python3 -m tsw --list-rules                             # enabled rules: type, family, direction, cap, weight
 python3 -m tsw.tools.rates --words "ju,nog" --kwic 5    # per-class rates on trn, for calibrating a rule
 python3 -m unittest discover -s tsw/tests -t .
 ```
@@ -190,7 +191,7 @@ python3 -m unittest discover -s evals/tests -v
   and politician tokens with `XTOPIC` and also reports the unmasked numbers.
   `baselines:TopicCheat` is a deliberate cheat that must fall to chance under
   masking.
-- **Outputs:** every run writes `results/<ts>_<clf>_<split>_<gran>[_masked].json`
+- **Outputs:** every run writes `results/<ts>_<clf>_<split>_<gran>[_all][_masked].json`
   (metrics, rule table, git commit, data sha256) and one line in
   `results/LEADERBOARD.md`. It also copies the JSON to `results/all/`
   (gitignored; override with `$TSW_SHARED_RESULTS`).
@@ -223,8 +224,10 @@ Val AUC by unit length, topic-masked:
 | GBT over rules + literature features | .701 | .869 | .971 |
 | LR over the 300 most frequent words (no expert input) | .700 | .870 | .971 |
 
-- **Learned weights help short texts only:** they gain up to .035 AUC on
-  sentences and 100-token chunks, and nothing at 500 tokens.
+- **ML helps short texts most:** the best models gain about .035 AUC on
+  sentences and 100-token chunks, and .006 at 500 tokens. The gain comes from
+  the extra features: re-weighting the 49 rules alone changes AUC by less
+  than .01.
 - **Expert features hold their own:** with topic words masked, they do as
   well as plain word frequencies. The bag-of-words model is the only one that
   loses AUC under masking.
