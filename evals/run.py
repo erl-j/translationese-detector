@@ -50,7 +50,7 @@ for p in (ROOT, HERE):
 import metrics  # noqa: E402
 import topicmask  # noqa: E402
 
-SHARED_DEFAULT = "./results/all"
+SHARED_DEFAULT = os.path.join(ROOT, "results", "all")
 GRANS = {"sent": "sent", "sentence": "sent", "s": "sent", "100": "100", "500": "500"}
 SPLITS = ("trn", "val", "test")
 SPLIT_ALIASES = {"dev": "trn"}          # the old dev split is trn, byte for byte

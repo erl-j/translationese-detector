@@ -22,7 +22,7 @@ import math
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SHARED = "./results/all"
+SHARED = os.path.join(ROOT, "results", "all")
 SPLIT_ALIASES = {"dev": "trn"}
 LEGACY_SPLITS = ("dev-train", "dev-val")
 

@@ -108,7 +108,10 @@ The full feature catalogue with sources is in [docs/literature.md](docs/literatu
 
 Europarl v7 (Koehn 2005), Swedish side. Label 0 means a speech given in
 Swedish; label 1 means a speech given in English and translated into Swedish
-by the EP.
+by the EP. The corpus is not included in this repository: `data/build.py`
+downloads it from statmt.org. Its source is the European Parliament
+proceedings (see the Europarl site for terms of use). The repository contains
+only short example sentences and derived counts.
 
 ```bash
 # downloads ~1.5 GB to data/raw/ on first run; ~1–3 CPU-minutes, so run it through Slurm
@@ -194,12 +197,9 @@ python3 -m unittest discover -s evals/tests -v
 - **Long runs:** full sentence-level trn (88k sentences) takes a few minutes,
   so run it through Slurm.
 
-**Dashboard:**
-(private dashboard). It shows trn vs val
-scores per classifier, rule diagnostics, the feature catalogue and annotated
-trn examples with highlighted clues. Its data comes from
-`evals/export_dashboard.py`, `export_features.py` and `export_examples.py`,
-and is uploaded by hand.
+**Dashboard data:** `evals/export_dashboard.py`, `export_features.py` and
+`export_examples.py` write JSON summaries of all runs, the feature catalogue
+and annotated trn examples, for a results dashboard.
 
 ## Hybrid: ML on top of the expert features
 
@@ -233,3 +233,7 @@ Val AUC by unit length, topic-masked:
   [hybrid/reports/stacking_100.md](hybrid/reports/stacking_100.md).
 - **Setup and pipeline:** [hybrid/README.md](hybrid/README.md). It uses its own
   venv at `.venv-hybrid/` with numpy and scikit-learn.
+
+## License
+
+MIT, see [LICENSE](LICENSE). The Europarl data is not covered by it.
