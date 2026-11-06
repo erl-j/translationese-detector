@@ -1,0 +1,54 @@
+{
+ "argv": [
+  "evals/run_all.py",
+  "--clf",
+  "baselines:MeanSentLen",
+  "--split",
+  "dev-val",
+  "--quiet"
+ ],
+ "balanced": true,
+ "clf": "baselines:MeanSentLen",
+ "data_file": "dev.100.bal.jsonl",
+ "data_sha256": "3a8bb7d1b8abe5807da915d68b94737d469e1f4316fd46eaced5bce4cbb4ca7c",
+ "elapsed_sec": 0.34,
+ "git_branch": "hybrid-ml",
+ "git_commit": "cecddae953d553dd64d0783020ee0b8e0a5e1a12",
+ "git_dirty": true,
+ "gran": "100",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.6546637744034707,
+  "confusion": {
+   "fn": 941,
+   "fp": 651,
+   "tn": 1399,
+   "tp": 1619
+  },
+  "macro_f1": 0.6538755028603498,
+  "n": 4610,
+  "n_orig": 2050,
+  "n_trans": 2560,
+  "pred_trans_rate": 0.4924078091106291,
+  "roc_auc": 0.7198795731707317
+ },
+ "rules": {
+  "mean_sent_len": {
+   "auc": 0.7198795731707317,
+   "fire_orig": 0.9926829268292683,
+   "fire_trans": 0.991015625,
+   "log_odds": -0.1957225418179025,
+   "mean_orig": -0.15418926953804984,
+   "mean_trans": 0.29957506144029616,
+   "n_fire": 4572,
+   "sign_acc": 0.6568241469816273
+  }
+ },
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T223858Z",
+ "worktree": "worktrees/hybrid-ml"
+}

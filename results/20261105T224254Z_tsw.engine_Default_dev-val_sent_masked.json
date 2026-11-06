@@ -1,0 +1,108 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/engine_cache.py",
+  "--gran",
+  "sent"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "dev.sent.bal.jsonl",
+ "data_sha256": "ffad4bf48ca21fe3b0846bfa1cd05c8a746929c67328a1b8aea5690f0487872d",
+ "elapsed_sec": null,
+ "eval_mode": "harness evaluate() via hybrid/engine_cache.py",
+ "git_branch": "hybrid-ml",
+ "git_commit": "8ccbf52bae6e97de3b9dc70ea21fe92ec7d9127b",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5640612685467566,
+  "confusion": {
+   "fn": 7361,
+   "fp": 5361,
+   "tn": 7710,
+   "tp": 8751
+  },
+  "macro_f1": 0.5635058504628967,
+  "n": 29183,
+  "n_orig": 13071,
+  "n_trans": 16112,
+  "pred_trans_rate": 0.4835692012473015,
+  "roc_auc": 0.5966759574570083
+ },
+ "rules": {
+  "starter.calques": {
+   "auc": 0.5029020709368442,
+   "fire_orig": 0.002142146737051488,
+   "fire_trans": 0.007944389275074478,
+   "log_odds": 1.3026952397547689,
+   "mean_orig": 0.002723586565679749,
+   "mean_trans": 0.010495283018867931,
+   "n_fire": 156,
+   "sign_acc": 0.8205128205128205
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.4717486616521166,
+   "fire_orig": 0.20763522301277637,
+   "fire_trans": 0.2938803376365442,
+   "log_odds": 0.46255271738141013,
+   "mean_orig": -0.006520571856112413,
+   "mean_trans": 0.01736383312057294,
+   "n_fire": 7449,
+   "sign_acc": 0.40408108470935694
+  },
+  "starter.modal_particles": {
+   "auc": 0.6019637103241126,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.2091610805731996,
+   "mean_orig": -0.0012926124872388116,
+   "mean_trans": 0.01627827502232331,
+   "n_fire": 29183,
+   "sign_acc": 0.5548435733132303
+  },
+  "starter.sent_len": {
+   "auc": 0.5960969402310216,
+   "fire_orig": 0.991660928773621,
+   "fire_trans": 0.9995034756703078,
+   "log_odds": 2.77289654824693,
+   "mean_orig": -0.021563571112886096,
+   "mean_trans": 0.026198326589903537,
+   "n_fire": 29066,
+   "sign_acc": 0.5647147870363999
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.5235092907333616,
+   "fire_orig": 0.10221100145359957,
+   "fire_trans": 0.053872889771598806,
+   "log_odds": -0.6926422961821483,
+   "mean_orig": 4.622781324977489e-05,
+   "mean_trans": -0.00034075441474771005,
+   "n_fire": 2204,
+   "sign_acc": 0.6016333938294011
+  }
+ },
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T224254Z",
+ "topic_auc_drop": 0.00023112540880354526,
+ "unmasked_metrics": {
+  "accuracy": 0.5642668676969469,
+  "confusion": {
+   "fn": 7355,
+   "fp": 5361,
+   "tn": 7710,
+   "tp": 8757
+  },
+  "macro_f1": 0.5637052853532829,
+  "n": 29183,
+  "n_orig": 13071,
+  "n_trans": 16112,
+  "pred_trans_rate": 0.4837748003974917,
+  "roc_auc": 0.5969070828658118
+ },
+ "worktree": "worktrees/hybrid-ml"
+}

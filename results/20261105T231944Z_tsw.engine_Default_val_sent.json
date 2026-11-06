@@ -1,0 +1,38 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/eval_val.py",
+  "--phase-b"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "val.sent.bal.jsonl",
+ "data_sha256": "32f249dea5c38f07956a5735bf4d9b810f943047946d36c6bd232344e3a0a868",
+ "elapsed_sec": 2.06,
+ "git_branch": "hybrid-ml",
+ "git_commit": "e1dd1e9b413366afaa7d49991055b8a8c9a45d2d",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": false,
+ "metrics": {
+  "accuracy": 0.5597846097201767,
+  "confusion": {
+   "fn": 5153,
+   "fp": 4412,
+   "tn": 6452,
+   "tp": 5711
+  },
+  "macro_f1": 0.5592720227870358,
+  "n": 21728,
+  "n_orig": 10864,
+  "n_trans": 10864,
+  "pred_trans_rate": 0.46589653902798234,
+  "roc_auc": 0.5767490843750881
+ },
+ "rules": null,
+ "split": "val",
+ "timestamp": "20261105T231944Z",
+ "worktree": "worktrees/hybrid-ml"
+}

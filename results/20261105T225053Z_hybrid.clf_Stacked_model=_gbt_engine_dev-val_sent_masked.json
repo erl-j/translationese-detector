@@ -1,0 +1,79 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/stack.py"
+ ],
+ "balanced": true,
+ "clf": "hybrid.clf:Stacked(model='gbt_engine')",
+ "data_file": "dev.sent.bal.jsonl",
+ "data_sha256": "ffad4bf48ca21fe3b0846bfa1cd05c8a746929c67328a1b8aea5690f0487872d",
+ "elapsed_sec": null,
+ "engine": "tsw.engine:Default",
+ "engine_tsw_hash": "ae5041cbd85649bf",
+ "eval_mode": "cached features (hybrid/train.py); fitted on dev records with session date < 2002-03-01",
+ "git_branch": "hybrid-ml",
+ "git_commit": "ec3e9f5c06bf22e0b7c829bfc63a5503ae2ebfc7",
+ "git_dirty": true,
+ "gran": "sent",
+ "harness_version": 1,
+ "hyper": {
+  "learning_rate": 0.08,
+  "max_leaf_nodes": 15,
+  "n_iter": 51
+ },
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.5626906075454888,
+  "confusion": {
+   "fn": 10150,
+   "fp": 2612,
+   "tn": 10459,
+   "tp": 5962
+  },
+  "macro_f1": 0.5520537884571308,
+  "n": 29183,
+  "n_orig": 13071,
+  "n_trans": 16112,
+  "pred_trans_rate": 0.2938011856217661,
+  "roc_auc": 0.62975443840557
+ },
+ "n_unseen_speaker": 2139,
+ "rules": null,
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T225053Z",
+ "topic_auc_drop": 0.00011931864068037701,
+ "unmasked_metrics": {
+  "accuracy": 0.5628619401706473,
+  "confusion": {
+   "fn": 10143,
+   "fp": 2614,
+   "tn": 10457,
+   "tp": 5969
+  },
+  "macro_f1": 0.5522728347585065,
+  "n": 29183,
+  "n_orig": 13071,
+  "n_trans": 16112,
+  "pred_trans_rate": 0.29410958434705137,
+  "roc_auc": 0.6298737570462504
+ },
+ "unseen_speaker_metrics": {
+  "accuracy": 0.511921458625526,
+  "confusion": {
+   "fn": 909,
+   "fp": 135,
+   "tn": 642,
+   "tp": 453
+  },
+  "macro_f1": 0.508080888183981,
+  "n": 2139,
+  "n_orig": 777,
+  "n_trans": 1362,
+  "note": "dev-val units none of whose speakers occur in dev-train (orig 777 / trans 1362)",
+  "pred_trans_rate": 0.27489481065918653,
+  "roc_auc": 0.6226086060887823
+ },
+ "worktree": "worktrees/hybrid-ml"
+}

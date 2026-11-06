@@ -1,0 +1,118 @@
+{
+ "argv": [
+  "worktrees/hybrid-ml/hybrid/engine_cache.py",
+  "--gran",
+  "500"
+ ],
+ "balanced": true,
+ "clf": "tsw.engine:Default",
+ "data_file": "dev.500.bal.jsonl",
+ "data_sha256": "56e491d76668a6ba301136db148303303e43dc5481099fd767313fac617735e4",
+ "elapsed_sec": null,
+ "eval_mode": "harness evaluate() via hybrid/engine_cache.py",
+ "git_branch": "hybrid-ml",
+ "git_commit": "8ccbf52bae6e97de3b9dc70ea21fe92ec7d9127b",
+ "git_dirty": false,
+ "gran": "500",
+ "harness_version": 1,
+ "limit": null,
+ "limit_seed": null,
+ "mask_topic": true,
+ "metrics": {
+  "accuracy": 0.7881448957189902,
+  "confusion": {
+   "fn": 68,
+   "fp": 125,
+   "tn": 267,
+   "tp": 451
+  },
+  "macro_f1": 0.779134869640042,
+  "n": 911,
+  "n_orig": 392,
+  "n_trans": 519,
+  "pred_trans_rate": 0.6322722283205269,
+  "roc_auc": 0.8538496323384845
+ },
+ "rules": {
+  "cap:starter": {
+   "auc": 0.4980732177263969,
+   "fire_orig": 0.0,
+   "fire_trans": 0.0038535645472061657,
+   "log_odds": 1.3329649245170394,
+   "mean_orig": 0.0,
+   "mean_trans": -0.0036817470558259255,
+   "n_fire": 2,
+   "sign_acc": 0.0
+  },
+  "starter.calques": {
+   "auc": 0.5502536274625457,
+   "fire_orig": 0.05612244897959184,
+   "fire_trans": 0.15606936416184972,
+   "log_odds": 1.1185813439603467,
+   "mean_orig": 0.08086734693877554,
+   "mean_trans": 0.2348747591522155,
+   "n_fire": 103,
+   "sign_acc": 0.7864077669902912
+  },
+  "starter.dem_har_vs_denna": {
+   "auc": 0.5351539459714522,
+   "fire_orig": 0.9974489795918368,
+   "fire_trans": 1.0,
+   "log_odds": 1.3814935837765336,
+   "mean_orig": -0.19671723989928605,
+   "mean_trans": 0.24579480472682033,
+   "n_fire": 910,
+   "sign_acc": 0.5560439560439561
+  },
+  "starter.modal_particles": {
+   "auc": 0.596727419291416,
+   "fire_orig": 1.0,
+   "fire_trans": 1.0,
+   "log_odds": 0.28033027331681915,
+   "mean_orig": -0.042975436271869234,
+   "mean_trans": 0.38862095465365937,
+   "n_fire": 911,
+   "sign_acc": 0.6355653128430296
+  },
+  "starter.sent_len": {
+   "auc": 0.8360096928944989,
+   "fire_orig": 0.9974489795918368,
+   "fire_trans": 0.9961464354527938,
+   "log_odds": -0.2318016140573249,
+   "mean_orig": -0.5701899561477484,
+   "mean_trans": 0.5716492300832822,
+   "n_fire": 908,
+   "sign_acc": 0.751101321585903
+  },
+  "starter.ska_vs_skall": {
+   "auc": 0.7450970272502064,
+   "fire_orig": 0.9132653061224489,
+   "fire_trans": 0.6763005780346821,
+   "log_odds": -1.6056953745440579,
+   "mean_orig": -0.006677998235783008,
+   "mean_trans": -0.008320673986939232,
+   "n_fire": 709,
+   "sign_acc": 0.4978843441466855
+  }
+ },
+ "split": "dev-val",
+ "subset_rule": "dev records with session date >= 2002-03-01",
+ "timestamp": "20261105T224230Z",
+ "topic_auc_drop": 0.00039813613306594053,
+ "unmasked_metrics": {
+  "accuracy": 0.7881448957189902,
+  "confusion": {
+   "fn": 68,
+   "fp": 125,
+   "tn": 267,
+   "tp": 451
+  },
+  "macro_f1": 0.779134869640042,
+  "n": 911,
+  "n_orig": 392,
+  "n_trans": 519,
+  "pred_trans_rate": 0.6322722283205269,
+  "roc_auc": 0.8542477684715505
+ },
+ "worktree": "worktrees/hybrid-ml"
+}
