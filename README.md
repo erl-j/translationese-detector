@@ -18,6 +18,8 @@ from Swedish translated from English.
 
 Technical report (method, calibration, evaluation, findings): [report/translationese-swe-report.pdf](report/translationese-swe-report.pdf).
 
+Try it in the browser: **[Swedish Translationese Checker](https://erl-j.github.io/translationese-detector/)** (a JavaScript port of the engine that runs client-side; see [web/README.md](web/README.md)).
+
 ```text
 $ python3 -m tsw "Herr talman! Först av allt vill jag säga att det faktum att kommissionen
   kommer att agera är viktigt. Dessutom, vi måste se till att detta genomförs på daglig basis."
@@ -108,6 +110,7 @@ The full feature catalogue with sources is in [docs/literature.md](docs/literatu
 | `evals/` | harness (`run.py`, `run_all.py`), metrics, topic mask, baselines, dashboard exporters, `integration/` (rule-overlap analysis) |
 | `data/` | `build.py` (Europarl → labelled splits), `MANIFEST.md` (counts, sha256) |
 | `hybrid/` | ML on top of the expert features: measurement only, not used by `tsw/` |
+| `web/` | browser checker: `site/` (static GitHub Pages site with the JS port `tsw.js` and the generated `ruleset.json`), ruleset builder, Python-vs-JS parity test |
 | `docs/` | `literature.md` (feature catalogue with sources), `ENGINE.md` (engine, rule maths, how to write a rule), `INTEGRATION.md` (how the families were combined; data in `integration/`) |
 | `results/` | one JSON per eval run plus `LEADERBOARD.md` |
 
