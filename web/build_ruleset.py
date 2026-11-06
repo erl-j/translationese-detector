@@ -168,8 +168,9 @@ def exclamation_data():
 
 def git_commit():
     try:
-        return subprocess.check_output(["git", "-C", ROOT, "rev-parse", "--short", "HEAD"],
-                                       text=True).strip()
+        # last commit that changed the engine (not HEAD: unrelated commits do not change the rules)
+        return subprocess.check_output(["git", "-C", ROOT, "log", "-1", "--format=%h", "--", "tsw"],
+                                       text=True).strip() or "unknown"
     except Exception:  # pragma: no cover
         return "unknown"
 
