@@ -1,141 +1,235 @@
 # translationese-swe
 
-A fully rule-based expert system that tells Swedish translated from English
-(translationese) apart from Swedish written in Swedish to begin with.
+A fully rule-based expert system that tells Swedish written in Swedish apart
+from Swedish translated from English.
 
-- No trained models anywhere in the pipeline: hand-written lexicons, regexes and
-  heuristics, combined with hand-set weights.
-- Evals come first: `evals/` holds the harness, and `data/` holds the scripts
-  that build labelled splits.
+- **49 hand-written rules** over regexes, word lists and counts, in 7 families.
+  Every parameter was set by hand from training-split statistics. There is no
+  trained model, POS tagger or parser anywhere in `tsw/`.
+- **Every verdict explains itself:** which rules fired, how much each
+  contributed, and on which words.
+- **Evaluated on Europarl** with a date-based train/validation/test split and
+  topic masking.
 
-Layout
-- `data/`   scripts that build the corpora (raw downloads are gitignored)
-- `evals/`  eval harness and metrics
-- `tsw/`    the rule engine (features → rules → verdict)
-- `docs/`   literature notes and the rule catalogue
+```text
+$ python3 -m tsw "Herr talman! Först av allt vill jag säga att det faktum att kommissionen
+  kommer att agera är viktigt. Dessutom, vi måste se till att detta genomförs på daglig basis."
+VERDICT: TRANSLATED  (score +7.07, P(translated) = 1.00; 29 words, 3 sentences)
+
+Evidence for translated:
+  - English calques and anglicisms: calque 'först av allt' (EN 'first of all'), calque 'det faktum att'
+    (EN 'the fact that'), calque 'på X basis' (EN 'on a X basis') -> +3.00 toward TRANSLATED
+  - comma after a sentence-initial adverbial ('Dessutom, ...') ... -> +2.00 toward TRANSLATED
+  - English word order leaking into Swedish (V3 / no inversion / embedded negation): +1.50 toward TRANSLATED
+  - future/intention auxiliary 'kommer att' vs 'ska/skall' ... -> +0.92 toward TRANSLATED
+  ...
+```
+
+## Results
+
+Balanced classes, country/nationality/party words masked. Figures are accuracy / ROC-AUC.
+
+| system | split | sentence | 100 tokens | 500 tokens |
+|---|---|---|---|---|
+| **rule engine** (`tsw.engine:Default`) | trn | .653 / .723 | .822 / .907 | .945 / .990 |
+| **rule engine** | **val** | **.613 / .666** | **.747 / .833** | **.920 / .977** |
+| baseline: mean sentence length | val | .563 / .583 | .633 / .671 | .708 / .792 |
+| hybrid ML, best per column (see [Hybrid](#hybrid-ml-on-top-of-the-expert-features)) | val | .642 / .701 | .787 / .869 | .939 / .983 |
+
+- **Test has not been run yet.** It covers 2007–2011 and is locked for one
+  final run.
+- **Expect test to be lower than val.** Several markers of original Swedish
+  become rarer over 1997–2006, and val already scores below trn.
+- **Masking topic words changes AUC by at most .001**, so the rules don't key
+  on what speakers talk about.
+
+## What gives a translation away (Europarl, 1997–2004)
+
+Leave-one-family-out ablation on trn ranks the families: connectives and
+punctuation > register > particles > calques ≈ the starter rules (sentence
+length, modal particles) > word order. The statistics
+family adds almost nothing once the others are in. Details are in
+[docs/INTEGRATION.md](docs/INTEGRATION.md).
+
+**More frequent in originals:**
+- Swedish particles and connectives with no English trigger: *ju, nämligen,
+  ändå, alltså, egentligen, dessutom, därför, också, dvs., bland annat, samt*.
+- Generic *man*.
+- *tycka* rather than *anse*, *väldigt* rather than *mycket*.
+- Swedish-initiated topicalisation: *Därför anser jag*, *Det vet vi*.
+
+**More frequent in translations:**
+- *kommer att* for the future (English *will*), and *skulle vilja* (*would like to*).
+- Possessives: *min/vår*, *hans/hennes/deras*.
+- Stock equivalents of English discourse markers: *i synnerhet*, *i själva verket*.
+- Sentence-initial *Och/Men*.
+- A comma after a fronted adverbial, as in "Dessutom, vi …".
+- English-ordered openings: *För det första*, *Slutligen*, *Om …, kommer vi*.
+- *av*-periphrasis.
+- 43 calques such as *det faktum att*, *när det rör*, *de av oss som* and *i det förflutna*.
+
+**Literature claims that do not hold here:**
+- Translations do *not* over-use connectives (explicitation is reversed).
+- *skall*, *naturligtvis* and *samt* lean original.
+- *den här* leans translated.
+- *emellertid* and *huruvida* show no difference.
+- Lexical variety (MATTR, OVIX) shows no simplification.
+- Most textbook calques have no translation lean in EP Swedish: *i termer av*,
+  *på basis av*, *i ljuset av*, *sist men inte minst*.
+
+The full feature catalogue with sources is in [docs/literature.md](docs/literature.md).
+
+## Limitations
+
+- **One domain.** The rules were built for edited European Parliament
+  transcripts. A few rules partly encode EP or transcription conventions and
+  say so in their docstrings: written-out abbreviations, dash-delimited
+  asides, exclamation marks. Nothing has been tested on fiction or news.
+- **Drift over time.** Several markers of original Swedish decline over the
+  period. Rule values reflect 1997–2004.
+- **Speaker mix.** The translated side is dominated by European Commission
+  speakers. Every rule was checked for speaker concentration (`rates.py
+  --by-speaker`), but the confound can't be removed entirely.
+- **Short texts.** A single sentence carries little evidence; AUC is .67 on
+  sentences against .98 on 500-token chunks.
+
+## Layout
+
+| path | contents |
+|---|---|
+| `tsw/` | the expert system: `text.py` (normaliser, sentence splitter, tokenizer), `doc.py`, `engine.py`, `rules/` (one file per family, auto-discovered), `tools/` (`rates.py`, `collocations.py`: trn-only calibration helpers) |
+| `evals/` | harness (`run.py`, `run_all.py`), metrics, topic mask, baselines, dashboard exporters |
+| `data/` | `build.py` (Europarl → labelled splits), `MANIFEST.md` (counts, sha256) |
+| `hybrid/` | ML on top of the expert features: measurement only, not used by `tsw/` |
+| `docs/` | `literature.md` (feature catalogue with sources), `ENGINE.md` (engine, rule maths, how to write a rule), `INTEGRATION.md` (how the families were combined) |
+| `results/` | one JSON per eval run plus `LEADERBOARD.md` |
 
 ## Data
 
-Europarl v7 (Koehn 2005), Swedish side. Label 0 = speech given in Swedish,
-label 1 = speech given in English and translated into Swedish by the EP.
+Europarl v7 (Koehn 2005), Swedish side. Label 0 means a speech given in
+Swedish; label 1 means a speech given in English and translated into Swedish
+by the EP.
 
 ```bash
-# one deterministic command; downloads ~1.5 GB to data/raw/ on first run.
-# Takes ~1-3 CPU-minutes, so run it through Slurm, not on the login node:
+# downloads ~1.5 GB to data/raw/ on first run; ~1–3 CPU-minutes, so run it through Slurm
 srun -p berzelius-hopper-cpu --time=00:20:00 -c 2 --mem=8G python3 -I data/build.py
-python3 -I data/build.py --stats   # (also via srun) only print label/year counts
 ```
 
-Outputs `data/processed/{trn,val,test}.{sent,100,500}.{bal,all}.jsonl`
-(gitignored) and the committed `data/MANIFEST.md` / `data/manifest.json`
-(counts, sha256 of each file, session-date ranges, labelling statistics). Each
-record has `id, text, label, src_lang, date, speaker, speakers, speaker_id,
-n_turns, granularity, n_tokens`.
+- **Output:** the build writes
+  `data/processed/{trn,val,test}.{sent,100,500}.{bal,all}.jsonl` (gitignored).
+  Each record has `id, text, label, src_lang, date, speaker, speaker_id,
+  granularity, n_tokens`, among others.
+- **Labels:** Europarl mostly tags a speech's source language in the *other*
+  language versions. Labels therefore combine the `LANGUAGE` attribute in
+  `txt/sv` and `txt/en` (same file, same speaker ID) with inline `(XX)`
+  markers. A speech is dropped if:
+  - its sources disagree,
+  - its Swedish and English speaker names disagree, or
+  - it doesn't look Swedish.
+- **Units:**
+  - `sent`: sentences of at least 3 tokens.
+  - `100` and `500`: runs of consecutive sentences from one class and one
+    session, cut at 100 or 500 tokens.
+  - `bal` files downsample the translated class with a fixed seed; `all` files
+    keep everything.
+- **Splits:** by session date; a session never straddles a cut.
 
-- Labels: Europarl tags a turn's source language mostly in the *other* language
-  versions, so labels come from the `LANGUAGE` attribute in `txt/sv` and in
-  `txt/en` (same file, same `SPEAKER ID`) plus inline `(XX)` markers; turns
-  whose evidence disagrees, whose sv/en speaker names disagree, or that do not
-  look Swedish are dropped. Details in the `data/build.py` docstring.
-- Splits by session date (a session never straddles a cut):
-
-  | split | sessions | 500-token bal (O + T) | use |
+  | split | sessions | 500-token units (O + T) | use |
   |---|---|---|---|
-  | **trn** | 1997-01 .. 2004-06-30 | 1367 + 1367 | calibrate rules, read examples and errors |
-  | **val** | 2004-07-01 .. 2006-12-31 | 318 + 318 | aggregate metrics only, sparingly |
-  | **test** | 2007-01-01 .. 2011 | 589 + 589 | locked: one final run (`--i-mean-it`) |
+  | **trn** | 1997-01 .. 2004-06 | 1367 + 1367 | set rule values; read examples, KWIC and errors |
+  | **val** | 2004-07 .. 2006-12 | 318 + 318 | aggregate metrics only, a few runs per change |
+  | **test** | 2007-01 .. 2011 | 589 + 589 | locked: one final run (`--i-mean-it`) |
 
-  trn is the former `dev` split, byte for byte (same records, same balancing
-  seed; sha256 checked), so results recorded on `dev` are trn results and
-  `--split dev` is an alias of trn. `bal` files downsample the majority class
-  (translated) with a fixed seed; `all` files keep everything.
-- Granularities: `sent` (sentences of >= 3 tokens), `100` and `500`
-  (consecutive sentences of one class within one session date, cut as soon as
-  they reach 100/500 whitespace tokens).
+  The tools enforce this protocol:
+  - `tsw/tools/rates.py` and `collocations.py` refuse val and test.
+  - `--show-errors` is refused on val and test.
+  - `--split test` needs `--i-mean-it`.
 
-### Protocol: calibrate and inspect on trn, compare on val, test once at the end
-
-1. **trn**: read rule values off `tsw/tools/rates.py` (it refuses val and
-   test), read KWIC lines, examples and `--show-errors` output.
-2. **val**: look at it only as aggregate metrics (`evals/run.py` /
-   `run_all.py`; `--show-errors` is refused on val), and sparingly: a handful
-   of runs per branch to compare and select rule sets. Never read val texts,
-   never tune a value against a val number. A large trn-minus-val AUC gap
-   means the hand calibration fits trn.
-3. **test**: scored once, for the final pre-registered system (`--i-mean-it`).
-
-## Engine
-
-`tsw/` is the expert system; how it works, how to write a rule family (one file
-in `tsw/rules/`, auto-discovered), the rule maths, the calibration protocol and
-anti-overfitting rules are in [docs/ENGINE.md](docs/ENGINE.md).
-
-**49 enabled rules in 7 families** (60 defined; all values hand-set from trn):
-
-| family | rules | covers |
-|---|---:|---|
-| `starter` | 2 | modal particles ju/nog/väl/visst; words per sentence |
-| `connpunct` | 13 | native vs. calqued connectives, att/som drop, initial Och/Men, comma habits, dashes, parentheses, abbreviations, exclamations |
-| `particles` | 15 | nämligen, ändå, alltså, stance adverbs, anaphoric då, of-course choice, dvs., particle verbs, ta itu med, pronoun profile (man, det är, possessives, han/hon, ni vs man) |
-| `register` | 9 | kommer att vs ska, skulle vilja vs vill, tycka vs anse, väldigt vs mycket, självklart, den/det här, bland annat, samt, bra |
-| `calques` | 4 | 43-entry English calque lexicon, native counterparts, försöka att, pied-piped relatives |
-| `wordorder` | 3 | V2 sentence openings (fronted vs. subject theme), V2 violations |
-| `stats` | 3 | long-word share, nominal 'av', other 'av' |
-
-How the families were combined without double counting (overlap table, cap
-findings, leave-one-family-out ablation): [docs/INTEGRATION.md](docs/INTEGRATION.md).
-
-Current numbers (balanced, topic-masked, acc / AUC; one val run, metrics only):
-
-| | sent | 100 | 500 |
-|---|---|---|---|
-| Default, trn | .653 / .723 | .822 / .907 | .945 / .990 |
-| Default, val | .613 / .666 | .747 / .833 | .920 / .977 |
-| starter engine, val | .560 / .577 | .611 / .640 | .700 / .790 |
-| MeanSentLen, val | .563 / .583 | .633 / .671 | .708 / .792 |
+## Using the engine
 
 ```bash
-python3 -m tsw "Herr talman! Det här är ju viktigt."     # verdict + evidence + highlighted spans
-python3 -m tsw -f speech.txt --json                      # Engine.annotate() as JSON
-python3 -m tsw.tools.rates --words "ju,nog" --kwic 5     # trn statistics for calibrating a rule
+python3 -m tsw "Det vet vi ju alla."                    # verdict, evidence, highlighted spans
+python3 -m tsw -f speech.txt --json                     # Engine.annotate() as JSON
+python3 -m tsw --list-rules                             # every rule with direction, rationale, source
+python3 -m tsw.tools.rates --words "ju,nog" --kwic 5    # per-class rates on trn, for calibrating a rule
 python3 -m unittest discover -s tsw/tests -t .
 ```
 
+In Python, `Engine` offers several views of the same evidence:
+- `score(text)`
+- `explain(text)`: contribution per rule
+- `explain_spans(text)`: character offsets of each clue
+- `annotate(text)`: everything at once, JSON-serialisable
+
+`Engine(families=..., exclude=...)` selects subsets of rules.
+
+To add a rule family, see [docs/ENGINE.md](docs/ENGINE.md). It covers the rule
+types and their maths, the calibration protocol, and the rules against
+overfitting.
+
 ## Evals
 
-A classifier is any object with `score(text) -> float` (> 0 means
-"translated"), optionally `explain(text) -> {rule_name: contribution}` (or a
-fast `score_and_explain(text) -> (score, dict)`). Load it by dotted path:
+A classifier is any object with `score(text) -> float`, where > 0 means
+"translated". It can optionally provide `explain(text) -> {rule:
+contribution}`. Classifiers are loaded by dotted path:
 
 ```bash
-python3 evals/run.py --clf baselines:Constant --split val --gran 100
-python3 evals/run.py --clf baselines:MeanSentLen --gran 500 --mask-topic --show-errors 5   # trn
-python3 evals/run.py --clf "baselines:Random(seed=3)" --split trn --gran sent --limit 2000
-python3 evals/run_all.py --clf tsw.engine:Default  # {trn,val} x {sent,100,500} x {unmasked,masked}
-python3 evals/run_all.py --clf tsw.engine:Default --splits trn  # trn only
+python3 evals/run.py --clf tsw.engine:Default --split val --gran 100 --mask-topic
+python3 evals/run.py --clf baselines:MeanSentLen --gran 500 --show-errors 5     # trn
+python3 evals/run_all.py --clf tsw.engine:Default     # {trn,val} x {sent,100,500} x {unmasked,masked}
 python3 -m unittest discover -s evals/tests -v
 ```
 
-- Metrics: accuracy, macro-F1, ROC-AUC, confusion matrix; with `explain`, a
-  per-rule table (firing rate per class, mean contribution per class, smoothed
-  log-odds of firing translated-vs-original, rule-alone AUC, sign accuracy).
-- `--mask-topic` replaces country/nationality/city/party/politician tokens
-  (`evals/topicmask.py`) with `XTOPIC` before scoring and also reports the
-  unmasked numbers. A rule set whose AUC drops a lot under masking is keying on
-  topic (see `baselines:TopicCheat`, which is a deliberate cheat).
-- `--split` is `trn` (default; `dev` is an alias and is recorded as trn),
-  `val` or `test`. `--split test` is refused without `--i-mean-it`;
-  `--show-errors` is refused on val and test.
-- Every run writes `results/<ts>_<clf>_<split>_<gran>[_all][_masked].json`
-  (metrics, rule table, split, git commit/dirty/branch, worktree path, mask
-  flag, data sha256) in the worktree it runs from, a copy in the shared
-  `./results/all/` (gitignored;
-  override with `$TSW_SHARED_RESULTS`), and one line in `results/LEADERBOARD.md`.
-- Worktrees: `data/processed/` is gitignored, so a worktree without its own
-  copy reads the main checkout's (or `$TSW_DATA`).
-- Scoring the full sentence-level trn split (~88k sentences) with a real rule
-  set can take minutes: use `srun -p berzelius-hopper-cpu --time=... -c 1`.
-- Dashboard data: `evals/export_dashboard.py` (runs of every split, `dev` runs
-  exported as trn, runs on the retired dev-train/dev-val halves marked
-  `legacy`; rule tables; corpus counts) and `evals/export_examples.py`
-  (annotated TP/TN/FP/FN examples, sampled from trn only).
+- **Metrics:** accuracy, macro-F1, ROC-AUC and the confusion matrix. With
+  `explain`, there is also a per-rule table: firing rate per class, mean
+  contribution, log-odds of firing, AUC of the rule alone, and sign accuracy.
+- **Topic masking:** `--mask-topic` replaces country, nationality, city, party
+  and politician tokens with `XTOPIC` and also reports the unmasked numbers.
+  `baselines:TopicCheat` is a deliberate cheat that must fall to chance under
+  masking.
+- **Outputs:** every run writes `results/<ts>_<clf>_<split>_<gran>[_masked].json`
+  (metrics, rule table, git commit, data sha256) and one line in
+  `results/LEADERBOARD.md`. It also copies the JSON to `results/all/`
+  (gitignored; override with `$TSW_SHARED_RESULTS`).
+- **Long runs:** full sentence-level trn (88k sentences) takes a few minutes,
+  so run it through Slurm.
+
+**Dashboard:**
+(private dashboard). It shows trn vs val
+scores per classifier, rule diagnostics, the feature catalogue and annotated
+trn examples with highlighted clues. Its data comes from
+`evals/export_dashboard.py`, `export_features.py` and `export_examples.py`,
+and is uploaded by hand.
+
+## Hybrid: ML on top of the expert features
+
+`hybrid/` measures how much signal the expert features carry and how far the
+hand-set weights are from learned ones. The models it fits:
+- logistic regression,
+- gradient-boosted trees,
+- shallow decision trees.
+
+They run over the literature word-list features and over the engine's
+per-rule outputs. Every model is fitted on trn and scored once on val. It
+does not feed into `tsw/`.
+
+Val AUC by unit length, topic-masked:
+
+| model | sentence | 100 tokens | 500 tokens |
+|---|---|---|---|
+| rule engine | .666 | .833 | .977 |
+| LR re-weighting of the 49 rules | .669 | .840 | .972 |
+| LR over rules + literature features | .688 | .860 | .983 |
+| GBT over rules + literature features | .701 | .869 | .971 |
+| LR over the 300 most frequent words (no expert input) | .700 | .870 | .971 |
+
+- **Learned weights help short texts only:** they gain up to .035 AUC on
+  sentences and 100-token chunks, and nothing at 500 tokens.
+- **Expert features hold their own:** with topic words masked, they do as
+  well as plain word frequencies. The bag-of-words model is the only one that
+  loses AUC under masking.
+- **No rule changes sign.**
+- **Where hand-set and learned weights differ most**, rule by rule:
+  [hybrid/reports/stacking_100.md](hybrid/reports/stacking_100.md).
+- **Setup and pipeline:** [hybrid/README.md](hybrid/README.md). It uses its own
+  venv at `.venv-hybrid/` with numpy and scikit-learn.

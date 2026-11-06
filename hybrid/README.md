@@ -1,6 +1,6 @@
-# hybrid/ — ML on top of the expert features (side track, branch `hybrid-ml`)
+# hybrid/: ML on top of the expert features
 
-**Not part of the expert system.** `main` stays purely rule-based. This package fits
+**Not part of the expert system.** `tsw/` never imports this package. This package fits
 simple models (L2 logistic regression, gradient-boosted trees, shallow decision trees)
 whose inputs are *expert* features, to measure how much signal the expert features
 carry, re-weight the hand-set rules, and suggest rules back to the rule writers.
@@ -14,7 +14,7 @@ Inputs (all expert features):
    rule computes (hits/1000 words, choice share, unit mean).
 3. Reference only: `bow_lr`, LR on the 300 most frequent words (no expert input).
 
-Protocol (main's trn/val/test split, see README): every model is fitted on **all of
+Protocol (the trn/val/test split in the top-level README): every model is fitted on **all of
 trn** (sessions ≤ 2004-06-30); hyper-parameters (LR's C) by 5-fold CV *inside* trn,
 folds grouped by session date. Each fitted model is scored **once** on **val**
 (2004-07 .. 2006) through the harness, unmasked and topic-masked, next to
@@ -22,15 +22,22 @@ folds grouped by session date. Each fitted model is scored **once** on **val**
 models are wrapped score-only (no per-feature val statistics) and nothing reads val
 texts. Test (2007-2011) is never touched.
 
+## Setup
+
+```bash
+python3 -m venv .venv-hybrid                       # at the repo root (gitignored)
+.venv-hybrid/bin/pip install numpy scipy scikit-learn
+PY=.venv-hybrid/bin/python
+```
+
 ## Run (Slurm, 1 CPU; ~10 min for everything)
 
 ```bash
 sbatch hybrid/slurm/retrain_val.sh                                  # Phase A + B, val eval, reports
-sbatch --export=ALL,STEPS=phase_b hybrid/slurm/retrain_val.sh       # after merging rule families
+sbatch --export=ALL,STEPS=phase_b hybrid/slurm/retrain_val.sh       # Phase B only (after rule changes)
 ```
 
-Steps (all `python -m hybrid.<step>` with the venv python
-`.venv-hybrid/bin/python (repo root)`, numpy/scipy/scikit-learn):
+Steps (each is `$PY -m hybrid.<step>`):
 `cache` (trn feature cache) → `train` (Phase A fits) → `engine_cache` (engine contributions +
 rule statistics on trn) → `stack` (Phase B fits) → `eval_val` (harness on val) → `report`.
 
