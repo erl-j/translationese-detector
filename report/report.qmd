@@ -1,0 +1,424 @@
+---
+title: "A Rule-Based Detector for Swedish Translated from English"
+subtitle: "Technical report: design, calibration and evaluation on Europarl"
+date: 2026-11-06
+date-format: long
+author-meta: "Nicolas Jonason"
+abstract: |
+  We describe a rule-based expert system that classifies Swedish text as written in
+  Swedish or translated from English. It consists of 49 hand-written rules over regular
+  expressions, word lists and counts, grouped into seven families. Each rule contributes a
+  log-likelihood ratio whose parameters were typed by hand from training-split statistics,
+  and every verdict comes with span-level evidence. On Europarl v7 with a date-based split
+  and topic words masked, the engine reaches accuracy / ROC-AUC of .613 / .666 on single
+  sentences, .747 / .833 on 100-token chunks and .920 / .977 on 500-token chunks of the
+  held-out validation period (2004–2006), against an AUC of .583, .671 and .792 for a
+  sentence-length baseline. Logistic regression and gradient-boosted trees over the same
+  expert features add between .006 and .036 AUC. Several literature claims about
+  translationese, among them explicitation through connectives, do not hold in this corpus.
+format:
+  pdf:
+    pdf-engine: lualatex
+    documentclass: article
+    papersize: a4
+    fontsize: 10pt
+    geometry:
+      - margin=2.2cm
+    number-sections: true
+    colorlinks: true
+    include-in-header: preamble.tex
+    fig-pos: "t"
+    output-file: translationese-swe-report.pdf
+bibliography: references.bib
+link-citations: true
+---
+
+# Introduction
+
+Translationese, the set of statistical properties that distinguish translated text from text
+originally written in the same language, was named in a study of exactly this language
+pair: Swedish novels translated from English [@gellerstam1986]. Computational work has since
+shown that translated text can be separated from original text with high accuracy on long
+chunks [@baroni2006; @koppel2011; @volansky2015], mostly with function-word, character and
+part-of-speech n-gram features in supervised classifiers. For Swedish Europarl, the only
+classifier we are aware of is a three-class SVM (original Swedish, from English, from other
+languages) over POS and character n-grams on about 2,000-token
+chunks, which reached 94.1% in cross-validation and 80% on a held-out set [@joelsson2016].
+
+This report describes a system built under a different constraint: it is fully rule-based.
+It uses tokenisation, regular expressions, word lists, counts and hand-written rules with
+hand-set parameters, and no trained model, tagger or parser. The rules implement features
+from the translation-studies literature (interference, normalisation, unique items,
+explicitation) and from contrastive Swedish–English grammar, and each verdict is explained
+by the rules that fired and the words they fired on. We evaluate it on the Swedish side of
+Europarl with a date-based split, measure how much an ML model on top of the same features
+gains, and report which literature claims hold and which do not in this corpus.
+
+The project's literature review (`docs/literature.md`) records how each cited source was
+checked. Some were confirmed only through citing sources, among them @gellerstam1986,
+@baker1993 and @tirkkonencondit2004; claims attributed to them here follow those secondary
+accounts.
+
+# Task and data {#sec-data}
+
+**Corpus and labels.** The data is the Swedish side of Europarl v7 [@koehn2005]. Label 0
+marks a speech given in Swedish, label 1 a speech given in English and translated into
+Swedish by the European Parliament. Europarl records a speech's source language mainly in
+the *other* language versions: a naive reading of the `LANGUAGE` attribute in the Swedish
+files finds only 154 original Swedish turns. Labels therefore combine the attribute in
+`txt/sv` and `txt/en` (same file, same speaker ID) with inline `(XX)` language markers. A
+turn is dropped when these sources disagree, when the Swedish and English
+speaker names disagree, or when the text does not look Swedish. Turns in other source
+languages and untagged turns are dropped as well. Of 196,477 speaker turns, 5,994 original
+and 34,149 translated turns are kept. Tag inconsistency across language files is a known
+source of label noise in Europarl [@ustaszewski2019].
+
+**Units.** Three granularities are built: sentences of at least three tokens; and chunks of
+consecutive sentences of one class within one session date, emitted as soon as they reach
+100 or 500 whitespace tokens (leftovers are dropped). The translated class is several times
+larger than the original class, so balanced files downsample it with a fixed seed. All
+figures in this report are on balanced files.
+
+**Split and protocol.** The split is by session date, so a session never straddles a cut
+(Table&nbsp;\ref{tab-data}). Each split also falls into a different period: trn covers 1997 to mid-2004,
+val the following parliamentary term after the 2004 enlargement, test 2007–2011. Speakers
+overlap little: of 151 distinct original-language speakers in trn and 89 in val, 10 occur in
+both. The protocol is enforced by the tools:
+
+- **trn** is the only split whose texts are read. Rule values are read off trn statistics,
+  and examples, keyword-in-context lines and errors are inspected only on trn.
+- **val** is used for aggregate metrics only, a few runs per change. The calibration tools
+  refuse it, and error listing is disabled.
+- **test** is locked for one final run and has **not been run** for this report.
+
+```{=latex}
+\input{assets/tab_data.tex}
+```
+
+**Topic masking.** Country, nationality, city, party and politician tokens can be replaced by
+a placeholder before scoring. Every result is reported masked and unmasked. A deliberately
+topic-keyed baseline must fall to chance under masking, which checks that the mask removes
+the topical signal. Masked figures are reported throughout; for the engine they differ from
+the unmasked ones by at most .001.
+
+# Method {#sec-method}
+
+## Engine
+
+**Text processing.** Input is normalised (quotation marks, dashes, ellipses, whitespace,
+soft hyphens, Unicode NFC) with a character offset map back to the original input. A
+rule-based sentence splitter ends sentences at `.`, `!`, `?` and `...` before an upper-case
+letter or digit, except after known abbreviations and initials; *Herr talman!* `Mr
+President!' is its own sentence, and vocative-only sentences are flagged so that
+sentence-position and sentence-length rules can skip them. The tokeniser keeps
+abbreviations (*t.ex.*, *bl.a.*), numbers with decimal comma or space separators and
+hyphenated compounds (*EU-länderna*) as single tokens. Rules read only from a lazily cached
+document object (sentences, tokens, lower-cased words, sentence-initial words, punctuation
+counts); regular expressions run on the lower-cased normalised text.
+
+**Rule types.** Every rule returns a log-likelihood ratio in nats,
+$\mathrm{LLR} = \ln P(\text{text}\mid T) / P(\text{text}\mid O)$, so that positive values
+point to *translated*. Five types cover all rules:
+
+- **HitRule**, for rare, high-precision items such as calques: a fixed LLR per match (or one
+  per lexicon entry), $\mathrm{LLR} = \sum_{\text{hits}} \ell_h$. Absence is no evidence.
+- **RateRule**, the frequency of an item relative to length under a Poisson model, with
+  hand-set rates $r_O, r_T$ per 1000 words. For $k$ hits in $n$ words,
+  $$\mathrm{LLR} = k \ln\frac{r_T}{r_O} - n\,\frac{r_T - r_O}{1000}.$$
+  The second term is evidence from absence and grows with length.
+- **ChoiceRule**, which of two competing variants was chosen (binomial), with $p_O, p_T$ the
+  share of variant A among A and B in each class:
+  $$\mathrm{LLR} = k_A \ln\frac{p_T}{p_O} + k_B \ln\frac{1-p_T}{1-p_O}.$$
+  Conditioning on a choice having been made makes it the most robust type to length and
+  topic, but it discards information when the rate of variant B also differs between the
+  classes.
+- **StatRule**, a per-unit statistic (e.g. words per sentence) modelled as Gaussian per
+  class; with a pooled SD the LLR is linear in the mean and decomposes into per-sentence
+  shares. The statistics family uses a variant whose SD of the text mean is
+  $\sqrt{\sigma^2/n + \tau^2}$, where $\tau$ is between-text variation that does not shrink
+  with length, so the evidence saturates on long texts.
+- **PredicateRule**, arbitrary code returning an LLR, used for the word-order rules (clause
+  opening classification over closed word lists for finite verbs, subject pronouns and
+  fronted adverbials).
+
+**Combination.** Each rule's LLR is multiplied by a weight $w_r$ (default 1) and clipped to
+$\pm c_r$. Rule contributions are summed per family, the family sum is clipped to $\pm C_f$,
+and the score is the sum over families:
+$$s = \sum_f \operatorname{clip}\Bigl(\sum_{r \in f} \operatorname{clip}(w_r\,\mathrm{LLR}_r,\ \pm c_r),\ \pm C_f\Bigr),
+\qquad P(\text{translated}) = \frac{1}{1+e^{-s}}.$$
+The prior is 0 (balanced classes) and the decision threshold is $s > 0$. Family caps (2 to
+6) bound the damage of correlated rules that read the same tokens.
+
+**Explanations.** Besides the score, the engine reports each rule's contribution (with a
+pseudo-entry for the amount a family cap removed, so the contributions sum to the score), a
+human-readable evidence sentence per rule, and character spans for every piece of
+evidence, mapped back to the original input. Each span carries its signed share of the
+rule's contribution; what is not tied to a span (the absence term of rate rules, residuals
+of statistics) is reported at document level. Section&nbsp;[-@sec-examples] shows this output.
+
+## Calibration protocol {#sec-calibration}
+
+Rule values are set by hand, as a knowledge engineer would. A rule's pattern and its
+rationale are written before any numbers are looked at. A helper tool then prints per-class
+statistics on trn (by default the balanced 500-token file, about 0.7M words per class): hits,
+rate per 1000 words, share of texts with a hit, variant shares for choices, random
+keyword-in-context lines, the share of hits from the five most frequent speakers, and
+per-year rates. The KWIC lines are read to check that the pattern matches what was meant,
+and the rounded values (at most two significant digits) are typed into the rule with a
+comment recording what was seen. There is no automated fitting and no search over
+weights, caps or thresholds. Further constraints: every rule cites a literature entry or is
+marked as expert judgement; names of countries, parties, persons, cities and institutions
+are banned from patterns; every rule is checked for speaker concentration (the share of
+hits from the five most frequent speakers); and drifting items get small caps. Values were set on trn, and val was scored a handful of times
+to compare rule sets.
+
+## Integration of the families {#sec-integration}
+
+The seven families were calibrated separately and then combined, so evidence that two
+families read off the same tokens was initially counted twice. To find such overlaps, every
+trn text was scored with all rules and two diagnostics were computed: the within-class
+Pearson correlation of every pair of rule contributions (separately in O and T, on 14,170
+100-token and 2,734 500-token chunks), and the character overlap of their evidence spans.
+Pairs with same-direction $|r| > .3$ or shared spans were resolved by hand, by removing the
+overlapping pattern from one rule, disabling one rule, or halving one weight. For example,
+a register-family rate of *av* correlated at $r = .96$ (O) and .94 (T) with the
+statistics family's *av* rule and was disabled, and sentence-initial *Därför*, *Dessutom*
+were removed from the connective rule because the word-order family scores the same tokens
+as a topicalised opening. Of 60 defined rules, 49 are enabled. On trn (masked), resolution
+moved 100-token AUC from .902 to .907. Family caps bind almost only on 500-token chunks
+(particles on 20.0% of original chunks, calques on 11.7% of translated ones), the clipped
+amount points to the true class in 90–100% of these cases, and lifting any one cap changes
+trn accuracy by 0 and AUC by at most .0002; no cap was changed.
+
+# Features {#sec-features}
+
+Table&nbsp;\ref{tab-features} lists the main rules with their hand-set class parameters; all 49 rules are in
+Appendix&nbsp;[-@sec-appendix]. The families are:
+
+- **starter**: modal particles (*ju, nog, väl, visst*) and words per sentence.
+- **connectives and punctuation**: native connective adverbs and additive *också* (O),
+  Swedish stock equivalents of English discourse markers (*i synnerhet* ‘in particular’, *i
+  själva verket* ‘in fact’), sentence-initial *Och/Men*, a comma after a fronted adverbial
+  (*Dessutom, vi måste* ‘Moreover, we must’), comma habits around clausal conjunctions,
+  dropped complementiser *att* and relative *som*, written-out abbreviations, dash-delimited
+  asides, parentheses and exclamation marks.
+- **register**: lexical choices between native variants, e.g. *kommer att* vs *ska/skall*
+  for the future, *skulle vilja* vs *vill*, *tycka* vs *anse*, *väldigt* vs *mycket*, and
+  rates of *bland annat*, *samt*, evaluative *bra*, *självklart* and *den/det/de här*.
+- **particles and pronouns**: clause-internal particles (*nämligen, ändå, alltså*, anaphoric
+  *då*), stance adverbs, Swedish particle verbs (*slå fast*, *lyfta fram*), generic *man*,
+  copular *det är*, possessive and personal pronouns, *ni* vs *man*.
+- **calques**: a lexicon of \nCalques{} English calques with per-entry LLRs (*det faktum
+  att* ‘the fact that’, *när det rör* ‘as regards’, *de av oss som* ‘those of us who’, *i det
+  förflutna* ‘in the past’), two native counterparts, *försöka att* + infinitive, and
+  pied-piped relatives (*i vilket* ‘in which’).
+- **word order**: a heuristic classifier of main-clause openings (topicalised adverb, object
+  or clause with V2 inversion vs subject-first), and English order leaking into Swedish (no
+  inversion after a fronted adverbial, V3, main-clause negation order in subordinate
+  clauses).
+- **statistics**: the share of long words (the LIX criterion) and the share of *av* ‘of, by’
+  after nominalisations and elsewhere; these abstain below 50 words.
+
+```{=latex}
+\input{assets/tab_features.tex}
+```
+
+# Annotated examples {#sec-examples}
+
+The boxes below show the engine's output on six units from **trn**; no val or test text is
+shown anywhere in this report. Outcomes use translated as the positive class (TP, TN, FP,
+FN). Spans are coloured by the net direction of the evidence covering each character
+(\hlT{toward translated}, \hlO{toward original}), with intensity growing with the summed
+contribution share; overlapping spans are merged per character. A superscript after a span
+gives the number of its rule in the list below the text. Sentence-level statistics (words
+per sentence, word length, *av* shares) have no token spans and appear only in the list.
+The lists and highlights are generated at build time from the current engine; the notes
+are the analyst's reading and are checked against the engine's contributions in the build.
+Sentence examples carry an English gloss.
+
+```{=latex}
+\input{assets/examples.tex}
+```
+
+The examples show the two main error sources. False positives are originals in an
+institutional register that shares the conventions of translated EP prose (Examples 3 and
+6), and false negatives are translations in which the translator chose native variants
+(Example 4). In both cases, the engine's evidence is correct about the words; the words do
+not determine the source language.
+
+# Results {#sec-results}
+
+## Classification
+
+Table&nbsp;\ref{tab-results} and Figure&nbsp;\ref{fig-auc} give accuracy and AUC on trn and val. The engine separates the
+classes well on 500-token chunks (val AUC .977) and moderately on single sentences (.666),
+where most rules have no hit. It outperforms the mean-sentence-length baseline at every
+length. The trn-minus-val AUC gap is .057 for sentences, .074 for 100-token chunks and .013
+for 500-token chunks. Since val lies in a later parliamentary term, this gap combines
+overfitting of the hand calibration with drift: several markers of original Swedish become
+rarer from 1997 to 2004, and short texts depend on single clues more than long ones.
+
+```{=latex}
+\input{assets/tab_results.tex}
+```
+
+```{=latex}
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.78\textwidth]{assets/fig_auc.pdf}
+\caption{ROC-AUC by unit length, topic-masked. Solid: val; dashed: trn (for the hybrid model,
+out-of-fold AUC from cross-validation inside trn). The hybrid is a logistic regression over
+the engine's rule contributions, rule statistics and literature word-list features
+(\texttt{lr\_all}). Sources: \texttt{docs/INTEGRATION.md}, \texttt{hybrid/reports/METRICS.md}.}
+\label{fig-auc}
+\end{figure}
+```
+
+## Family ablation {#sec-ablation}
+
+Table&nbsp;\ref{tab-ablation} removes one family at a time on trn. The ranking by AUC loss at 100 tokens is
+connectives and punctuation ($-.030$), register ($-.025$), particles ($-.021$), calques and
+the starter rules ($-.011$ each), word order ($-.005$) and statistics ($-.002$). The
+statistics family abstains below 50 words and its evidence is largely carried by other
+families once all are combined. Word order has a small marginal effect, spread over many
+weak per-sentence opening terms; it is kept because it owns the prefield evidence that was
+removed from other rules during integration.
+
+```{=latex}
+\input{assets/tab_ablation.tex}
+```
+
+## Machine learning on the expert features {#sec-hybrid}
+
+To measure how far the hand-set weights are from learned ones, and how much signal the
+expert features carry beyond the engine, we fitted logistic regression (LR), gradient-boosted
+trees (GBT) and shallow decision trees on trn (hyper-parameters by five-fold cross-validation
+inside trn, folds grouped by session date) and scored each model once on val (Table&nbsp;\ref{tab-hybrid}).
+The inputs are expert features only: the engine's per-rule contributions, the raw statistic
+each rule computes, and about 110 features from the literature word lists. An LR over the
+300 most frequent words serves as a reference without expert input. None of these models
+is part of the engine.
+
+```{=latex}
+\input{assets/tab_hybrid.tex}
+```
+
+Three observations follow. First, **re-weighting the hand-set rules gains little**: an LR
+over the 49 rule contributions changes val AUC by +.003, +.007 and $-.005$ at the three
+lengths. The learned multiplier on each hand-set contribution is positive for every rule at
+every length (no rule changes sign); on 100-token chunks it ranges from \multMinHund{} to
+\multMaxHund{}, and \multInHund{} of 49 rules lie between 0.5 and 2. The largest multipliers
+(sentence-initial *Men* 2.385, additive *också* 2.067, *den/det/de här* 2.017) mark rules
+whose hand-set weights are conservative. The smallest (*tycka* vs *anse* 0.395, *att*-drop
+0.446, *ni* vs *man* 0.455) concern rules that share evidence with other rules: *tycker
+jag är* fires both *tycka* and *att*-drop, and every generic *man* counts in both *ni* vs
+*man* and the generic-*man* rate. Second, **gains come from
+additional features**, not from weights: models that add the literature features gain
+.035 AUC on sentences, .036 on 100-token chunks and .006 on 500-token chunks over the
+engine. Third, **expert features match word frequencies once topic is masked**: the
+bag-of-words model is the only one that loses AUC under masking (.707 to .700 on
+sentences, .880 to .870 on 100-token chunks). Masked, it is level with the best expert
+models on sentences (.700 vs .701) and 100-token chunks (.870 vs .869) and below them on
+500-token chunks (.971 vs .983).
+
+# Findings on Swedish translationese in Europarl {#sec-findings}
+
+The calibration statistics give a description of EN→SV translationese in EP proceedings of
+1997–2004. Unless stated otherwise, figures are hand-set rule values or calibration statistics on trn
+(rates per 1000 words, mostly from 500-token chunks; shares for choices), original vs
+translated.
+
+**Unique items are under-represented in translation**, as predicted by the unique-items
+hypothesis [@tirkkonencondit2004] and contrastive work on Swedish modal particles
+[@aijmer1996]. Modal particle *ju* occurs at 0.96 vs 0.054; the rules for *nämligen* (0.42
+vs 0.02), *bland annat* (0.64 vs 0.021) and stance adverbs such as *egentligen* (0.51 vs
+0.12) are among the strongest O evidence. Swedish-specific lexical choices behave the same
+way: *tycka* takes .58 of *tycka*+*anse* in originals and .2 in translations, *väldigt*
+.43 vs .1 of *väldigt*+*mycket* before adjectives, and generic *man* is more frequent in
+originals (3.5 vs 2.4).
+
+**Interference from English is visible in function words and fixed phrases.** The future
+with *kommer att* (English *will*) takes .24 of *kommer att*+*ska/skall* in originals and .6
+in translations; *skulle vilja* (‘would like to’) .097 vs .32 of *skulle vilja*+*vill*; the
+non-reflexive possessives *hans/hennes/deras/dess* occur at 0.98 vs 2.8. A comma after a
+fronted adverbial follows 1% of such adverbials in originals and 9.1% in translations.
+The preposition *av* is more frequent in translations (13.6 vs 19), in line with
+@nilsson2004. Translations have longer sentences (mean 18.3 vs 21.5 words), the direction
+@volansky2015 report for English. Word order matches the prediction that translators keep
+the English theme [@hasselgard2004; @bohnacker2008] only in part: topicalisation leans
+original when it is a Swedish-initiated choice (deictic or causal adverbs, object *det*,
+*Det vet vi* ‘that know we’), whereas fronted adverbial clauses and structuring conjuncts
+(*För det första* ‘firstly’, *Slutligen* ‘finally’) lean translated, since they mirror an
+English sentence-initial adverbial. Subject-pronoun-first openings lean translated in
+1997–2001, and the difference fades by 2002–2004.
+
+**Claims that do not hold in this corpus:**
+
+- *Explicitation through connectives* [@blumkulka1986; @volansky2015]. The T-leaning
+  connectives of the catalogue are *less* frequent in translations (7.02 vs 4.96), and the
+  native connective adverbs in the middle field are a strong O feature (4.7 vs 1.9).
+- *Normalisation towards formal variants* as reported for EP Swedish by @danielsson2003.
+  *skall* and *ska* together occur at 6.4 vs 2.8, so the modal is an O feature; under the EP
+  house style of the period, *skall* takes at least 98% of the two in both classes (share of
+  *ska* .0022 vs .014).
+  *emellertid* (0.55 vs 0.59) and *huruvida* (0.089 vs 0.13) show no usable difference, and
+  *således* is more frequent in originals (0.13 vs 0.050). *den/det/de här*, an O keyword
+  in that study, is more frequent in translations (0.17 vs 0.90). Formal *samt* leans
+  original (0.85 vs 0.25), and so do *naturligtvis/givetvis/självklart* taken together
+  (1.2 vs 0.529); only within the choice *naturligtvis* vs *givetvis/förstås* is
+  *naturligtvis* the translated variant (.71 vs .85). Danielsson compared EP translations
+  with debates of the Swedish Riksdag, not with EP originals, which may explain part of
+  the difference.
+- *Simplification* [@baker1993; @laviosa1998]. Lexical variety is equal at two significant
+  digits: MATTR over 50-word windows .830 vs .828, OVIX 64.3 vs 63.5.
+- *Translations avoid sentence-initial conjunctions*, predicted by analogy with English
+  [@volansky2015]: sentence-initial *Och* (0.016 vs 0.17) and *Men* (0.45 vs 0.85) are more
+  frequent in translations.
+- Resumptive *så* after a fronted clause is not an O feature, and *Det är därför* `that is
+  why' leans original rather than translated.
+- Most textbook calques have no translation lean in EP Swedish: *i termer av*, *på basis
+  av*, *i ljuset av*, *baserat på* and *sist men inte minst*. *implementera* occurs almost
+  only in originals (0.039 vs 0.0003).
+
+Two properties of the corpus explain much of this. The originals are edited transcripts of
+speeches, so spoken-register items (particles, *väldigt*, *bra*, exclamations) mark them;
+and the translations are produced under institutional norms of EU Swedish that favour
+source-shaped, nominal prose [@bendegard2014]. Features that separate the classes here
+may therefore separate speech from institutional writing as much as originals from
+translations.
+
+# Limitations {#sec-limitations}
+
+- **One domain.** The rules were built for and tested on edited European Parliament
+  proceedings. Some rules partly encode EP or transcription conventions and say so in their
+  rationale (written-out abbreviations, dash-delimited asides, exclamation marks). Nothing
+  has been tested on fiction, news or other genres, where cross-domain accuracy of
+  translationese classifiers is known to drop [@rabinovich2015].
+- **Drift.** Several markers of original Swedish decline over 1997–2004, and the rule
+  values reflect that period. Val already scores below trn; test (2007–2011) is likely to
+  score lower again.
+- **Speaker mix.** The originals come from a limited set of Swedish MEPs (151 distinct
+  speakers in trn), while the translated class is dominated by European Commission
+  speakers. Rule hits were checked for speaker concentration, but the confound cannot be
+  removed entirely; Example 6 shows an original that reads like translated Commission
+  prose.
+- **Short texts.** A single sentence carries little evidence: val AUC is .666 on sentences
+  against .977 on 500-token chunks.
+- **Labels.** Source-language tags are incomplete and partly inconsistent across language
+  versions; the cross-checks drop inconsistent turns but cannot detect relay translation.
+- **Test not run.** All held-out figures are from val, which was used, sparingly, to
+  compare rule sets. The locked test split (2007–2011, 589 + 589 500-token chunks) has not
+  been scored.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+\appendix
+
+# Rule list {#sec-appendix}
+
+```{=latex}
+\input{assets/tab_rules_appendix.tex}
+```

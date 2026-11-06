@@ -1,0 +1,72 @@
+{\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth} l c r r >{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
+\caption{All 49 enabled rules, generated from the rule metadata (\texttt{python3 -m tsw --list-rules}).
+Type: hit, rate (Poisson), choice (binomial), stat (Gaussian), pred.\ (predicate).
+Dir: direction of a hit (for choice rules, of variant A). Cap: per-rule cap on $|w \cdot \mathrm{LLR}|$; w: weight.}
+\label{tab-appendix}\\
+\toprule
+rule & type & dir & cap & w & description \\
+\midrule
+\endfirsthead
+\toprule
+rule & type & dir & cap & w & description \\
+\midrule
+\endhead
+\addlinespace[3pt]\multicolumn{6}{@{}l}{\textit{starter} (2 rules, family cap 6)}\\*
+\texttt{starter.modal\_particles} & rate & O & 3 & 1.00 & modal particles ju/nog/väl/visst \\
+\texttt{starter.sent\_len} & stat & T & 2 & 0.50 & words per sentence \\
+\addlinespace[3pt]\multicolumn{6}{@{}l}{\textit{connectives \& punctuation} (13 rules, family cap 4)}\\*
+\texttt{connpunct.native\_connectives} & rate & O & 2 & 0.50 & native connective adverbs (dessutom, därför, dock, därmed, inte minst \ldots{}) \\
+\texttt{connpunct.additive\_ocksa} & rate & O & 1.5 & 0.40 & additive `också' \\
+\texttt{connpunct.calque\_connectives} & rate & T & 2 & 0.80 & Swedish equivalents of English discourse markers (i synnerhet, i själva verket \ldots{}) \\
+\texttt{connpunct.att\_drop} & rate & O & 1.5 & 1.00 & complementizer `att' dropped after tror/tycker/anser/hoppas/säger \ldots{} \\
+\texttt{connpunct.som\_drop} & choice & T & 1.5 & 0.70 & object relative without `som' (`det arbete ni har gjort') \\
+\texttt{connpunct.initial\_och} & rate & T & 2 & 1.00 & sentence-initial `Och' \\
+\texttt{connpunct.initial\_men} & rate & T & 1.5 & 0.70 & sentence-initial `Men' \\
+\texttt{connpunct.initial\_adverbial\_comma} & choice & T & 2 & 1.00 & comma after a sentence-initial adverbial (`Dessutom, \ldots{}') \\
+\texttt{connpunct.clause\_comma\_omission} & choice & T & 1.5 & 0.70 & no comma before clausal men/eftersom/medan/vilket \\
+\texttt{connpunct.written\_out\_abbrev} & choice & T & 1.5 & 0.50 & `till exempel/så kallad/till och med' written out vs `t.ex./s.k./t.o.m.' \\
+\texttt{connpunct.parenthetical\_dash} & rate & T & 1.5 & 0.50 & dash between words (parenthetical insertion) \\
+\texttt{connpunct.explanatory\_parens} & rate & T & 1 & 1.00 & explanatory parentheses (no numbers, not document codes) \\
+\texttt{connpunct.exclamation} & pred. & O & 1.5 & 0.50 & exclamation marks outside vocatives \\
+\addlinespace[3pt]\multicolumn{6}{@{}l}{\textit{register} (9 rules, family cap 6)}\\*
+\texttt{register.kommer\_att\_vs\_ska} & choice & T & 2.5 & 1.00 & future/intention auxiliary `kommer att' vs `ska/skall' \\
+\texttt{register.skulle\_vilja\_vs\_vill} & choice & T & 2 & 1.00 & `jag/vi skulle vilja' vs `jag/vi vill' \\
+\texttt{register.tycker\_vs\_anser} & choice & O & 2 & 1.00 & opinion verb `tycka' vs `anse' \\
+\texttt{register.valdigt\_vs\_mycket} & choice & O & 1.5 & 1.00 & degree adverb `väldigt' vs `mycket' + adjective \\
+\texttt{register.sjalvklart} & rate & O & 1.5 & 1.00 & stance adverb `självklart' \\
+\texttt{register.dem\_har\_rate} & rate & T & 1 & 0.50 & demonstrative `den/det/de här' \\
+\texttt{register.bland\_annat} & rate & O & 1.5 & 0.60 & `bland annat / bl.a.' \\
+\texttt{register.samt} & rate & O & 1.5 & 1.00 & coordinator `samt' \\
+\texttt{register.bra} & rate & O & 1.5 & 1.00 & evaluative `bra' \\
+\addlinespace[3pt]\multicolumn{6}{@{}l}{\textit{particles \& pronouns} (15 rules, family cap 4)}\\*
+\texttt{particles.namligen} & rate & O & 2.5 & 1.00 & clause-internal particle `nämligen' (explanatory `you see') \\
+\texttt{particles.anda} & rate & O & 2 & 1.00 & concessive particle `ändå' \\
+\texttt{particles.alltsa} & rate & O & 1.5 & 1.00 & inferential particle `alltså' \\
+\texttt{particles.stance} & rate & O & 2 & 1.00 & stance adverbs `egentligen/visserligen/i och för sig/i alla fall' \\
+\texttt{particles.da\_anaphoric} & rate & O & 2 & 1.00 & anaphoric/inferential `då' (`then, in that case') \\
+\texttt{particles.of\_course} & choice & T & 1.5 & 1.00 & `of course': `naturligtvis' vs `givetvis/förstås' \\
+\texttt{particles.dvs} & rate & O & 1.5 & 1.00 & reformulation marker `dvs.' / `det vill säga' \\
+\texttt{particles.particle\_verbs} & rate & O & 1.5 & 1.00 & Swedish-specific particle verbs (slå fast, ställa sig bakom, lyfta fram, \ldots{}) \\
+\texttt{particles.ta\_itu\_med} & rate & T & 2 & 1.00 & `ta itu med' (EN tackle/address/deal with) \\
+\texttt{particles.generic\_man} & rate & O & 1.5 & 0.25 & generic pronoun `man' \\
+\texttt{particles.copular\_det} & rate & O & 1.5 & 0.50 & copular `det är/var' and `är/var det' (expletive, cleft, anaphoric det) \\
+\texttt{particles.poss\_1st} & rate & T & 1.5 & 0.60 & 1st-person possessive determiners `min/mitt/mina/vår/vårt/våra' \\
+\texttt{particles.poss\_3rd} & rate & T & 2 & 0.80 & 3rd-person non-reflexive possessives `hans/hennes/deras/dess' \\
+\texttt{particles.han\_hon} & rate & T & 1 & 0.50 & 3rd-person personal pronouns `han/hon' \\
+\texttt{particles.ni\_vs\_man} & choice & T & 1.5 & 1.00 & `ni' vs generic `man' \\
+\addlinespace[3pt]\multicolumn{6}{@{}l}{\textit{calques} (4 rules, family cap 3)}\\*
+\texttt{calques.lexicon} & hit & T & 3 & 1.00 & English calques and anglicisms \\
+\texttt{calques.native\_counterparts} & hit & O & 2 & 1.00 & native alternatives of calques \\
+\texttt{calques.forsoka\_att} & choice & T & 1.5 & 1.00 & `försöka att + V' vs `försöka + V' \\
+\texttt{calques.pied\_piped\_relative} & hit & T & 1.5 & 1.00 & pied-piped relative `P + vilken/vilket/vilka' \\
+\addlinespace[3pt]\multicolumn{6}{@{}l}{\textit{word order} (3 rules, family cap 4)}\\*
+\texttt{wordorder.fronted\_theme} & pred. & O & 3 & 0.80 & topicalised non-subject in the prefield (V2 inversion): which kind \\
+\texttt{wordorder.subject\_theme} & pred. & T & 2 & 0.80 & subject in the prefield: pronoun / NP / det / demonstrative / cleft \\
+\texttt{wordorder.v2\_violation} & pred. & T & 3 & 1.00 & English word order leaking into Swedish (V3 / no inversion / embedded negation) \\
+\addlinespace[3pt]\multicolumn{6}{@{}l}{\textit{statistics} (3 rules, family cap 2)}\\*
+\texttt{stats.long\_words} & stat & T & 1 & 0.50 & share of long words (> 6 letters, the LIX criterion) \\
+\texttt{stats.av\_nominal} & stat & T & 1 & 1.00 & `av' after a definite nominalisation (`genomförandet av') \\
+\texttt{stats.av\_other} & stat & T & 1.5 & 1.00 & `av' elsewhere (of-periphrasis, by-agent) \\
+\bottomrule
+\end{longtable}}

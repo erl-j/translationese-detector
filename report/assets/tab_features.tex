@@ -1,0 +1,52 @@
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Main rules by family. Dir: the direction a hit points to (O original, T translated).
+Hand-set values are typed from trn statistics (O / T): rate rules in hits per 1000 words,
+choice rules as the share of variant A (the first-named variant), stat rules as class means
+(words per sentence; \emph{av} per 1000 words);
+for the hit rules, log-likelihood ratio per hit. AUC: the rule's contribution alone as a score
+on trn 100-token units; $\times$LR: multiplier on the hand-set contribution learned by a logistic
+regression over all 49 rule contributions on trn (Section~\ref{sec-hybrid}).
+Full list in Appendix~\ref{sec-appendix}.}
+\label{tab-features}
+\begin{tabularx}{\textwidth}{@{}l c X l r r@{}}
+\toprule
+rule & dir & feature & hand-set O / T & AUC & $\times$LR \\
+\midrule
+\addlinespace[2pt]\multicolumn{6}{l}{\textit{starter} (family cap 6)}\\
+\texttt{modal\_particles} & O & modal particles \emph{ju, nog, väl, visst} & .92 / .092 & .591 & 0.802 \\
+\texttt{sent\_len} & T & words per sentence & 18 / 21 & .675 & 1.379 \\
+\addlinespace[2pt]\multicolumn{6}{l}{\textit{connectives \& punctuation} (family cap 4)}\\
+\texttt{native\_connectives} & O & middle-field \emph{dessutom, därför, dock, därmed, inte minst} & 4.7 / 1.9 & .640 & 1.904 \\
+\texttt{additive\_ocksa} & O & additive \emph{också} `also' & 5.5 / 2.2 & .641 & 2.067 \\
+\texttt{calque\_connectives} & T & \emph{i synnerhet, i själva verket, till sist} `in particular, in fact, finally' & .34 / 1.5 & .520 & 0.866 \\
+\texttt{initial\_och} & T & sentence-initial \emph{Och} `And' & .016 / .17 & .465 & 1.419 \\
+\texttt{initial\_adverbial\_comma} & T & comma after a fronted adverbial: \emph{Dessutom, vi \ldots} & P(A) .01 / .091 & .569 & 0.678 \\
+\texttt{clause\_comma\_omission} & T & no comma before clausal \emph{men, eftersom, medan, vilket} & P(A) .043 / .17 & .537 & 0.812 \\
+\texttt{written\_out\_abbrev} & T & \emph{till exempel} vs \emph{t.ex.}, \emph{så kallad} vs \emph{s.k.} & P(A) .28 / .71 & .547 & 1.529 \\
+\addlinespace[2pt]\multicolumn{6}{l}{\textit{register} (family cap 6)}\\
+\texttt{kommer\_att\_vs\_ska} & T & future \emph{kommer att} vs \emph{ska/skall} & P(A) .24 / .6 & .667 & 0.713 \\
+\texttt{skulle\_vilja\_vs\_vill} & T & \emph{jag/vi skulle vilja} vs \emph{jag/vi vill} `would like to' vs `want to' & P(A) .097 / .32 & .559 & 0.838 \\
+\texttt{tycker\_vs\_anser} & O & opinion verb \emph{tycka} vs \emph{anse} `think, consider' & P(A) .58 / .2 & .550 & 0.395 \\
+\texttt{valdigt\_vs\_mycket} & O & \emph{väldigt} vs \emph{mycket} + adjective `very' & P(A) .43 / .1 & .539 & 0.603 \\
+\texttt{bland\_annat} & O & \emph{bland annat, bl.a.} `among other things' & .64 / .021 & .568 & 1.408 \\
+\texttt{samt} & O & coordinator \emph{samt} `and, as well as' & .85 / .25 & .567 & 1.244 \\
+\texttt{dem\_har\_rate} & T & demonstrative \emph{den/det/de här} `this, these' & .17 / .81 & .492 & 2.017 \\
+\addlinespace[2pt]\multicolumn{6}{l}{\textit{particles \& pronouns} (family cap 4)}\\
+\texttt{namligen} & O & clause-internal \emph{nämligen} `you see, namely' & .42 / .02 & .563 & 1.287 \\
+\texttt{stance} & O & \emph{egentligen, visserligen, i och för sig, i alla fall} & .51 / .12 & .560 & 0.854 \\
+\texttt{generic\_man} & O & generic \emph{man} `one' & 3.5 / 2.4 & .592 & 1.293 \\
+\texttt{ni\_vs\_man} & T & \emph{ni} `you (pl.)' vs generic \emph{man} & P(A) .17 / .35 & .574 & 0.455 \\
+\texttt{poss\_3rd} & T & \emph{hans, hennes, deras, dess} `his, her, their, its' & .98 / 2.8 & .538 & 0.736 \\
+\addlinespace[2pt]\multicolumn{6}{l}{\textit{calques} (family cap 3)}\\
+\texttt{lexicon} & T & 43 calques, e.g.\ \emph{det faktum att} `the fact that', \emph{när det rör} `as regards' & +0.5 to +1.5 per hit & .603 & 1.460 \\
+\texttt{pied\_piped\_relative} & T & \emph{i vilket}, \emph{för vilka} `in which, for which' & +0.8 per hit & .521 & 0.724 \\
+\addlinespace[2pt]\multicolumn{6}{l}{\textit{word order} (family cap 4)}\\
+\texttt{fronted\_theme} & O & topicalised non-subject + V2: \emph{Därför anser jag}, \emph{Det vet vi} & per-sentence LLRs & .637 & 0.954 \\
+\texttt{subject\_theme} & T & subject in the prefield: pronoun, NP, \emph{det}, cleft & per-sentence LLRs & .532 & 0.748 \\
+\texttt{v2\_violation} & T & no inversion after a fronted adverbial, V3, embedded negation & per-sentence LLRs & .502 & 0.922 \\
+\addlinespace[2pt]\multicolumn{6}{l}{\textit{statistics} (family cap 2)}\\
+\texttt{av\_other} & T & share of \emph{av} `of, by' outside nominalisations & 13 / 17 & .594 & 0.707 \\
+\bottomrule
+\end{tabularx}
+\end{table}

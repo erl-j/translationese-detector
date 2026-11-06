@@ -1,0 +1,16 @@
+\begin{table}[tbp]
+\centering\small
+\caption{Date-based splits (balanced files; counts per class, so each set has twice as many units).
+Sessions: first and last session date present and number of sessions. Tokens: whitespace tokens
+of the balanced 500-token file, both classes. Source: \texttt{data/MANIFEST.md}.}
+\label{tab-data}
+\begin{tabular}{@{}l l r r r r r@{}}
+\toprule
+split & sessions & $n$ & sentences & 100-token & 500-token & tokens (500) \\
+\midrule
+trn & 1997-01-14 -- 2004-05-05 & 483 & 43\,952 & 7\,085 & 1\,367 & 1\,400\,951 \\
+val & 2004-07-20 -- 2006-12-18 & 140 & 10\,864 & 1\,677 & 318 & 325\,339 \\
+test & 2007-01-15 -- 2011-07-06 & 250 & 19\,332 & 3\,058 & 589 & 603\,493 \\
+\bottomrule
+\end{tabular}
+\end{table}

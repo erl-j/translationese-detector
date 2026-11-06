@@ -1,0 +1,92 @@
+\begin{exbox}{Example 1 \quad sentence \quad \textbf{TP} \quad true: translated \quad P(translated) = 0.992 \quad score $+4.81$ \quad 24 words}
+{\setlength{\parindent}{0pt}\raggedright \highLight[tsT!70]{Till sist}\textsuperscript{\sffamily\bfseries 3}\highLight[tsT!70]{,}\textsuperscript{\sffamily\bfseries 1}\highLight[tsT!57]{ jag var}\textsuperscript{\sffamily\bfseries 2} både glad och smickrad när president Chirac hänvisade till detta betänkande i sitt tal till parlamentet för några veckor sedan.}\par\smallskip{\small\textit{`Finally, I was both pleased and flattered when President Chirac referred to this report in his speech to Parliament a few weeks ago.'}}
+\par\medskip
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}l r X@{}}
+\textbf{1}~\texttt{connpunct.initial\_adverbial\_comma} & $+2.00$ & comma after a sentence-initial adverbial (`Dessutom, \ldots{}') \\
+\textbf{2}~\texttt{wordorder.v2\_violation} & $+1.50$ & English word order leaking into Swedish (V3 / no inversion / embedded negation) \\
+\textbf{3}~\texttt{connpunct.calque\_connectives} & $+1.17$ & Swedish equivalents of English discourse markers (i synnerhet, i själva verket \ldots{}) \\
+\end{tabularx}
+\par 28 other rules: $+0.15$ in total (mostly absence and length terms).}
+\par\smallskip{\small\textbf{Note.} \emph{Till sist, jag var} follows English \emph{Finally, I was}. Three rules read three properties of the same construction: the comma after the fronted adverbial (punctuation, at its rule cap of 2), the missing V2 inversion (word order) and the structuring conjunct \emph{till sist} `finally' (lexis).}
+\end{exbox}
+
+\begin{exbox}{Example 2 \quad sentence \quad \textbf{TN} \quad true: original \quad P(translated) = 0.014 \quad score $-4.27$ \quad 20 words}
+{\setlength{\parindent}{0pt}\raggedright \highLight[tsO!38]{Personligen}\textsuperscript{\sffamily\bfseries 4}\highLight[tsO!35]{ }\highLight[tsO!63]{tycker}\textsuperscript{\sffamily\bfseries 2}\highLight[tsO!35]{ jag}\textsuperscript{\sffamily\bfseries 3} \highLight[tsO!70]{nämligen}\textsuperscript{\sffamily\bfseries 1} att kampanjen för att förhindra våld mot kvinnor faktiskt är viktigare för framtiden än denna världsutställning.}\par\smallskip{\small\textit{`Personally, you see, I think that the campaign to prevent violence against women is actually more important for the future than this world exhibition.'}}
+\par\medskip
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}l r X@{}}
+\textbf{1}~\texttt{particles.namligen} & $-2.50$ & clause-internal particle `nämligen' (explanatory `you see') \\
+\textbf{2}~\texttt{register.tycker\_vs\_anser} & $-1.06$ & opinion verb `tycka' vs `anse' \\
+\textbf{3}~\texttt{wordorder.fronted\_theme} & $-0.67$ & topicalised non-subject in the prefield (V2 inversion): which kind \\
+\textbf{4}~\texttt{connpunct.initial\_adverbial\_comma} & $-0.09$ & comma after a sentence-initial adverbial (`Dessutom, \ldots{}') \\
+\end{tabularx}
+\par 28 other rules: $+0.05$ in total (mostly absence and length terms).}
+\par\smallskip{\small\textbf{Note.} Three native choices without an English trigger: the clause-internal particle \emph{nämligen} `you see' (at its rule cap of 2.5), \emph{tycker} rather than \emph{anser} `think', and the fronted adverb with V2 inversion \emph{Personligen tycker jag} `personally think I'.}
+\end{exbox}
+
+\begin{exbox}{Example 3 \quad sentence \quad \textbf{FP} \quad true: original \quad P(translated) = 0.925 \quad score $+2.52$ \quad 14 words}
+{\setlength{\parindent}{0pt}\raggedright \highLight[tsT!70]{Till sist}\textsuperscript{\sffamily\bfseries 2}\highLight[tsT!70]{,}\textsuperscript{\sffamily\bfseries 1} för att detta arbete \highLight[tsO!35]{skall}\textsuperscript{\sffamily\bfseries 3} bli framgångsrikt får kommissionen inte lämnas ensam.}\par\smallskip{\small\textit{`Finally, for this work to be successful, the Commission must not be left alone.'}}
+\par\medskip
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}l r X@{}}
+\textbf{1}~\texttt{connpunct.initial\_adverbial\_comma} & $+2.00$ & comma after a sentence-initial adverbial (`Dessutom, \ldots{}') \\
+\textbf{2}~\texttt{connpunct.calque\_connectives} & $+1.17$ & Swedish equivalents of English discourse markers (i synnerhet, i själva verket \ldots{}) \\
+\textbf{3}~\texttt{register.kommer\_att\_vs\_ska} & $-0.64$ & future/intention auxiliary `kommer att' vs `ska/skall' \\
+\end{tabularx}
+\par 28 other rules: $-0.02$ in total (mostly absence and length terms).}
+\par\smallskip{\small\textbf{Note.} An original sentence that opens like Example~1, \emph{Till sist,} with a comma. The comma rule (at its cap) and \emph{till sist} outweigh \emph{skall}, which counts as the native side of the \emph{kommer att} vs \emph{ska/skall} choice. Here the comma precedes a fronted purpose clause (\emph{för att} \ldots), where it is ordinary Swedish punctuation: a false positive of the comma rule.}
+\end{exbox}
+
+\begin{exbox}{Example 4 \quad sentence \quad \textbf{FN} \quad true: translated \quad P(translated) = 0.039 \quad score $-3.21$ \quad 21 words}
+{\setlength{\parindent}{0pt}\raggedright \highLight[tsO!38]{Då}\textsuperscript{\sffamily\bfseries 4}\highLight[tsO!35]{ tänkte vi}\textsuperscript{\sffamily\bfseries 3} att det kanske rent ekonomiskt kunde bli \highLight[tsO!46]{bra}\textsuperscript{\sffamily\bfseries 2} i Hongkong men att det politiskt skulle gå \highLight[tsO!56]{väldigt}\textsuperscript{\sffamily\bfseries 1} dåligt.}\par\smallskip{\small\textit{`Then we thought that it might go well in Hong Kong in purely economic terms, but that politically it would go very badly.'}}
+\par\medskip
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}l r X@{}}
+\textbf{1}~\texttt{register.valdigt\_vs\_mycket} & $-1.46$ & degree adverb `väldigt' vs `mycket' + adjective \\
+\textbf{2}~\texttt{register.bra} & $-1.06$ & evaluative `bra' \\
+\textbf{3}~\texttt{wordorder.fronted\_theme} & $-0.67$ & topicalised non-subject in the prefield (V2 inversion): which kind \\
+\textbf{4}~\texttt{connpunct.initial\_adverbial\_comma} & $-0.09$ & comma after a sentence-initial adverbial (`Dessutom, \ldots{}') \\
+\end{tabularx}
+\par 28 other rules: $+0.06$ in total (mostly absence and length terms).}
+\par\smallskip{\small\textbf{Note.} A translation with three native-register choices: \emph{väldigt} rather than \emph{mycket} before an adjective, evaluative \emph{bra} `good, well', and V2 inversion after the fronted adverb (\emph{Då tänkte vi} `then thought we'). Apart from small absence and length terms, no evidence points to translation.}
+\end{exbox}
+
+\begin{exbox}{Example 5 \quad 100-token chunk \quad \textbf{TP} \quad true: translated \quad P(translated) = 1.000 \quad score $+9.48$ \quad 117 words}
+{\setlength{\parindent}{0pt}\raggedright En uppfördandekodex kanske inte räcker. \highLight[tsT!70]{Slutligen,}\textsuperscript{\sffamily\bfseries 3} när det gäller turism, \highLight[tsT!49]{skulle jag vilja}\textsuperscript{\sffamily\bfseries 4} gratulera samtliga föredragande, och \highLight[tsT!36]{i synnerhet}\textsuperscript{\sffamily\bfseries 2} Torres Marques för \highLight[tsT!40]{hennes}\textsuperscript{\sffamily\bfseries 5} betänkande. \highLight[tsT!19]{Turism är}\textsuperscript{\sffamily\bfseries 8} Europas och världens största industri, trots det har vi i Europa förlorat 10 procent av \highLight[tsT!25]{vår}\textsuperscript{\sffamily\bfseries 9} marknadsandel sedan 1960. Turism en klassisk industri på den inre marknaden. \highLight[tsT!19]{Eurons födelse }\highLight[tsT!36]{kommer}\textsuperscript{\sffamily\bfseries 8}\highLight[tsT!34]{ att}\textsuperscript{\sffamily\bfseries 1} ge denna marknad en oerhörd knuff framåt, och hela turistindustrin \highLight[tsT!36]{i allmänhet}\textsuperscript{\sffamily\bfseries 2}. \highLight[tsT!19]{Jag tror}\textsuperscript{\sffamily\bfseries 8} att vi \highLight[tsT!34]{kommer att}\textsuperscript{\sffamily\bfseries 1} få tre typer av vinnare genom introducerandet av euron. \highLight[tsT!34]{Först och främst}\textsuperscript{\sffamily\bfseries 2,3} de som arbetar inom industrin. \highLight[tsT!19]{Euron kommer}\textsuperscript{\sffamily\bfseries 8} inte bara att skapa fler arbetstillfällen, den \highLight[tsT!34]{kommer att}\textsuperscript{\sffamily\bfseries 1} ge större möjlighet till överblick av löner, vilka i sin tur \highLight[tsT!34]{kommer att}\textsuperscript{\sffamily\bfseries 1} förbättras.}
+\par\medskip
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}l r X@{}}
+\textbf{1}~\texttt{register.kommer\_att\_vs\_ska} & $+2.50$ & future/intention auxiliary `kommer att' vs `ska/skall' \\
+\textbf{2}~\texttt{connpunct.calque\_connectives} & $+2.00$ & Swedish equivalents of English discourse markers (i synnerhet, i själva verket \ldots{}) \\
+\textbf{3}~\texttt{connpunct.initial\_adverbial\_comma} & $+2.00$ & comma after a sentence-initial adverbial (`Dessutom, \ldots{}') \\
+\textbf{4}~\texttt{register.skulle\_vilja\_vs\_vill} & $+1.19$ & `jag/vi skulle vilja' vs `jag/vi vill' \\
+\textbf{5}~\texttt{particles.poss\_3rd} & $+0.67$ & 3rd-person non-reflexive possessives `hans/hennes/deras/dess' \\
+\textbf{6}~\texttt{starter.sent\_len} & $-0.48$ & words per sentence \textit{(no span)} \\
+\textbf{7}~\texttt{stats.av\_nominal} & $+0.43$ & `av' after a definite nominalisation (`genomförandet av') \textit{(no span)} \\
+\textbf{8}~\texttt{wordorder.subject\_theme} & $+0.22$ & subject in the prefield: pronoun / NP / det / demonstrative / cleft \\
+\textbf{9}~\texttt{particles.poss\_1st} & $+0.12$ & 1st-person possessive determiners `min/mitt/mina/vår/vårt/våra' \\
+\end{tabularx}
+\par 27 other rules: $+1.03$ in total (mostly absence and length terms); family cap \texttt{connpunct}: $-0.20$.}
+\par\smallskip{\small\textbf{Note.} Evidence from several families: future \emph{kommer att} with no \emph{ska/skall} (the choice rule at its cap of 2.5), \emph{Slutligen,} with a comma, the structuring conjuncts \emph{i synnerhet} `in particular' and \emph{i allmänhet} `in general', \emph{skulle jag vilja} `I would like to', and the possessive \emph{hennes} `her'. The connectives-and-punctuation family exceeds its cap of 4 and is clipped.}
+\end{exbox}
+
+\begin{exbox}{Example 6 \quad 100-token chunk \quad \textbf{FP} \quad true: original \quad P(translated) = 0.986 \quad score $+4.24$ \quad 101 words}
+{\setlength{\parindent}{0pt}\raggedright \highLight[tsO!21]{Det gäller}\textsuperscript{\sffamily\bfseries 9} betänkandet av Florenz som \highLight[tsO!28]{också}\textsuperscript{\sffamily\bfseries 6} har debatterats under detta sammanträde. Låt mig understryka att kommissionen \highLight[tsT!40]{kommer att}\textsuperscript{\sffamily\bfseries 1} \highLight[tsT!34]{säkerställa}\textsuperscript{\sffamily\bfseries 2} att \highLight[tsT!29]{det förslag vi }\highLight[tsT!51]{kommer}\textsuperscript{\sffamily\bfseries 4}\highLight[tsT!40]{ att}\textsuperscript{\sffamily\bfseries 1} lägga fram tidigt nästa år om oktaBDE och dekaBDE \highLight[tsT!40]{kommer att}\textsuperscript{\sffamily\bfseries 1} vara förenligt med \highLight[tsT!25]{vårt}\textsuperscript{\sffamily\bfseries 8} förslag om begränsning av farliga ämnen i elektrisk och elektronisk utrustning. Eftersom riskbedömningen när det gäller oktaBDE och dekaBDE är långt framskriden blir det, om så skulle erfordras, möjligt för kommissionen att vidta åtgärder mycket tidigare än 2006. \highLight[tsO!20]{Då}\textsuperscript{\sffamily\bfseries 10} riskbedömningarna slutförts och tillgången på säkra ersättningsprodukter undersökts, bör det bli möjligt att fastställa i vilka fall som användningen innebär risker.}
+\par\medskip
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}l r X@{}}
+\textbf{1}~\texttt{register.kommer\_att\_vs\_ska} & $+2.50$ & future/intention auxiliary `kommer att' vs `ska/skall' \\
+\textbf{2}~\texttt{calques.lexicon} & $+0.60$ & English calques and anglicisms \\
+\textbf{3}~\texttt{stats.av\_nominal} & $+0.45$ & `av' after a definite nominalisation (`genomförandet av') \textit{(no span)} \\
+\textbf{4}~\texttt{connpunct.som\_drop} & $+0.43$ & object relative without `som' (`det arbete ni har gjort') \\
+\textbf{5}~\texttt{starter.sent\_len} & $+0.29$ & words per sentence \textit{(no span)} \\
+\textbf{6}~\texttt{connpunct.additive\_ocksa} & $-0.23$ & additive `också' \\
+\textbf{7}~\texttt{particles.poss\_3rd} & $-0.15$ & 3rd-person non-reflexive possessives `hans/hennes/deras/dess' \textit{(no span)} \\
+\textbf{8}~\texttt{particles.poss\_1st} & $+0.14$ & 1st-person possessive determiners `min/mitt/mina/vår/vårt/våra' \\
+\textbf{9}~\texttt{wordorder.subject\_theme} & $-0.11$ & subject in the prefield: pronoun / NP / det / demonstrative / cleft \\
+\textbf{10}~\texttt{connpunct.initial\_adverbial\_comma} & $-0.09$ & comma after a sentence-initial adverbial (`Dessutom, \ldots{}') \\
+\end{tabularx}
+\par 27 other rules: $+0.41$ in total (mostly absence and length terms).}
+\par\smallskip{\small\textbf{Note.} An original speech in which the speaker speaks for the Commission (\emph{det förslag vi kommer att lägga fram} `the proposal we will put forward'). Future \emph{kommer att}, \emph{säkerställa} `ensure' (calque lexicon), the nominal \emph{betänkandet av} `the report by' and the relative clause without \emph{som} all point to translation. Commission prose given in Swedish shares these conventions with translated Commission prose (Section~\ref{sec-limitations}).}
+\end{exbox}

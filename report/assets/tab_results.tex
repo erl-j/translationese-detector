@@ -1,0 +1,20 @@
+\begin{table}[tbp]
+\centering\small
+\caption{Accuracy / ROC-AUC on balanced, topic-masked data (unmasked figures differ by at most
+.001). The engine and the baseline have no fitted parameters; trn is where the rule values were
+read off, val is held out. The hybrid row is the best model per column among the ML models over
+expert features (Section~\ref{sec-hybrid}; superscript: model). Sources: \texttt{docs/INTEGRATION.md},
+\texttt{hybrid/reports/METRICS.md}.}
+\label{tab-results}
+\begin{tabular}{@{}l l c c c@{}}
+\toprule
+system & split & sentence & 100 tokens & 500 tokens \\
+\midrule
+rule engine & trn & .653 / .723 & .822 / .907 & .945 / .990 \\
+rule engine & val & .613 / .666 & .747 / .833 & .920 / .977 \\
+mean sentence length & trn & .561 / .582 & .629 / .677 & .721 / .787 \\
+mean sentence length & val & .563 / .583 & .633 / .671 & .708 / .792 \\
+best expert-feature hybrid & val & .642 / .701\textsuperscript{gbt\_all} & .787 / .869\textsuperscript{gbt\_all} & .939 / .983\textsuperscript{lr\_all} \\
+\bottomrule
+\end{tabular}
+\end{table}

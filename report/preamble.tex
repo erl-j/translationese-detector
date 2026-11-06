@@ -1,0 +1,33 @@
+% Included in the LaTeX header by report.qmd (LuaLaTeX).
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{luacolor}
+\usepackage{lua-ul}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath}
+\usepackage[section]{placeins}
+
+% Highlight colours: toward translated (orange), toward original (blue).
+\definecolor{tsT}{HTML}{EB6834}
+\definecolor{tsO}{HTML}{2A78D6}
+\definecolor{exframe}{HTML}{8A8984}
+\definecolor{exback}{HTML}{FCFCFB}
+
+\newtcolorbox{exbox}[1]{breakable, enhanced, colback=exback, colframe=exframe,
+  boxrule=0.4pt, arc=1.5pt, left=5pt, right=5pt, top=4pt, bottom=4pt,
+  fonttitle=\small\sffamily, coltitle=black, colbacktitle=black!6,
+  title={#1}, before skip=8pt, after skip=8pt}
+
+\newcommand{\hlT}[1]{\highLight[tsT!45]{#1}}
+\newcommand{\hlO}[1]{\highLight[tsO!45]{#1}}
+
+\input{assets/numbers.tex}
+
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\raggedbottom
+
+\AtBeginDocument{\author{Nicolas Jonason\\[2pt]\normalsize\texttt{nicolas.jonason@aiforscience.se}}}

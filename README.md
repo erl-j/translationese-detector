@@ -12,6 +12,8 @@ from Swedish translated from English.
 - **Evaluated on Europarl** with a date-based train/validation/test split and
   topic masking.
 
+Technical report (method, calibration, evaluation, findings): [report/translationese-swe-report.pdf](report/translationese-swe-report.pdf).
+
 ```text
 $ python3 -m tsw "Herr talman! Först av allt vill jag säga att det faktum att kommissionen
   kommer att agera är viktigt. Dessutom, vi måste se till att detta genomförs på daglig basis."

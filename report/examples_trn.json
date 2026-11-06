@@ -1,0 +1,50 @@
+[
+ {
+  "id": "ep-00-10-04:312:1:s34",
+  "split": "trn",
+  "gran": "sent",
+  "label": 1,
+  "date": "2000-10-04",
+  "text": "Till sist, jag var både glad och smickrad när president Chirac hänvisade till detta betänkande i sitt tal till parlamentet för några veckor sedan."
+ },
+ {
+  "id": "ep-99-05-07:34:1:s13",
+  "split": "trn",
+  "gran": "sent",
+  "label": 0,
+  "date": "1999-05-07",
+  "text": "Personligen tycker jag nämligen att kampanjen för att förhindra våld mot kvinnor faktiskt är viktigare för framtiden än denna världsutställning."
+ },
+ {
+  "id": "ep-01-10-03:313:1:s14",
+  "split": "trn",
+  "gran": "sent",
+  "label": 0,
+  "date": "2001-10-03",
+  "text": "Till sist, för att detta arbete skall bli framgångsrikt får kommissionen inte lämnas ensam."
+ },
+ {
+  "id": "ep-98-10-07:147:1:s3",
+  "split": "trn",
+  "gran": "sent",
+  "label": 1,
+  "date": "1998-10-07",
+  "text": "Då tänkte vi att det kanske rent ekonomiskt kunde bli bra i Hongkong men att det politiskt skulle gå väldigt dåligt."
+ },
+ {
+  "id": "c100:1998-03-10:1:3",
+  "split": "trn",
+  "gran": "100",
+  "label": 1,
+  "date": "1998-03-10",
+  "text": "En uppfördandekodex kanske inte räcker. Slutligen, när det gäller turism, skulle jag vilja gratulera samtliga föredragande, och i synnerhet Torres Marques för hennes betänkande. Turism är Europas och världens största industri, trots det har vi i Europa förlorat 10 procent av vår marknadsandel sedan 1960. Turism en klassisk industri på den inre marknaden. Eurons födelse kommer att ge denna marknad en oerhörd knuff framåt, och hela turistindustrin i allmänhet. Jag tror att vi kommer att få tre typer av vinnare genom introducerandet av euron. Först och främst de som arbetar inom industrin. Euron kommer inte bara att skapa fler arbetstillfällen, den kommer att ge större möjlighet till överblick av löner, vilka i sin tur kommer att förbättras."
+ },
+ {
+  "id": "c100:2002-04-09:0:27",
+  "split": "trn",
+  "gran": "100",
+  "label": 0,
+  "date": "2002-04-09",
+  "text": "Det gäller betänkandet av Florenz som också har debatterats under detta sammanträde. Låt mig understryka att kommissionen kommer att säkerställa att det förslag vi kommer att lägga fram tidigt nästa år om oktaBDE och dekaBDE kommer att vara förenligt med vårt förslag om begränsning av farliga ämnen i elektrisk och elektronisk utrustning. Eftersom riskbedömningen när det gäller oktaBDE och dekaBDE är långt framskriden blir det, om så skulle erfordras, möjligt för kommissionen att vidta åtgärder mycket tidigare än 2006. Då riskbedömningarna slutförts och tillgången på säkra ersättningsprodukter undersökts, bör det bli möjligt att fastställa i vilka fall som användningen innebär risker."
+ }
+]

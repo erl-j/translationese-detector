@@ -1,0 +1,8 @@
+# Quarto / LaTeX build caches and local tool installs
+.quarto/
+_freeze/
+report_files/
+report.tex
+*.log
+*.aux
+.tools/

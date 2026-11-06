@@ -1,0 +1,27 @@
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Val AUC (topic-masked) of models fitted on trn (hyper-parameters by session-grouped CV
+inside trn) and scored once on val. For the bag-of-words reference, the unmasked AUC is in
+parentheses. Source: \texttt{hybrid/reports/METRICS.md}.}
+\label{tab-hybrid}
+\begin{tabular}{@{}l l c c c@{}}
+\toprule
+model & key & sentence & 100 tokens & 500 tokens \\
+\midrule
+rule engine (no fitting) & \texttt{engine\_raw} & .666 & .833 & .977 \\
+engine score, LR threshold and scale & \texttt{engine\_calib} & .666 & .833 & .977 \\
+LR re-weighting of the 49 rule contributions & \texttt{stack\_rules} & .669 & .840 & .972 \\
+LR over the 7 family subscores & \texttt{stack\_families} & .667 & .830 & .974 \\
+LR over rule contributions + rule statistics & \texttt{lr\_engine} & .675 & .847 & .972 \\
+GBT over rule contributions + rule statistics & \texttt{gbt\_engine} & .681 & .845 & .968 \\
+LR over $\sim$110 literature word-list features & \texttt{lr\_expert} & .670 & .824 & .964 \\
+GBT over the literature features & \texttt{gbt} & .684 & .838 & .959 \\
+engine score + 10 literature features (LR) & \texttt{hybrid\_plus} & .681 & .850 & .981 \\
+LR over rules + statistics + literature features & \texttt{lr\_all} & .688 & .860 & .983 \\
+GBT over rules + statistics + literature features & \texttt{gbt\_all} & .701 & .869 & .971 \\
+\midrule
+LR over the 300 most frequent words (no expert input) & \texttt{bow\_lr} & .700 (.707) & .870 (.880) & .971 (.975) \\
+baseline: mean sentence length & \texttt{MeanSentLen} & .583 & .671 & .792 \\
+\bottomrule
+\end{tabular}
+\end{table}

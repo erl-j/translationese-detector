@@ -1,0 +1,21 @@
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Leave-one-family-out ablation on trn (masked, balanced): accuracy / AUC without the family
+and the change ($\Delta$acc / $\Delta$AUC) relative to the full engine. Source: \texttt{docs/INTEGRATION.md}.}
+\label{tab-ablation}
+\begin{tabular}{@{}l c c c c c c@{}}
+\toprule
+without & sentence & $\Delta$ & 100 tokens & $\Delta$ & 500 tokens & $\Delta$ \\
+\midrule
+all families & .653 / .723 &  & .822 / .907 &  & .945 / .990 &  \\
+\midrule
+connpunct & .632 / .695 & $-$.021 / $-$.028 & .788 / .877 & $-$.034 / $-$.030 & .921 / .980 & $-$.024 / $-$.010 \\
+register & .633 / .696 & $-$.021 / $-$.027 & .800 / .882 & $-$.023 / $-$.025 & .935 / .985 & $-$.010 / $-$.006 \\
+particles & .636 / .702 & $-$.018 / $-$.021 & .801 / .886 & $-$.021 / $-$.021 & .939 / .984 & $-$.006 / $-$.006 \\
+starter (modal particles, sent\_len) & .634 / .710 & $-$.019 / $-$.014 & .812 / .896 & $-$.010 / $-$.011 & .940 / .988 & $-$.005 / $-$.002 \\
+calques & .647 / .713 & $-$.006 / $-$.010 & .810 / .896 & $-$.012 / $-$.011 & .941 / .988 & $-$.004 / $-$.003 \\
+wordorder & .649 / .717 & $-$.004 / $-$.006 & .817 / .902 & $-$.005 / $-$.005 & .945 / .989 & +.000 / $-$.002 \\
+stats & .653 / .723 & .000 / .000 & .821 / .905 & $-$.001 / $-$.002 & .943 / .990 & $-$.002 / .000 \\
+\bottomrule
+\end{tabular}
+\end{table}
