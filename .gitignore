@@ -7,3 +7,7 @@ results/*.tmp
 data/processed/
 results/all/
 .venv-hybrid/
+venv/
+.env
+wandb/
+.cache/
